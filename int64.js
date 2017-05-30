@@ -288,13 +288,17 @@ Int64.prototype.idiv = function idiv(b) {
   res = a.set(0);
 
   while (rem.gte(b)) {
-    approx = Math.floor(rem.toDouble() / b.toDouble());
+    approx = rem.toDouble() / b.toDouble();
+    approx = Math.floor(approx);
 
     if (approx < 1)
       approx = 1;
 
     log2 = Math.ceil(Math.log(approx) / Math.LN2);
-    delta = log2 <= 48 ? 1 : Math.pow(2, log2 - 48);
+    delta = 1;
+
+    if (log2 > 48)
+      delta = Math.pow(2, log2 - 48);
 
     ares = Int64.fromNumber(approx, true);
     arem = ares.mul(b);
@@ -731,6 +735,8 @@ Int64.prototype.fromNumber = function fromNumber(num, signed) {
   var neg = false;
   var hi, lo;
 
+  assert(typeof num === 'number' && isFinite(num));
+
   if (num < 0) {
     neg = true;
     num = -num;
@@ -752,8 +758,13 @@ Int64.fromNumber = function fromNumber(num, signed) {
 };
 
 Int64.prototype.fromInt = function fromInt(num, signed) {
-  var hi = num < 0 ? -1 : 0;
-  var lo = num | 0;
+  var hi, lo;
+
+  assert(typeof num === 'number' && isFinite(num));
+
+  hi = num < 0 ? -1 : 0;
+  lo = num | 0;
+
   return this.fromBits(hi, lo, signed);
 };
 
@@ -818,9 +829,9 @@ Int64.prototype.toInt = function toInt() {
 };
 
 Int64.prototype.fromString = function fromString(str, signed, base) {
-  var nonzero = 0;
+  var res = new Int64();
   var neg = false;
-  var i, ch, radix, result, size, val, pow, res;
+  var i, radix, size, val, pow;
 
   if (base == null)
     base = 10;
@@ -853,10 +864,8 @@ Int64.prototype.fromString = function fromString(str, signed, base) {
 
   assert(str.length <= 64);
 
-  res = new Int64();
-  res.signed = true;
-
-  radix = Int64.fromNumber(Math.pow(base, 8), true);
+  radix = Math.pow(base, 8);
+  radix = Int64.fromNumber(radix, true);
 
   for (i = 0; i < str.length; i += 8) {
     size = Math.min(8, str.length - i);
@@ -923,7 +932,8 @@ Int64.prototype.toString = function toString(base) {
     return '-' + this.neg().toString(base);
   }
 
-  radix = Int64.fromNumber(Math.pow(base, 6), this.signed);
+  radix = Math.pow(base, 6);
+  radix = Int64.fromNumber(radix, this.signed);
   rem = this;
 
   for (;;) {
@@ -981,7 +991,7 @@ function isSafeMul(a) {
   if (a.hi !== 0)
     return false;
 
-  if ((a.lo >>> 0) >= (1 << 26))
+  if ((a.lo >>> 0) >= (1 << 24))
     return false;
 
   return true;
