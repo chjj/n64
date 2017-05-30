@@ -640,7 +640,9 @@ Int64.prototype.eq = function eq(b) {
 };
 
 Int64.prototype.eqn = function eqn(num) {
-  return this.hi === 0 && this.lo === num;
+  var hi = num < 0 ? -1 : 0;
+  var lo = num | 0;
+  return this.hi === hi && this.lo === lo;
 };
 
 Int64.prototype.gt = function gt(b) {
