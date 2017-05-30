@@ -2,18 +2,6 @@
 
 var assert = require('assert');
 
-/*
- * Constants
- */
-
-var ZERO;
-var ONE;
-var NEG_ONE;
-var MIN_I25;
-var MIN_I64;
-var MAX_I64;
-var MAX_U64;
-
 /**
  * Int64
  * @constructor
@@ -146,22 +134,22 @@ Int64.prototype.imul = function imul(b) {
   var hi, lo;
 
   if (a.isZero() || b.isZero())
-    return a.inject(ZERO);
+    return a.setZero();
 
   if (a.signed) {
     if (!b.signed)
       b = b.toSigned();
 
-    if (a.eq(MIN_I64)) {
+    if (a.isMin64()) {
       if (!b.isOdd())
-        return a.inject(ZERO);
-      return a.inject(MIN_I64);
+        return a.setZero();
+      return a.setMin64();
     }
 
-    if (b.eq(MIN_I64)) {
+    if (b.isMin64()) {
       if (a.isOdd())
-        return a.inject(MIN_I64);
-      return a.inject(ZERO);
+        return a.setMin64();
+      return a.setZero();
     }
 
     if (a.isNeg()) {
@@ -177,7 +165,7 @@ Int64.prototype.imul = function imul(b) {
       b = b.toUnsigned();
   }
 
-  if (a.lt(MIN_I25) && b.lt(MIN_I25))
+  if (a.isSafe() && b.isSafe())
     return a.set(a.toNumber() * b.toNumber());
 
   a48 = a.hi >>> 16;
@@ -253,20 +241,20 @@ Int64.prototype.idiv = function idiv(b) {
     if (!b.signed)
       b = b.toSigned();
 
-    if (a.eq(MIN_I64)) {
-      if (b.eq(ONE) || b.eq(NEG_ONE))
-        return a.inject(MIN_I64);
+    if (a.isMin64()) {
+      if (b.isOne() || b.isNegOne())
+        return a.setMin64();
 
-      if (b.eq(MIN_I64))
-        return a.inject(ONE);
+      if (b.isMin64())
+        return a.setOne();
 
       half = a.shrn(1);
       approx = half.idiv(b).ishln(1);
 
       if (approx.isZero()) {
         if (b.isNeg())
-          return a.inject(ONE);
-        return a.inject(NEG_ONE);
+          return a.setOne();
+        return a.setNegOne();
       }
 
       rem = a.sub(b.mul(approx));
@@ -275,8 +263,8 @@ Int64.prototype.idiv = function idiv(b) {
       return res;
     }
 
-    if (b.eq(MIN_I64))
-      return a.inject(ZERO);
+    if (b.isMin64())
+      return a.setZero();
 
     if (a.isNeg()) {
       if (b.isNeg())
@@ -291,14 +279,14 @@ Int64.prototype.idiv = function idiv(b) {
       b = b.toUnsigned();
 
     if (b.gt(a))
-      return a.inject(ZERO);
+      return a.setZero();
 
     if (b.gt(a.ushrn(1)))
-      return a.inject(ONE);
+      return a.setOne();
   }
 
   rem = a.clone();
-  res = a.inject(ZERO);
+  res = a.setZero();
 
   while (rem.gte(b)) {
     approx = Math.floor(rem.toDouble() / b.toDouble());
@@ -319,7 +307,7 @@ Int64.prototype.idiv = function idiv(b) {
     }
 
     if (ares.isZero())
-      ares.inject(ONE);
+      ares.setOne();
 
     res.iadd(ares);
     rem.isub(arem);
@@ -563,8 +551,8 @@ Int64.prototype.ushrn = function ushrn(num) {
  */
 
 Int64.prototype.ineg = function ineg() {
-  if (this.signed && this.eq(MIN_I64))
-    return this.inject(MIN_I64);
+  if (this.signed && this.isMin64())
+    return this.setMin64();
   return this.inot().iaddn(1);
 };
 
@@ -587,7 +575,7 @@ Int64.prototype.ipown = function ipown(num) {
   num >>>= 0;
 
   if (num === 0)
-    return this.inject(ONE);
+    return this.setOne();
 
   while (--num)
     this.imul(exp);
@@ -711,11 +699,54 @@ Int64.prototype.isNeg = function isNeg() {
   return this.signed && this.hi < 0;
 };
 
+Int64.prototype.isMin64 = function isMin64() {
+  return this.hi === (0x80000000 | 0) && this.lo === 0;
+};
+
+Int64.prototype.isSafe = function isSafe() {
+  var a = this;
+
+  if (a.isNeg())
+    a = a.neg();
+
+  if (a.hi !== 0)
+    return false;
+
+  if ((a.lo >>> 0) >= (1 << 24))
+    return false;
+
+  return true;
+};
+
+Int64.prototype.isNegOne = function isNegOne() {
+  return this.hi === -1 && this.lo === -1;
+};
+
+Int64.prototype.isOne = function isOne() {
+  return this.hi === 0 && this.lo === 1;
+};
+
+Int64.prototype.setMin64 = function setMin64() {
+  return this.join(0x80000000, 0);
+};
+
+Int64.prototype.setNegOne = function setNegOne() {
+  return this.join(-1, -1);
+};
+
+Int64.prototype.setOne = function setOne() {
+  return this.join(0, 1);
+};
+
+Int64.prototype.setZero = function setZero() {
+  return this.join(0, 0);
+};
+
 Int64.prototype.bitLength = function bitLength() {
   var a = this;
 
   if (this.isNeg()) {
-    if (this.eq(MIN_I64))
+    if (this.isMin64())
       return 64;
     a = this.neg();
   }
@@ -933,7 +964,7 @@ Int64.prototype.toString = function toString(base) {
     return '0';
 
   if (this.isNeg()) {
-    if (this.eq(MIN_I64)) {
+    if (this.isMin64()) {
       radix = Int64.fromNumber(base, true);
       div = this.div(radix);
       rem = div.mul(radix).isub(this);
@@ -990,19 +1021,6 @@ function countBits(word) {
 
   return bit + 1;
 }
-
-/*
- * Constants
- */
-
-ZERO = Int64.fromInt(0, true);
-ONE = Int64.fromInt(1, true);
-NEG_ONE = Int64.fromInt(-1, true);
-
-MIN_I25 = Int64.fromInt(1 << 24, true);
-MIN_I64 = Int64.fromBits(0x80000000, 0, true);
-MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
-MAX_U64 = Int64.fromBits(0xffffffff, 0xffffffff, false);
 
 /*
  * Expose
