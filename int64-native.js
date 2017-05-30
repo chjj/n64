@@ -59,6 +59,11 @@ Int64.prototype.set = function set(num) {
   return this;
 };
 
+Int64.prototype.inject = function inject(b) {
+  this.n.inject(b.n);
+  return this;
+};
+
 /*
  * Addition
  */
