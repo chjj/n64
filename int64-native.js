@@ -48,8 +48,11 @@ Int64.prototype.from = function from(num, signed, base) {
   if (num == null)
     return this;
 
-  if (typeof num === 'number')
+  if (typeof num === 'number') {
+    if (typeof signed === 'number')
+      return this.fromBits(num, signed, base);
     return this.fromNumber(num, signed);
+  }
 
   if (typeof num === 'string')
     return this.fromString(num, signed, base);
