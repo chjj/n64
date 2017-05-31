@@ -17,8 +17,8 @@
 'use strict';
 
 var assert = require('assert');
-var Int64 = require('../int64.js');
-var Native = require('../int64-native.js');
+var Int64 = require('../lib/int64.js');
+var Native = require('../lib/native.js');
 
 function run(Int64, name) {
   var ONE = Int64.fromInt(1, true);
