@@ -79,25 +79,35 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#add(i64)` - Cloned addition with another int64.
 - `Int64#addn(num)` - Cloned addition with a JS number.
 
+---
+
 - `Int64#isub(i64)` - In-place subtraction with another int64.
 - `Int64#isubn(num)` - In-place subtraction with a JS number.
 - `Int64#sub(i64)` - Cloned subtraction with another int64.
 - `Int64#subn(num)` - Cloned subtraction with a JS number.
+
+---
 
 - `Int64#imul(i64)` - In-place multiplication with another int64.
 - `Int64#imuln(num)` - In-place multiplication with a JS number.
 - `Int64#mul(i64)` - Cloned multiplication with another int64.
 - `Int64#muln(num)` - Cloned multiplication with a JS number.
 
+---
+
 - `Int64#idiv(i64)` - In-place division with another int64.
 - `Int64#idivn(num)` - In-place division with a JS number.
 - `Int64#div(i64)` - Cloned division with another int64.
 - `Int64#divn(num)` - Cloned division with a JS number.
 
+---
+
 - `Int64#imod(i64)` - In-place modulo with another int64.
 - `Int64#imodn(num)` - In-place modulo with a JS number.
 - `Int64#mod(i64)` - Cloned modulo with another int64.
 - `Int64#modn(num)` - Cloned modulo with a JS number.
+
+---
 
 - `Int64#ipow(i64)` - In-place exponentiation with another int64.
 - `Int64#ipown(num)` - In-place exponentiation with a JS number.
@@ -111,33 +121,47 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#and(i64)` - Cloned `AND` with another int64.
 - `Int64#andn(num)` - Cloned `AND` with a JS number.
 
+---
+
 - `Int64#ior(i64)` - In-place `OR` with another int64.
 - `Int64#iorn(num)` - In-place `OR` with a JS number.
 - `Int64#or(i64)` - Cloned `OR` with another int64.
 - `Int64#orn(num)` - Cloned `OR` with a JS number.
+
+---
 
 - `Int64#ixor(i64)` - In-place `XOR` with another int64.
 - `Int64#ixorn(num)` - In-place `XOR` with a JS number.
 - `Int64#xor(i64)` - Cloned `XOR` with another int64.
 - `Int64#xorn(num)` - Cloned `XOR` with a JS number.
 
+---
+
 - `Int64#inot()` - In-place `NOT`.
 - `Int64#not()` - Cloned `NOT`.
+
+---
 
 - `Int64#ishl(i64)` - In-place left-shift with another int64.
 - `Int64#ishln(num)` - In-place left-shift with a JS number.
 - `Int64#shl(i64)` - Cloned left-shift with another int64.
 - `Int64#shln(num)` - Cloned left-shift with a JS number.
 
+---
+
 - `Int64#ishr(i64)` - In-place right-shift with another int64.
 - `Int64#ishrn(num)` - In-place right-shift with a JS number.
 - `Int64#shr(i64)` - Cloned right-shift with another int64.
 - `Int64#shrn(num)` - Cloned right-shift with a JS number.
 
+---
+
 - `Int64#iushr(i64)` - In-place unsigned right-shift with another int64.
 - `Int64#iushrn(num)` - In-place unsigned right-shift with a JS number.
 - `Int64#ushr(i64)` - Cloned unsigned right-shift with another int64.
 - `Int64#ushrn(num)` - Cloned unsigned right-shift with a JS number.
+
+---
 
 - `Int64#ineg()` - In-place negation.
 - `Int64#neg()` - Cloned negation.
@@ -147,18 +171,26 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#cmp(i64)` - Compare to another int64.
 - `Int64#cmpn(num)` - Compare to a JS number.
 
+---
+
 - `Int64#eq(i64)` - Test equality against another int64.
 - `Int64#eqn(num)` - Test equality against a JS number.
+
+---
 
 - `Int64#gt(i64)` - Greater than (int64).
 - `Int64#gtn(num)` - Greater than (JS number).
 - `Int64#gte(i64)` - Greater than or equal to (int64).
 - `Int64#gten(num)` - Greater than or equal to (JS number).
 
+---
+
 - `Int64#lt(i64)` - Less than (int64).
 - `Int64#ltn(num)` - Less than (JS number).
 - `Int64#lte(i64)` - Less than or equal to (int64).
 - `Int64#lten(num)` - Less than or equal to (JS number).
+
+---
 
 - `Int64#isZero()` - Test whether int64 is zero.
 - `Int64#isNeg()` - Test whether int64 is negative.
