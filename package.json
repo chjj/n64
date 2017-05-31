@@ -29,7 +29,7 @@
     "mocha": "^3.4.1"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=0.11.0"
   },
   "browser": {
     "./lib/n64": "./lib/int64.js"
