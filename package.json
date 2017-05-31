@@ -1,10 +1,11 @@
 {
   "name": "n64",
   "version": "0.0.0",
-  "description": "Native bindings to int64",
+  "description": "Native int64 binding for node.js with javascript fallback",
   "keywords": [
     "int64",
-    "n64"
+    "n64",
+    "uint64"
   ],
   "bugs": {
     "url": "https://github.com/chjj/n64/issues"
@@ -15,21 +16,23 @@
   "main": "./lib/n64.js",
   "repository": "git://github.com/chjj/n64.git",
   "scripts": {
-    "install": "node-gyp rebuild",
+    "install": "node-gyp rebuild || echo 'Build failed. Using JS fallback.'",
     "test": "mocha --reporter spec test/*-test.js"
   },
   "dependencies": {
-    "bindings": "1.2.1",
-    "nan": "2.6.2"
+    "bindings": "^1.2.1",
+    "nan": "^2.6.2"
   },
   "devDependencies": {
-    "mocha": "3.4.1"
+    "jsdoc": "^3.4.3",
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.1"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">=4.0.0"
   },
   "browser": {
-    "./lib/n64.js": "./lib/int64.js"
+    "./lib/n64": "./lib/int64.js"
   },
   "gypfile": true
 }
