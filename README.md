@@ -39,8 +39,8 @@ Outputs:
 
 ## API
 
-The API tries to mimic the [bn.js] API as much as possible. Each method follows
-a pattern of `(i?)(operation)(n?)`. For example, `a.add(b)` will clone the
+`n64` tries to mimic the [bn.js] API as much as possible. Each method follows a
+pattern of `(i?)(operation)(n?)`. For example, `a.add(b)` will clone the
 current int64, do the addition, and return a new int64. `a.iadd(b)` will do the
 addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 32 bit JS number. `a.iaddn(b)` will do the same thing _in-place_.
