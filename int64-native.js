@@ -8,11 +8,12 @@ var Native = require('bcoin-native').Int64;
  * @constructor
  */
 
-function Int64() {
+function Int64(num, signed, base) {
   if (!(this instanceof Int64))
-    return new Int64();
+    return new Int64(num, signed, base);
 
   this.n = new Native();
+  this.from(num, signed, base);
 }
 
 /*
@@ -42,6 +43,28 @@ Int64.prototype.__defineGetter__('signed', function() {
 Int64.prototype.__defineSetter__('signed', function(value) {
   return this.n.setSigned(value);
 });
+
+Int64.prototype.from = function from(num, signed, base) {
+  if (num == null)
+    return this;
+
+  if (typeof num === 'number')
+    return this.fromNumber(num, signed);
+
+  if (typeof num === 'string')
+    return this.fromString(num, signed, base);
+
+  if (typeof num === 'boolean') {
+    this.signed = num;
+    return this;
+  }
+
+  throw new Error('Not a number.');
+};
+
+Int64.from = function from(num, signed, base) {
+  return new Int64().from(num, signed, base);
+};
 
 Int64.prototype.clone = function clone() {
   var obj = new Int64();
@@ -486,6 +509,10 @@ Int64.prototype.toInt = function toInt() {
 };
 
 Int64.prototype.fromString = function fromString(str, signed, base) {
+  if (typeof signed === 'number') {
+    base = signed;
+    signed = null;
+  }
   this.n.fromString(str, signed, base);
   return this;
 };
@@ -496,6 +523,10 @@ Int64.fromString = function fromString(str, signed, base) {
 
 Int64.prototype.toString = function toString(base) {
   return this.n.toString(base);
+};
+
+Int64.prototype.inspect = function inspect() {
+  return '<Int64 ' + this.toString(16) + '>';
 };
 
 Int64.isInt64 = function isInt64(obj) {
