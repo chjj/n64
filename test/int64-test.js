@@ -294,6 +294,8 @@ function run(Int64, name) {
     it('should do unsigned left shift', function() {
       var num = UONE.shln(63);
       assert.ok(!num.eq(MIN_I64));
+      assert.equal(num.cmp(MIN_I64), 1);
+      assert.equal(MIN_I64.cmp(num), -1);
       assert.equal(num.toString(), '9223372036854775808');
       assert.equal(
         Int64.fromString('9223372036854775808', false).toString(),
