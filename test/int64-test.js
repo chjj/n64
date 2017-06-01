@@ -730,6 +730,13 @@ function run(Int64, name) {
       a = Int64.fromNumber(-123, true);
       assert.equal(a.pown(6).toString(), '3462825991689');
       assert.equal(a.toString(), '-123');
+
+      a = Int64.fromNumber(-2, true);
+      a.ipown(4);
+      assert.equal(a.toString(), '16');
+      a = Int64.fromNumber(-2, true);
+      a.ipown(3);
+      assert.equal(a.toString(), '-8');
     });
 
     it('should do big pow (unsigned)', function() {

@@ -491,12 +491,19 @@ NAN_METHOD(Int64::Ipown) {
   if (!info[0]->IsNumber())
     return Nan::ThrowError("First argument must be a number.");
 
-  uint32_t lo = (uint32_t)info[0]->Uint32Value();
+  uint64_t x = a->n;
+  uint32_t y = (uint32_t)info[0]->Uint32Value();
 
-  if (a->sign)
-    a->n = pow(abs((int64_t)((int32_t)a->n)), lo);
-  else
-    a->n = pow(a->n, lo);
+  if (a->n != 0) {
+    a->n = 1;
+
+    while (y > 0) {
+      if (y & 1)
+        a->n *= x;
+      y >>= 1;
+      x *= x;
+    }
+  }
 
   info.GetReturnValue().Set(info.Holder());
 }
