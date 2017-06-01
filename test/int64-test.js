@@ -345,8 +345,8 @@ function run(Int64, name) {
       assert.equal(a.toString(), '1288490188800');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      a.iaddn(200 * 0x1000000);
-      assert.equal(a.toString(), '432852172800');
+      a.iaddn(0x3ffffff);
+      assert.equal(a.toString(), '429563838463');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
       b = Int64.fromNumber(200 * 0x100000000, false);
@@ -354,7 +354,7 @@ function run(Int64, name) {
       assert.equal(a.toString(), '429496729600');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      assert.equal(a.addn(200 * 0x1000000).toString(), '432852172800');
+      assert.equal(a.addn(0x3ffffff).toString(), '429563838463');
       assert.equal(a.toString(), '429496729600');
     });
 
@@ -585,8 +585,8 @@ function run(Int64, name) {
       assert.equal(a.toString(), '160');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      a.idivn(200 * 0x1000000);
-      assert.equal(a.toString(), '128');
+      a.idivn(0x3ffffff);
+      assert.equal(a.toString(), '6400');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
       b = Int64.fromNumber(10 * 0x10000000, false);
@@ -594,7 +594,7 @@ function run(Int64, name) {
       assert.equal(a.toString(), '429496729600');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      assert.equal(a.divn(200 * 0x1000000).toString(), '128');
+      assert.equal(a.divn(0x3ffffff).toString(), '6400');
       assert.equal(a.toString(), '429496729600');
     });
 
@@ -605,8 +605,8 @@ function run(Int64, name) {
       assert.equal(a.toString(), '-160');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
-      a.idivn(-50 * 0x100000);
-      assert.equal(a.toString(), '-8192');
+      a.idivn(-0xfffff);
+      assert.equal(a.toString(), '-409600');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
       b = Int64.fromNumber(-10 * 0x10000000, true);
@@ -614,7 +614,7 @@ function run(Int64, name) {
       assert.equal(a.toString(), '429496729600');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
-      assert.equal(a.divn(-50 * 0x100000).toString(), '-8192');
+      assert.equal(a.divn(-0xfffff).toString(), '-409600');
       assert.equal(a.toString(), '429496729600');
     });
 
@@ -665,8 +665,8 @@ function run(Int64, name) {
       assert.equal(a.toString(), '1879048192');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      a.imodn(187 * 0x1000000);
-      assert.equal(a.toString(), '2818572288');
+      a.imodn(0x3ffffff);
+      assert.equal(a.toString(), '6400');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
       b = Int64.fromNumber(9 * 0x10000000, false);
@@ -674,7 +674,7 @@ function run(Int64, name) {
       assert.equal(a.toString(), '429496729600');
 
       a = Int64.fromNumber(100 * 0x100000000, false);
-      assert.equal(a.modn(187 * 0x1000000).toString(), '2818572288');
+      assert.equal(a.modn(0x3ffffff).toString(), '6400');
       assert.equal(a.toString(), '429496729600');
     });
 
@@ -685,8 +685,8 @@ function run(Int64, name) {
       assert.equal(a.toString(), '1879048192');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
-      a.imodn(-187 * 0x100000);
-      assert.equal(a.toString(), '73400320');
+      a.imodn(-0xfffff);
+      assert.equal(a.toString(), '409600');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
       b = Int64.fromNumber(-9 * 0x10000000, true);
@@ -694,7 +694,7 @@ function run(Int64, name) {
       assert.equal(a.toString(), '429496729600');
 
       a = Int64.fromNumber(100 * 0x100000000, true);
-      assert.equal(a.modn(-187 * 0x100000).toString(), '73400320');
+      assert.equal(a.modn(-0xfffff).toString(), '409600');
       assert.equal(a.toString(), '429496729600');
     });
 
