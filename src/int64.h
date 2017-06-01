@@ -24,10 +24,6 @@ public:
   bool sign;
 
 private:
-  static NAN_METHOD(Clone);
-  static NAN_METHOD(Inject);
-  static NAN_METHOD(Set);
-  static NAN_METHOD(Join);
   static NAN_METHOD(GetHi);
   static NAN_METHOD(SetHi);
   static NAN_METHOD(GetLo);
@@ -51,27 +47,34 @@ private:
   static NAN_METHOD(Iorn);
   static NAN_METHOD(Ixor);
   static NAN_METHOD(Ixorn);
+  static NAN_METHOD(Inot);
   static NAN_METHOD(Ishln);
   static NAN_METHOD(Ishrn);
   static NAN_METHOD(Iushrn);
-  static NAN_METHOD(Inot);
+  static NAN_METHOD(Setn);
+  static NAN_METHOD(Testn);
+  static NAN_METHOD(Imaskn);
   static NAN_METHOD(Ineg);
-  static NAN_METHOD(IsNeg);
-  static NAN_METHOD(IsZero);
-  static NAN_METHOD(IsOdd);
-  static NAN_METHOD(IsEven);
   static NAN_METHOD(Cmp);
   static NAN_METHOD(Cmpn);
   static NAN_METHOD(Eq);
   static NAN_METHOD(Eqn);
+  static NAN_METHOD(IsZero);
+  static NAN_METHOD(IsNeg);
+  static NAN_METHOD(IsOdd);
+  static NAN_METHOD(IsEven);
+  static NAN_METHOD(Clone);
+  static NAN_METHOD(Inject);
+  static NAN_METHOD(Set);
+  static NAN_METHOD(Join);
   static NAN_METHOD(BitLength);
-  static NAN_METHOD(ToDouble);
   static NAN_METHOD(ToNumber);
-  static NAN_METHOD(FromNumber);
+  static NAN_METHOD(ToDouble);
   static NAN_METHOD(ToInt);
+  static NAN_METHOD(ToString);
+  static NAN_METHOD(FromNumber);
   static NAN_METHOD(FromInt);
   static NAN_METHOD(FromBits);
-  static NAN_METHOD(ToString);
   static NAN_METHOD(FromString);
 };
 #endif

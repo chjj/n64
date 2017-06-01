@@ -52,8 +52,16 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `new Int64(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `new Int64(str, signed?, base?)` - Instantiate from string.
 
+### Properties
+
+- `hi` - Internal hi bits (int32).
+- `lo` - Internal lo bits (int32).
+- `signed` - Whether the int64 is signed (bool).
+
 ### Static Methods
 
+- `Int64.min(a, b)` - Pick min value.
+- `Int64.max(a, b)` - Pick max value.
 - `Int64.fromNumber(num, signed?)` - Instantiate from JS number.
 - `Int64.fromBits(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `Int64.fromInt(lo, signed?)` - Instantiate from lo bits.
@@ -63,12 +71,6 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64.from(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `Int64.from(str, signed?, base?)` - Instantiate from string.
 - `Int64.isInt64(obj)` - Test instanceof.
-
-### Properties
-
-- `hi` - Internal hi bits (int32).
-- `lo` - Internal lo bits (int32).
-- `signed` - Whether the int64 is signed (bool).
 
 ### Methods
 
@@ -98,6 +100,8 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#ipown(num)` - In-place exponentiation with a JS number.
 - `Int64#pow(i64)` - Cloned exponentiation with another int64.
 - `Int64#pown(num)` - Cloned exponentiation with a JS number.
+- `Int64#isqr()` - Square number in-place.
+- `Int64#sqr()` - Clone and square number.
 
 #### Bitwise
 
@@ -127,8 +131,18 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#iushrn(num)` - In-place unsigned right-shift with a JS number.
 - `Int64#ushr(i64)` - Cloned unsigned right-shift with another int64.
 - `Int64#ushrn(num)` - Cloned unsigned right-shift with a JS number.
+- `Int64#setn(bit)` - Set specified bit to `1` (in-place).
+- `Int64#testn(bit)` - Test whether a bit is set.
+- `Int64#imaskn(bit)` - Clear bits higher or equal to `bit` (in-place).
+- `Int64#maskn(bit)` - Clear bits higher or equal to `bit`.
+- `Int64#andln(num)` - Perform `AND` on lo 32 bits (returns JS number).
+
+#### Negation
+
 - `Int64#ineg()` - In-place negation.
 - `Int64#neg()` - Cloned negation.
+- `Int64#iabs()` - In-place absolute.
+- `Int64#abs()` - Cloned absolute.
 
 #### Comparison
 
@@ -152,7 +166,9 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 #### Helpers
 
 - `Int64#clone()` - Clone and return a new int64.
+- `Int64#inject(int64)` - Inject properties from int64.
 - `Int64#set(num)` - Set the int64 to a JS number value.
+- `Int64#join(hi, lo)` - Join hi and lo bits.
 - `Int64#toUnsigned()` - Cast to unsigned.
 - `Int64#toSigned()` - Cast to signed.
 - `Int64#bitLength()` - Count number of bits.

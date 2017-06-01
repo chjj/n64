@@ -5,7 +5,9 @@ var Int64 = require('../lib/int64.js');
 var Native = require('../lib/native.js');
 
 function run(Int64, name) {
+  var ZERO = Int64.fromInt(0, true);
   var ONE = Int64.fromInt(1, true);
+  var NEG_ONE = Int64.fromInt(-1, true);
   var UONE = Int64.fromInt(1, false);
   var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
   var MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
@@ -290,6 +292,10 @@ function run(Int64, name) {
       assert.equal(ONE.addn(1).gtn(1), true);
       assert.equal(ONE.addn(1).lten(1), false);
       assert.equal(ONE.addn(1).ltn(1), false);
+      assert.strictEqual(Int64.min(ZERO, ONE), ZERO);
+      assert.strictEqual(Int64.max(ZERO, ONE), ONE);
+      assert.strictEqual(Int64.min(Int64(1), ONE), ONE);
+      assert.strictEqual(Int64.max(Int64(1), ONE), ONE);
     });
 
     it('should do small addition (unsigned)', function() {
@@ -791,6 +797,16 @@ function run(Int64, name) {
       assert.equal(a.pown(64).toString(), '0');
     });
 
+    it('should square', function() {
+      var a = Int64.fromNumber(6, false);
+      a.isqr();
+      assert.equal(a.toString(), '36');
+
+      a = Int64.fromNumber(6, false);
+      assert.equal(a.sqr().toString(), '36');
+      assert.equal(a.toString(), '6');
+    });
+
     it('should do small AND (unsigned)', function() {
       var a = Int64.fromNumber(12412, false);
       var b = Int64.fromNumber(200, false);
@@ -1272,6 +1288,32 @@ function run(Int64, name) {
       assert.equal(a.toString(), '-1');
     });
 
+    it('should set and test bits', function() {
+      var a = Int64(0);
+      assert.equal(a.testn(35), false);
+      a.setn(35, 1);
+      assert.equal(a.toString(), '34359738368');
+      assert.equal(a.testn(35), true);
+      assert.equal(a.testn(34), false);
+      a.setn(35, 0);
+      assert.equal(a.testn(35), false);
+      assert.equal(a.toString(), '0');
+    });
+
+    it('should mask bits', function() {
+      var a = Int64.fromString('ffffffffffffffff', false, 16);
+      a.imaskn(35);
+      assert.equal(a.toString(), '34359738367');
+
+      a = Int64.fromString('ffffffffffffffff', false, 16);
+      assert.equal(a.maskn(35).toString(), '34359738367');
+      assert.equal(a.toString(), '18446744073709551615');
+    });
+
+    it('should and lo bits', function() {
+      assert.equal(Int64(1).andln(0xffff), 1);
+    });
+
     it('should do small NOT (unsigned)', function() {
       var a = Int64.fromNumber(12412, false);
       a.inot();
@@ -1350,6 +1392,14 @@ function run(Int64, name) {
       a = Int64.fromString('ffffffffffffffff', true, 16);
       assert.equal(a.neg().toString(), '1');
       assert.equal(a.toString(), '-1');
+    });
+
+    it('should get absolute value', function() {
+      assert.equal(Int64(-1, true).toString(), '-1');
+      assert.equal(Int64(-1, true).abs().toString(), '1');
+      assert.equal(Int64(-1, true).iabs().toString(), '1');
+      assert.equal(Int64(1, true).abs().toString(), '1');
+      assert.equal(Int64(1, true).iabs().toString(), '1');
     });
   });
 }
