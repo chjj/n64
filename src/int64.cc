@@ -341,10 +341,14 @@ NAN_METHOD(Int64::Idiv) {
   if (b->n == 0)
     return Nan::ThrowError("Cannot divide by zero.");
 
-  if (a->sign)
-    a->n = (int64_t)a->n / (int64_t)b->n;
-  else
+  if (a->sign) {
+    if ((int64_t)a->n == LLONG_MIN && (int64_t)b->n == -1)
+      ;
+    else
+      a->n = (int64_t)a->n / (int64_t)b->n;
+  } else {
     a->n /= b->n;
+  }
 
   info.GetReturnValue().Set(info.Holder());
 }
@@ -363,10 +367,14 @@ NAN_METHOD(Int64::Idivn) {
   if (num == 0)
     return Nan::ThrowError("Cannot divide by zero.");
 
-  if (a->sign)
-    a->n = (int64_t)a->n / (int64_t)((int32_t)num);
-  else
+  if (a->sign) {
+    if ((int64_t)a->n == LLONG_MIN && (int32_t)num == -1)
+      ;
+    else
+      a->n = (int64_t)a->n / (int64_t)((int32_t)num);
+  } else {
     a->n /= num;
+  }
 
   info.GetReturnValue().Set(info.Holder());
 }

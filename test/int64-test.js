@@ -223,9 +223,72 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '1');
     });
 
-    it('should divide int64 min by one', function() {
+    it('should divide with int64 min edge cases (signed)', function() {
+      var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
       var num = MIN_I64.div(ONE);
       assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      var num = MIN_I64.div(new Int64(1234));
+      assert.strictEqual(num.toString(), '-7474369559849899');
+
+      var num = MIN_I64.div(new Int64(-1234));
+      assert.strictEqual(num.toString(), '7474369559849899');
+
+      var num = MIN_I64.div(new Int64(1));
+      assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      num = MIN_I64.div(MIN_I64.clone());
+      assert.strictEqual(num.toString(), '1');
+
+      num = Int64(2).div(MIN_I64.clone());
+      assert.strictEqual(num.toString(), '0');
+
+      // Normally an FPE
+      num = MIN_I64.div(new Int64(-1));
+      assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      num = MIN_I64.div(new Int64(-2));
+      assert.strictEqual(num.toString(), '4611686018427387904');
+
+      num = MIN_I64.div(MIN_I64.subn(1000));
+      assert.strictEqual(num.toString(), '-1');
+
+      num = MIN_I64.div(MIN_I64.subn(-1000));
+      assert.strictEqual(num.toString(), '1');
+
+      num = MIN_I64.div(MIN_I64.ushrn(5));
+      assert.strictEqual(num.toString(), '-32');
+
+      num = new Int64('400000000000000', true, 16);
+      num = MIN_I64.div(num);
+      assert.strictEqual(num.toString(), '-32');
+    });
+
+    it('should divide with int64 min edge cases (unsigned)', function() {
+      var MIN_I64 = Int64.fromBits(0x80000000, 0, false);
+      var num = MIN_I64.div(ONE);
+      assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      var num = MIN_I64.div(new Int64(1234));
+      assert.strictEqual(num.toString(), '7474369559849899');
+
+      var num = MIN_I64.div(new Int64(-1234));
+      assert.strictEqual(num.toString(), '0');
+
+      var num = MIN_I64.div(new Int64(1));
+      assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      num = MIN_I64.div(MIN_I64.clone());
+      assert.strictEqual(num.toString(), '1');
+
+      num = Int64(2).div(MIN_I64.clone());
+      assert.strictEqual(num.toString(), '0');
+
+      num = MIN_I64.div(new Int64(-1));
+      assert.strictEqual(num.toString(), '0');
+
+      num = MIN_I64.div(MIN_I64.subn(1000));
+      assert.strictEqual(num.toString(), '1');
     });
 
     it('should do unsigned left shift', function() {
