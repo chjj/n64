@@ -24,6 +24,7 @@
     "nan": "^2.6.2"
   },
   "devDependencies": {
+    "bn.js": "^4.11.6",
     "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
     "mocha": "^3.4.1"
