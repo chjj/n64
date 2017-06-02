@@ -68,6 +68,7 @@ private:
   static NAN_METHOD(Set);
   static NAN_METHOD(Join);
   static NAN_METHOD(BitLength);
+  static NAN_METHOD(IsSafe);
   static NAN_METHOD(ToNumber);
   static NAN_METHOD(ToDouble);
   static NAN_METHOD(ToInt);

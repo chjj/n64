@@ -12,6 +12,9 @@ function run(Int64, name) {
   var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
   var MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
   var MAX_U64 = Int64.fromBits(0xffffffff, 0xffffffff, false);
+  var MAX_SAFE = Int64.fromNumber(Number.MAX_SAFE_INTEGER, false);
+  var MAX_SAFE_MIN = Int64.fromNumber(-Number.MAX_SAFE_INTEGER, true);
+  var MAX_SAFE_MAX = Int64.fromNumber(Number.MAX_SAFE_INTEGER, true);
 
   describe(name, function() {
     it('should instantiate and serialize', function() {
@@ -1485,6 +1488,25 @@ function run(Int64, name) {
       assert.strictEqual(Int64(-1, true).iabs().toString(), '1');
       assert.strictEqual(Int64(1, true).abs().toString(), '1');
       assert.strictEqual(Int64(1, true).iabs().toString(), '1');
+    });
+
+    it('should test safety', function() {
+      assert.strictEqual(MAX_SAFE.toString(), '9007199254740991');
+      assert.strictEqual(MAX_SAFE_MIN.toString(), '-9007199254740991');
+      assert.strictEqual(MAX_SAFE_MAX.toString(), '9007199254740991');
+
+      assert.strictEqual(ONE.isSafe(), true);
+      assert.strictEqual(UONE.isSafe(), true);
+      assert.strictEqual(Int64.INT32_MIN.isSafe(), true);
+      assert.strictEqual(Int64.INT32_MAX.isSafe(), true);
+      assert.strictEqual(Int64.UINT32_MIN.isSafe(), true);
+      assert.strictEqual(Int64.UINT32_MAX.isSafe(), true);
+      assert.strictEqual(MAX_SAFE.isSafe(), true);
+      assert.strictEqual(MAX_SAFE_MIN.isSafe(), true);
+      assert.strictEqual(MAX_SAFE_MAX.isSafe(), true);
+      assert.strictEqual(MAX_SAFE.clone().addn(1).isSafe(), false);
+      assert.strictEqual(MAX_SAFE_MIN.clone().subn(1).isSafe(), false);
+      assert.strictEqual(MAX_SAFE_MAX.clone().addn(1).isSafe(), false);
     });
   });
 }

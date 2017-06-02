@@ -78,6 +78,7 @@ Int64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "set", Int64::Set);
   Nan::SetPrototypeMethod(tpl, "join", Int64::Join);
   Nan::SetPrototypeMethod(tpl, "bitLength", Int64::BitLength);
+  Nan::SetPrototypeMethod(tpl, "isSafe", Int64::IsSafe);
   Nan::SetPrototypeMethod(tpl, "toNumber", Int64::ToNumber);
   Nan::SetPrototypeMethod(tpl, "toDouble", Int64::ToDouble);
   Nan::SetPrototypeMethod(tpl, "toInt", Int64::ToInt);
@@ -911,6 +912,23 @@ NAN_METHOD(Int64::BitLength) {
   info.GetReturnValue().Set(Nan::New<v8::Int32>(bit + 1));
 }
 
+NAN_METHOD(Int64::IsSafe) {
+  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
+  bool r = true;
+
+  if (a->sign) {
+    if ((int64_t)a->n > MAX_SAFE_INTEGER
+        || (int64_t)a->n < -MAX_SAFE_INTEGER) {
+      r = false;
+    }
+  } else {
+    if (a->n > (uint64_t)MAX_SAFE_INTEGER)
+      r = false;
+  }
+
+  info.GetReturnValue().Set(Nan::New<v8::Boolean>(r));
+}
+
 NAN_METHOD(Int64::ToNumber) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
   double r = 0;
@@ -918,12 +936,12 @@ NAN_METHOD(Int64::ToNumber) {
   if (a->sign) {
     if ((int64_t)a->n > MAX_SAFE_INTEGER
         || (int64_t)a->n < -MAX_SAFE_INTEGER) {
-      return Nan::ThrowError("Number exceeds 2^53-1.");
+      return Nan::ThrowError("Number exceeds 53 bits.");
     }
     r = (double)((int64_t)a->n);
   } else {
     if (a->n > (uint64_t)MAX_SAFE_INTEGER)
-      return Nan::ThrowError("Number exceeds 2^53-1.");
+      return Nan::ThrowError("Number exceeds 53 bits.");
     r = (double)a->n;
   }
 

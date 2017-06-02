@@ -173,6 +173,7 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#toSigned()` - Cast to signed.
 - `Int64#bitLength()` - Count number of bits.
 - `Int64#byteLength()` - Count number of bytes.
+- `Int64#isSafe()` - Test whether the number is less than or equal to 53 bits.
 - `Int64#toNumber()` - Convert int64 to a JS number (throws on >53 bits).
 - `Int64#toDouble()` - Convert int64 to a JS number.
 - `Int64#toInt()` - Convert lo bits to a JS number.
