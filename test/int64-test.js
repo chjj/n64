@@ -363,6 +363,23 @@ function run(Int64, name) {
       assert.strictEqual(Int64.max(Int64(1), ONE), ONE);
     });
 
+    it('should do comparisons (signed)', function() {
+      assert.equal(Int64(-20, true).eq(Int64(-20, true)), true);
+      assert.equal(!Int64(-20, true).eq(Int64(20, true)), true);
+      assert.equal(Int64(-20, true).cmp(Int64(-20, true)), 0);
+      assert.equal(Int64(-20, true).cmp(Int64(20, true)), -1);
+      assert.equal(Int64(20, true).cmp(Int64(-20, true)), 1);
+      assert.equal(Int64(-1, true).eq(Int64(-1, true)), true);
+      assert.equal(!Int64(-1, true).eq(Int64(1, true)), true);
+      assert.equal(Int64(-1, true).cmp(Int64(-1, true)), 0);
+      assert.equal(Int64(-1, true).cmp(Int64(1, true)), -1);
+      assert.equal(Int64(1, true).cmp(Int64(-1, true)), 1);
+      assert.equal(Int64(-2147483647, true).lt(Int64(100, true)), true);
+      assert.equal(Int64(2147483647, true).gt(Int64(100, true)), true);
+      assert.equal(Int64(-2147483647, true).lt(Int64(-100, true)), true);
+      assert.equal(Int64(2147483647, true).gt(Int64(-100, true)), true);
+    });
+
     it('should do small addition (unsigned)', function() {
       var a = Int64.fromNumber(100, false);
       var b = Int64.fromNumber(200, false);
