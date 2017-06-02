@@ -13,7 +13,7 @@ static Nan::Persistent<v8::FunctionTemplate> int64_constructor;
 
 NAN_INLINE static bool IsNull(v8::Local<v8::Value> options);
 
-static int64_t MAX_SAFE_INTEGER = 9007199254740991;
+static int64_t MAX_SAFE_INTEGER = 0x1fffffffffffff;
 
 Int64::Int64() {
   n = 0;
@@ -726,16 +726,15 @@ NAN_METHOD(Int64::Cmpn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowError("First argument must be a number.");
 
+  uint32_t num = info[0]->Uint32Value();
   int32_t r = 0;
 
   if (a->sign) {
-    int32_t num = info[0]->Int32Value();
-    if ((int64_t)a->n < (int64_t)num)
+    if ((int64_t)a->n < (int64_t)((int32_t)num))
       r = -1;
-    else if ((int64_t)a->n > (int64_t)num)
+    else if ((int64_t)a->n > (int64_t)((int32_t)num))
       r = 1;
   } else {
-    uint32_t num = info[0]->Uint32Value();
     if (a->n < (uint64_t)num)
       r = -1;
     else if (a->n > (uint64_t)num)
@@ -757,9 +756,7 @@ NAN_METHOD(Int64::Eq) {
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
   bool r = false;
 
-  if (a->sign != b->sign && (int64_t)a->n < 0 && (int64_t)b->n < 0)
-    r = false;
-  else if (a->n == b->n)
+  if (a->n == b->n)
     r = true;
 
   info.GetReturnValue().Set(Nan::New<v8::Boolean>(r));
@@ -774,14 +771,13 @@ NAN_METHOD(Int64::Eqn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowError("First argument must be a number.");
 
+  uint32_t num = info[0]->Uint32Value();
   bool r = false;
 
   if (a->sign) {
-    int32_t num = info[0]->Int32Value();
-    if ((int64_t)a->n == (int64_t)num)
+    if ((int64_t)a->n == (int64_t)((int32_t)num))
       r = true;
   } else {
-    uint32_t num = info[0]->Uint32Value();
     if (a->n == (uint64_t)num)
       r = true;
   }
