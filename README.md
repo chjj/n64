@@ -166,7 +166,7 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 #### Helpers
 
 - `Int64#clone()` - Clone and return a new int64.
-- `Int64#inject(int64)` - Inject properties from int64.
+- `Int64#inject(i64)` - Inject properties from int64.
 - `Int64#set(num)` - Set the int64 to a JS number value.
 - `Int64#join(hi, lo)` - Join hi and lo bits.
 - `Int64#toUnsigned()` - Cast to unsigned.
@@ -177,6 +177,8 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#toDouble()` - Convert int64 to a JS number.
 - `Int64#toInt()` - Convert lo bits to a JS number.
 - `Int64#toString(base?)` - Convert to string of `base`.
+- `Int64#toJSON()` - Convert to hex string.
+- `Int64#inspect()` - Inspect number.
 
 ## Contribution and License Agreement
 
