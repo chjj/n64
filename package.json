@@ -13,27 +13,22 @@
   "homepage": "https://github.com/chjj/n64",
   "license": "MIT",
   "author": "Christopher Jeffrey <chjjeffrey@gmail.com>",
-  "main": "./lib/n64.js",
+  "main": "./lib/int64.js",
   "repository": "git://github.com/chjj/n64.git",
   "scripts": {
-    "install": "node-gyp rebuild || echo 'Build failed. Using JS fallback.'",
+    "install": "node-gyp rebuild || echo 'Build for testing failed.'",
     "test": "mocha --reporter spec test/*-test.js"
-  },
-  "dependencies": {
-    "bindings": "^1.2.1",
-    "nan": "^2.6.2"
   },
   "devDependencies": {
     "bn.js": "^4.11.6",
+    "bindings": "^1.2.1",
     "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
-    "mocha": "^3.4.1"
+    "mocha": "^3.4.1",
+    "nan": "^2.6.2"
   },
   "engines": {
     "node": ">=0.11.0"
-  },
-  "browser": {
-    "./lib/n64": "./lib/int64.js"
   },
   "gypfile": true
 }
