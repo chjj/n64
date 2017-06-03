@@ -1,27 +1,18 @@
 # n64
 
-Native int64 binding for node.js with javascript fallback.
+Int64 object for javascript.
 
 ---
 
 There are a few different int64 libraries which currently exist for javascript.
 Some native, some non-native. Most are lacking test coverage. `n64` gives you a
-native and non-native version which both have full test coverage to ensure
-consistency between node.js and the browser.
+native and non-native version which both have full test coverage.
 
 ## Install
 
 ``` js
 $ npm install n64
 ```
-
-## Testing
-
-``` js
-$ npm test
-```
-
-This should run all test vectors for both the native and non-native backend.
 
 ## Usage
 
@@ -180,6 +171,14 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#toString(base?)` - Convert to string of `base`.
 - `Int64#toJSON()` - Convert to hex string.
 - `Int64#inspect()` - Inspect number.
+
+## Testing
+
+``` js
+$ npm test
+```
+
+This should run all test vectors for both the native and non-native backend.
 
 ## Contribution and License Agreement
 
