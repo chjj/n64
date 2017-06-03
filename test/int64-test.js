@@ -382,6 +382,9 @@ function run(Int64, name) {
       assert.strictEqual(Int64(2147483647, true).gt(Int64(100, true)), true);
       assert.strictEqual(Int64(-2147483647, true).lt(Int64(-100, true)), true);
       assert.strictEqual(Int64(2147483647, true).gt(Int64(-100, true)), true);
+      assert.strictEqual(Int64(-0x212345679, true).lt(Int64(-0x212345678, true)), true);
+      assert.strictEqual(Int64(0x212345679, true).gt(Int64(-0x212345678, true)), true);
+      assert.strictEqual(Int64(0x212345679, true).gt(Int64(0x212345678, true)), true);
     });
 
     it('should do small addition (unsigned)', function() {
