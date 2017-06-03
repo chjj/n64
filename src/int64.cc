@@ -659,12 +659,12 @@ NAN_METHOD(Int64::Testn) {
     return Nan::ThrowError("First argument must be a number.");
 
   uint32_t bit = info[0]->Uint32Value() & 63;
-  bool r = false;
+  int32_t r = 0;
 
   if ((a->n & (1ull << bit)) != 0)
-    r = true;
+    r = 1;
 
-  info.GetReturnValue().Set(Nan::New<v8::Boolean>(r));
+  info.GetReturnValue().Set(Nan::New<v8::Int32>(r));
 }
 
 NAN_METHOD(Int64::Imaskn) {

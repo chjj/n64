@@ -1378,13 +1378,13 @@ function run(Int64, name) {
 
     it('should set and test bits', function() {
       var a = Int64(0);
-      assert.strictEqual(a.testn(35), false);
+      assert.strictEqual(a.testn(35), 0);
       a.setn(35, 1);
       assert.strictEqual(a.toString(), '34359738368');
-      assert.strictEqual(a.testn(35), true);
-      assert.strictEqual(a.testn(34), false);
+      assert.strictEqual(a.testn(35), 1);
+      assert.strictEqual(a.testn(34), 0);
       a.setn(35, 0);
-      assert.strictEqual(a.testn(35), false);
+      assert.strictEqual(a.testn(35), 0);
       assert.strictEqual(a.toString(), '0');
     });
 
