@@ -95,6 +95,39 @@ function div(N, name) {
   end(i * 2);
 }
 
+function modn(N, name) {
+  var end = bench('modn (' + name + ')');
+  var A = new N('ffffffffffffffff', 16);
+  var i, j, a;
+
+  if (!A.imodn)
+    return;
+
+  for (i = 0; i < 1000000; i++) {
+    a = A.clone();
+    for (j = 0; i < 2; i++)
+      a.imodn(0xffffff);
+  }
+
+  end(i * 2);
+}
+
+function mod(N, name) {
+  var end = bench('mod (' + name + ')');
+  var A = new N('ffffffffffffffff', 16);
+  var B = new N(0xffffff);
+  var i, j, a, b;
+
+  for (i = 0; i < 1000000; i++) {
+    a = A.clone();
+    b = B.clone();
+    for (j = 0; i < 2; i++)
+      a.mod(b);
+  }
+
+  end(i * 2);
+}
+
 function muldiv(N, name) {
   var end = bench('muldiv (' + name + ')');
   var n = new N(10);
@@ -157,6 +190,18 @@ function run() {
   div(Int64, 'js');
   div(Native, 'native');
   div(BN, 'bn.js');
+
+  console.log('--');
+
+  modn(Int64, 'js');
+  modn(Native, 'native');
+  modn(BN, 'bn.js');
+
+  console.log('--');
+
+  mod(Int64, 'js');
+  mod(Native, 'native');
+  mod(BN, 'bn.js');
 
   console.log('--');
 
