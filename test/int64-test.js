@@ -939,10 +939,10 @@ function run(Int64, name) {
     });
 
     it('should do big AND (unsigned)', function() {
-      var a = Int64.fromNumber(121453243524523414, false);
+      var a = Int64.fromNumber(1214532435245234, false);
       var b = Int64.fromNumber(1242541452, false);
       a.iand(b);
-      assert.strictEqual(a.toString(), '1208558976');
+      assert.strictEqual(a.toString(), '1242474624');
 
       a = Int64.fromNumber(13545214126, false);
       a.iandn(7 * 0x1000000);
@@ -959,10 +959,10 @@ function run(Int64, name) {
     });
 
     it('should do big AND (signed)', function() {
-      var a = Int64.fromNumber(121453243524523414, true);
+      var a = Int64.fromNumber(1214532435245234, true);
       var b = Int64.fromNumber(1242541452, true);
       a.iand(b);
-      assert.strictEqual(a.toString(), '1208558976');
+      assert.strictEqual(a.toString(), '1242474624');
 
       a = Int64.fromNumber(13545214126, true);
       a.iandn(7 * 0x1000000);
@@ -1019,10 +1019,10 @@ function run(Int64, name) {
     });
 
     it('should do big OR (unsigned)', function() {
-      var a = Int64.fromNumber(121453243524523414, false);
+      var a = Int64.fromNumber(1214532435245234, false);
       var b = Int64.fromNumber(1242541452, false);
       a.ior(b);
-      assert.strictEqual(a.toString(), '121453243558505884');
+      assert.strictEqual(a.toString(), '1214532435312062');
 
       a = Int64.fromNumber(13545214126, false);
       a.iorn(7 * 0x1000000);
@@ -1039,10 +1039,10 @@ function run(Int64, name) {
     });
 
     it('should do big OR (signed)', function() {
-      var a = Int64.fromNumber(121453243524523414, true);
+      var a = Int64.fromNumber(1214532435245234, true);
       var b = Int64.fromNumber(1242541452, true);
       a.ior(b);
-      assert.strictEqual(a.toString(), '121453243558505884');
+      assert.strictEqual(a.toString(), '1214532435312062');
 
       a = Int64.fromNumber(13545214126, true);
       a.iorn(7 * 0x1000000);
@@ -1099,10 +1099,10 @@ function run(Int64, name) {
     });
 
     it('should do big XOR (unsigned)', function() {
-      var a = Int64.fromNumber(121453243524523414, false);
+      var a = Int64.fromNumber(1214532435245234, false);
       var b = Int64.fromNumber(1242541452, false);
       a.ixor(b);
-      assert.strictEqual(a.toString(), '121453242349946908');
+      assert.strictEqual(a.toString(), '1214531192837438');
 
       a = Int64.fromNumber(13545214126, false);
       a.ixorn(7 * 0x1000000);
@@ -1119,10 +1119,10 @@ function run(Int64, name) {
     });
 
     it('should do big XOR (signed)', function() {
-      var a = Int64.fromNumber(121453243524523414, true);
+      var a = Int64.fromNumber(1214532435245234, true);
       var b = Int64.fromNumber(1242541452, true);
       a.ixor(b);
-      assert.strictEqual(a.toString(), '121453242349946908');
+      assert.strictEqual(a.toString(), '1214531192837438');
 
       a = Int64.fromNumber(13545214126, true);
       a.ixorn(7 * 0x1000000);
