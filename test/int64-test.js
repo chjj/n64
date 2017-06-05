@@ -46,6 +46,7 @@ function run(Int64, name) {
         '1111111111111111111111111111111111111111111111111111111111111111');
 
       num = Int64.fromNumber(123456789012, false);
+      assert.strictEqual(num.toNumber(), 123456789012);
       assert.strictEqual(num.toString(16), '1cbe991a14');
       assert.strictEqual(num.toString(10), '123456789012');
       assert.strictEqual(num.toString(8), '1627646215024');
@@ -99,6 +100,7 @@ function run(Int64, name) {
 
     it('should deserialize signed strings', function() {
       var num = Int64.fromString('-1', true, 16);
+      assert.strictEqual(num.toNumber(), -1);
       assert.strictEqual(num.toString(16), '-1');
 
       num = Int64.fromString('-1', true, 10);
@@ -111,6 +113,7 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(2), '-1');
 
       num = Int64.fromString('-1cbe991a14', true, 16);
+      assert.strictEqual(num.toNumber(), -0x1cbe991a14);
       assert.strictEqual(num.toString(16), '-1cbe991a14');
 
       num = Int64.fromString('-123456789012', true, 10);
@@ -134,6 +137,9 @@ function run(Int64, name) {
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
+      assert.throws(function() {
+        num.toNumber();
+      });
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -143,6 +149,9 @@ function run(Int64, name) {
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
+      assert.throws(function() {
+        num.toNumber();
+      });
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -225,6 +234,7 @@ function run(Int64, name) {
 
       num = a.div(b);
       assert.strictEqual(num.toString(), '1');
+      assert.strictEqual(num.toNumber(), 1);
     });
 
     it('should divide with int64 min edge cases (signed)', function() {
@@ -234,9 +244,11 @@ function run(Int64, name) {
 
       var num = MIN_I64.div(new Int64(1234));
       assert.strictEqual(num.toString(), '-7474369559849899');
+      assert.strictEqual(num.toNumber(), -7474369559849899);
 
       var num = MIN_I64.div(new Int64(-1234));
       assert.strictEqual(num.toString(), '7474369559849899');
+      assert.strictEqual(num.toNumber(), 7474369559849899);
 
       var num = MIN_I64.div(new Int64(1));
       assert.strictEqual(num.toString(), MIN_I64.toString());
@@ -262,6 +274,7 @@ function run(Int64, name) {
 
       num = MIN_I64.div(MIN_I64.ushrn(5));
       assert.strictEqual(num.toString(), '-32');
+      assert.strictEqual(num.toNumber(), -32);
 
       num = new Int64('400000000000000', true, 16);
       num = MIN_I64.div(num);
@@ -275,6 +288,7 @@ function run(Int64, name) {
 
       num = MIN_I64.div(new Int64(1234));
       assert.strictEqual(num.toString(), '7474369559849899');
+      assert.strictEqual(num.toNumber(), 7474369559849899);
 
       num = MIN_I64.div(new Int64(-1234));
       assert.strictEqual(num.toString(), '0');
@@ -284,6 +298,7 @@ function run(Int64, name) {
 
       num = MIN_I64.div(MIN_I64.clone());
       assert.strictEqual(num.toString(), '1');
+      assert.strictEqual(num.toNumber(), 1);
 
       num = Int64(2).div(MIN_I64.clone());
       assert.strictEqual(num.toString(), '0');
@@ -1497,6 +1512,9 @@ function run(Int64, name) {
       assert.strictEqual(MAX_SAFE.toString(), '9007199254740991');
       assert.strictEqual(MAX_SAFE_MIN.toString(), '-9007199254740991');
       assert.strictEqual(MAX_SAFE_MAX.toString(), '9007199254740991');
+      assert.strictEqual(MAX_SAFE.toNumber(), 9007199254740991);
+      assert.strictEqual(MAX_SAFE_MIN.toNumber(), -9007199254740991);
+      assert.strictEqual(MAX_SAFE_MAX.toNumber(), 9007199254740991);
 
       assert.strictEqual(ONE.isSafe(), true);
       assert.strictEqual(UONE.isSafe(), true);
