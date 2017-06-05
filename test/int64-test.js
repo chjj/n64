@@ -62,6 +62,7 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(2), '-1');
 
       num = Int64.fromNumber(-123456789012, true);
+      assert.strictEqual(num.toNumber(), -0x1cbe991a14);
       assert.strictEqual(num.toString(16), '-1cbe991a14');
       assert.strictEqual(num.toString(10), '-123456789012');
       assert.strictEqual(num.toString(8), '-1627646215024');
@@ -1274,44 +1275,43 @@ function run(Int64, name) {
     });
 
     it('should do big right shift (unsigned)', function() {
-      var a = Int64.fromString('ffffffffffffffff', false, 16);
+      var a = Int64.fromString('f00fffffffffffff', false, 16);
       var b = Int64.fromNumber(45, false);
       a.ishr(b);
-      assert.strictEqual(a.toString(), '524287');
+      assert.strictEqual(a.toString(), '491647');
 
-      a = Int64.fromString('ffffffffffffffff', false, 16);
+      a = Int64.fromString('f00fffffffffffff', false, 16);
       a.ishrn(45);
-      assert.strictEqual(a.toString(), '524287');
+      assert.strictEqual(a.toString(), '491647');
 
-      a = Int64.fromString('ffffffffffffffff', false, 16);
+      a = Int64.fromString('f00fffffffffffff', false, 16);
       b = Int64.fromNumber(45, false);
-      assert.strictEqual(a.shr(b).toString(), '524287');
-      assert.strictEqual(a.toString(), '18446744073709551615');
+      assert.strictEqual(a.shr(b).toString(), '491647');
+      assert.strictEqual(a.toString(), '17298326168730075135');
 
-      a = Int64.fromString('ffffffffffffffff', false, 16);
-      assert.strictEqual(a.shrn(45).toString(), '524287');
-      assert.strictEqual(a.toString(), '18446744073709551615');
+      a = Int64.fromString('f00fffffffffffff', false, 16);
+      assert.strictEqual(a.shrn(45).toString(), '491647');
+      assert.strictEqual(a.toString(), '17298326168730075135');
     });
 
-    // XXX
     it('should do big right shift (signed)', function() {
-      var a = Int64.fromString('ffffffffffffffff', true, 16);
+      var a = Int64.fromString('f00fffffffffffff', true, 16);
       var b = Int64.fromNumber(45, true);
       a.ishr(b);
-      assert.strictEqual(a.toString(), '-1');
+      assert.strictEqual(a.toString(), '-32641');
 
-      a = Int64.fromString('ffffffffffffffff', true, 16);
+      a = Int64.fromString('f00fffffffffffff', true, 16);
       a.ishrn(45);
-      assert.strictEqual(a.toString(), '-1');
+      assert.strictEqual(a.toString(), '-32641');
 
-      a = Int64.fromString('ffffffffffffffff', true, 16);
+      a = Int64.fromString('f00fffffffffffff', true, 16);
       b = Int64.fromNumber(45, true);
-      assert.strictEqual(a.shr(b).toString(), '-1');
-      assert.strictEqual(a.toString(), '-1');
+      assert.strictEqual(a.shr(b).toString(), '-32641');
+      assert.strictEqual(a.toString(), '-1148417904979476481');
 
-      a = Int64.fromString('ffffffffffffffff', true, 16);
-      assert.strictEqual(a.shrn(45).toString(), '-1');
-      assert.strictEqual(a.toString(), '-1');
+      a = Int64.fromString('f00fffffffffffff', true, 16);
+      assert.strictEqual(a.shrn(45).toString(), '-32641');
+      assert.strictEqual(a.toString(), '-1148417904979476481');
     });
 
     it('should do small unsigned right shift (unsigned)', function() {
