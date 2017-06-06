@@ -16,7 +16,6 @@
   "main": "./lib/int64.js",
   "repository": "git://github.com/chjj/n64.git",
   "scripts": {
-    "install": "node-gyp rebuild || echo 'Build for testing failed.'",
     "test": "mocha --reporter spec test/*-test.js"
   },
   "devDependencies": {
@@ -29,6 +28,5 @@
   },
   "engines": {
     "node": ">=0.11.0"
-  },
-  "gypfile": true
+  }
 }
