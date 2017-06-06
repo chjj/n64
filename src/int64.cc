@@ -64,6 +64,8 @@ Int64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "setn", Int64::Setn);
   Nan::SetPrototypeMethod(tpl, "testn", Int64::Testn);
   Nan::SetPrototypeMethod(tpl, "imaskn", Int64::Imaskn);
+  Nan::SetPrototypeMethod(tpl, "setb", Int64::Setb);
+  Nan::SetPrototypeMethod(tpl, "testb", Int64::Testb);
   Nan::SetPrototypeMethod(tpl, "ineg", Int64::Ineg);
   Nan::SetPrototypeMethod(tpl, "cmp", Int64::Cmp);
   Nan::SetPrototypeMethod(tpl, "cmpn", Int64::Cmpn);
@@ -681,6 +683,50 @@ NAN_METHOD(Int64::Imaskn) {
   a->n &= (1ull << bit) - 1;
 
   info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(Int64::Setb) {
+  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
+
+  if (info.Length() < 2)
+    return Nan::ThrowError("int64.setb() requires arguments.");
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowError("First argument must be a number.");
+
+  if (!info[1]->IsNumber())
+    return Nan::ThrowError("First argument must be a number or boolean.");
+
+  uint32_t pos = info[0]->Uint32Value();
+  uint32_t val = info[1]->Uint32Value() & 0xff;
+
+  pos &= 7;
+  pos *= 8;
+
+  a->n &= ~(0xffull << pos);
+  a->n |= (uint64_t)val << pos;
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(Int64::Testb) {
+  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
+
+  if (info.Length() < 1)
+    return Nan::ThrowError("int64.testb() requires arguments.");
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowError("First argument must be a number.");
+
+  uint32_t pos = info[0]->Uint32Value();
+  int32_t r = 0;
+
+  pos &= 7;
+  pos *= 8;
+
+  r = (a->n >> pos) & 0xff;
+
+  info.GetReturnValue().Set(Nan::New<v8::Int32>(r));
 }
 
 NAN_METHOD(Int64::Ineg) {

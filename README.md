@@ -127,6 +127,8 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#imaskn(bit)` - Clear bits higher or equal to `bit` (in-place).
 - `Int64#maskn(bit)` - Clear bits higher or equal to `bit`.
 - `Int64#andln(num)` - Perform `AND` on lo 32 bits (returns JS number).
+- `Int64#setb(pos, value)` - Set a byte by position (little endian).
+- `Int64#testb(pos)` - Get a byte by position (little endian).
 
 #### Negation
 

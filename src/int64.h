@@ -54,6 +54,8 @@ private:
   static NAN_METHOD(Setn);
   static NAN_METHOD(Testn);
   static NAN_METHOD(Imaskn);
+  static NAN_METHOD(Setb);
+  static NAN_METHOD(Testb);
   static NAN_METHOD(Ineg);
   static NAN_METHOD(Cmp);
   static NAN_METHOD(Cmpn);
