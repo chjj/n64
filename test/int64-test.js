@@ -1529,20 +1529,6 @@ function run(Int64, name) {
       assert.strictEqual(MAX_SAFE_MIN.clone().subn(1).isSafe(), false);
       assert.strictEqual(MAX_SAFE_MAX.clone().addn(1).isSafe(), false);
     });
-
-    it('should set and test bytes', function() {
-      var num = new Int64(0);
-      assert.strictEqual(num.testb(0), 0);
-      assert.strictEqual(num.toString(), '0');
-      num.setb(1, 0xff);
-      assert.strictEqual(num.testb(0), 0);
-      assert.strictEqual(num.testb(1), 0xff);
-      assert.strictEqual(num.toString(16), 'ff00');
-      num.setb(7, 0xff);
-      assert.strictEqual(num.testb(6), 0);
-      assert.strictEqual(num.testb(7), 0xff);
-      assert.strictEqual(num.toString(16), 'ff0000000000ff00');
-    });
   });
 }
 
