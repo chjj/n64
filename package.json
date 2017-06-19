@@ -16,17 +16,21 @@
   "main": "./lib/int64.js",
   "repository": "git://github.com/chjj/n64.git",
   "scripts": {
+    "install": "node-gyp rebuild || echo 'Build failed.'",
     "test": "mocha --reporter spec test/*-test.js"
+  },
+  "dependencies": {
+    "bindings": "^1.2.1",
+    "nan": "^2.6.2"
   },
   "devDependencies": {
     "bn.js": "^4.11.6",
-    "bindings": "^1.2.1",
     "jsdoc": "^3.4.3",
     "jshint": "^2.9.4",
-    "mocha": "^3.4.1",
-    "nan": "^2.6.2"
+    "mocha": "^3.4.1"
   },
   "engines": {
-    "node": ">=0.11.0"
-  }
+    "node": ">=4.0.0"
+  },
+  "gypfile": true
 }
