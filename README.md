@@ -42,6 +42,8 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `new Int64(num, signed?)` - Instantiate from JS number.
 - `new Int64(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `new Int64(str, signed?, base?)` - Instantiate from string.
+- `new Int64(obj, signed?)` - Instantiate from object (hi & lo).
+- `new Int64(bn, signed?)` - Instantiate from bn.js bignumber.
 
 ### Properties
 
@@ -57,10 +59,14 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64.fromBits(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `Int64.fromInt(lo, signed?)` - Instantiate from lo bits.
 - `Int64.fromString(str, signed?, base?)` - Instantiate from string.
+- `Int64.fromObject(obj, signed?)` - Instantiate from object (hi & lo).
+- `Int64.fromBN(bn, signed?)` - Instantiate from bn.js bignumber.
 - `Int64.from(signed?)` - Instantiate.
 - `Int64.from(num, signed?)` - Instantiate from JS number.
 - `Int64.from(hi, lo, signed?)` - Instantiate from hi/lo bits.
 - `Int64.from(str, signed?, base?)` - Instantiate from string.
+- `Int64.from(obj, signed?)` - Instantiate from object (hi & lo).
+- `Int64.from(bn, signed?)` - Instantiate from bn.js bignumber.
 - `Int64.isInt64(obj)` - Test instanceof.
 
 ### Methods
