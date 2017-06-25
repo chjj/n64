@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert');
+var BN = require('bn.js');
 var Int64 = require('../lib/int64.js');
 var Native = require('../lib/native.js');
 
@@ -1528,6 +1529,34 @@ function run(Int64, name) {
       assert.strictEqual(MAX_SAFE.clone().addn(1).isSafe(), false);
       assert.strictEqual(MAX_SAFE_MIN.clone().subn(1).isSafe(), false);
       assert.strictEqual(MAX_SAFE_MAX.clone().addn(1).isSafe(), false);
+    });
+
+    it('should test bignum compat', function() {
+      var n = new BN('9007199254740991', 10);
+      var num = Int64.fromBN(n, false);
+      assert.equal(num.toString(), '9007199254740991');
+
+      n = new BN('-9007199254740991', 10);
+      num = Int64.fromBN(n, true);
+      assert.equal(num.toString(), '-9007199254740991');
+
+      n = new BN('ffffffffffffffff', 16);
+      num = Int64.fromBN(n, false);
+      assert.equal(num.toString(16), 'ffffffffffffffff');
+
+      n = new BN('ffffffffffffffff', 16);
+      assert.throws(function() {
+        Int64.fromBN(n, true);
+      });
+
+      n = new BN('fffffffffffffffff', 16);
+      assert.throws(function() {
+        Int64.fromBN(n, false);
+      });
+
+      n = new BN('-fffffffffffffff', 16);
+      num = Int64.fromBN(n, true);
+      assert.equal(num.toString(16), '-fffffffffffffff');
     });
   });
 }
