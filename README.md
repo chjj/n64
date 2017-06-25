@@ -19,13 +19,13 @@ $ npm install n64
 ``` js
 var Int64 = require('n64');
 
-console.log(Int64(0x123456789).muln(0x123456789).toString(10));
+console.log(Int64(0x123456789).muln(0x12345678).toString(10));
 ```
 
 Outputs:
 
 ```
-2891720706821293905
+1492501008711192120
 ```
 
 ## API
