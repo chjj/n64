@@ -8,7 +8,6 @@ var Native = require('../lib/native.js');
 function run(Int64, name) {
   var ZERO = Int64.fromInt(0, true);
   var ONE = Int64.fromInt(1, true);
-  var NEG_ONE = Int64.fromInt(-1, true);
   var UONE = Int64.fromInt(1, false);
   var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
   var MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
@@ -169,17 +168,17 @@ function run(Int64, name) {
 
     it('should count bits', function() {
       var num = Int64.fromString('000010000fffffff', false, 16);
-      assert.strictEqual(num.bitLength(), 45)
-      assert.strictEqual(num.byteLength(), 6)
+      assert.strictEqual(num.bitLength(), 45);
+      assert.strictEqual(num.byteLength(), 6);
       num = Int64.fromString('000010000fffffff', true, 16);
-      assert.strictEqual(num.bitLength(), 45)
-      assert.strictEqual(num.byteLength(), 6)
+      assert.strictEqual(num.bitLength(), 45);
+      assert.strictEqual(num.byteLength(), 6);
       num = Int64.fromString('800010000fffffff', false, 16);
-      assert.strictEqual(num.bitLength(), 64)
-      assert.strictEqual(num.byteLength(), 8)
+      assert.strictEqual(num.bitLength(), 64);
+      assert.strictEqual(num.byteLength(), 8);
       num = Int64.fromString('800010000fffffff', true, 16);
-      assert.strictEqual(num.bitLength(), 63)
-      assert.strictEqual(num.byteLength(), 8)
+      assert.strictEqual(num.bitLength(), 63);
+      assert.strictEqual(num.byteLength(), 8);
     });
 
     it('should cast between signed and unsigned', function() {
@@ -244,15 +243,15 @@ function run(Int64, name) {
       var num = MIN_I64.div(ONE);
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
-      var num = MIN_I64.div(new Int64(1234));
+      num = MIN_I64.div(new Int64(1234));
       assert.strictEqual(num.toString(), '-7474369559849899');
       assert.strictEqual(num.toNumber(), -7474369559849899);
 
-      var num = MIN_I64.div(new Int64(-1234));
+      num = MIN_I64.div(new Int64(-1234));
       assert.strictEqual(num.toString(), '7474369559849899');
       assert.strictEqual(num.toNumber(), 7474369559849899);
 
-      var num = MIN_I64.div(new Int64(1));
+      num = MIN_I64.div(new Int64(1));
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
       num = MIN_I64.div(MIN_I64.clone());

@@ -12,7 +12,7 @@ function addn(N, name) {
 
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
-    for (j = 0; i < 5; i++)
+    for (j = 0; j < 5; j++)
       a.iaddn(0x3ffffff);
   }
 
@@ -28,8 +28,8 @@ function add(N, name) {
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
     b = B.clone();
-    for (j = 0; i < 5; i++)
-      b.iadd(b);
+    for (j = 0; j < 5; j++)
+      a.iadd(b);
   }
 
   end(i * 5);
@@ -42,7 +42,7 @@ function muln(N, name) {
 
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
-    for (j = 0; i < 3; i++)
+    for (j = 0; j < 3; j++)
       a.imuln(0xffffff);
   }
 
@@ -58,7 +58,7 @@ function mul(N, name) {
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
     b = B.clone();
-    for (j = 0; i < 3; i++)
+    for (j = 0; j < 3; j++)
       a.imul(b);
   }
 
@@ -72,7 +72,7 @@ function divn(N, name) {
 
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
-    for (j = 0; i < 2; i++)
+    for (j = 0; j < 2; j++)
       a.idivn(0xffffff);
   }
 
@@ -88,7 +88,7 @@ function div(N, name) {
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
     b = B.clone();
-    for (j = 0; i < 2; i++)
+    for (j = 0; j < 2; j++)
       a = a.div(b);
   }
 
@@ -105,7 +105,7 @@ function modn(N, name) {
 
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
-    for (j = 0; i < 2; i++)
+    for (j = 0; j < 2; j++)
       a.imodn(0xffffff);
   }
 
@@ -121,7 +121,7 @@ function mod(N, name) {
   for (i = 0; i < 1000000; i++) {
     a = A.clone();
     b = B.clone();
-    for (j = 0; i < 2; i++)
+    for (j = 0; j < 2; j++)
       a.mod(b);
   }
 
@@ -145,7 +145,6 @@ function muldiv(N, name) {
 function muldivn(N, name) {
   var end = bench('muldivn (' + name + ')');
   var n = new N(10);
-  var ten = new N(10);
   var i;
 
   for (i = 0; i < 1000000; i++) {
