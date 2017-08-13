@@ -1,158 +1,149 @@
 'use strict';
 
-var bench = require('./bench');
-var Native = require('../lib/native');
-var Int64 = require('../lib/int64');
-var BN = require('bn.js');
+const bench = require('./bench');
+const Native = require('../lib/native');
+const Int64 = require('../lib/int64');
+const BN = require('bn.js');
 
 function addn(N, name) {
-  var end = bench('addn (' + name + ')');
-  var A = new BN(0);
-  var i, j, a;
+  const end = bench('addn (' + name + ')');
+  const A = new BN(0);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    for (j = 0; j < 5; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    for (let j = 0; j < 5; j++)
       a.iaddn(0x3ffffff);
   }
 
-  end(i * 5);
+  end(1000000 * 5);
 }
 
 function add(N, name) {
-  var end = bench('add (' + name + ')');
-  var A = new N(0);
-  var B = new N(0x100000000);
-  var i, j, a, b;
+  const end = bench('add (' + name + ')');
+  const A = new N(0);
+  const B = new N(0x100000000);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    b = B.clone();
-    for (j = 0; j < 5; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    const b = B.clone();
+    for (let j = 0; j < 5; j++)
       a.iadd(b);
   }
 
-  end(i * 5);
+  end(1000000 * 5);
 }
 
 function muln(N, name) {
-  var end = bench('muln (' + name + ')');
-  var A = new N(1);
-  var i, j, a;
+  const end = bench('muln (' + name + ')');
+  const A = new N(1);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    for (j = 0; j < 3; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    for (let j = 0; j < 3; j++)
       a.imuln(0xffffff);
   }
 
-  end(i * 3);
+  end(1000000 * 3);
 }
 
 function mul(N, name) {
-  var end = bench('mul (' + name + ')');
-  var A = new N(0);
-  var B = new N(0xffffff);
-  var i, j, a, b;
+  const end = bench('mul (' + name + ')');
+  const A = new N(0);
+  const B = new N(0xffffff);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    b = B.clone();
-    for (j = 0; j < 3; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    const b = B.clone();
+    for (let j = 0; j < 3; j++)
       a.imul(b);
   }
 
-  end(i * 3);
+  end(1000000 * 3);
 }
 
 function divn(N, name) {
-  var end = bench('divn (' + name + ')');
-  var A = new N('ffffffffffffffff', 16);
-  var i, j, a;
+  const end = bench('divn (' + name + ')');
+  const A = new N('ffffffffffffffff', 16);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    for (j = 0; j < 2; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    for (let j = 0; j < 2; j++)
       a.idivn(0xffffff);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function div(N, name) {
-  var end = bench('div (' + name + ')');
-  var A = new N('ffffffffffffffff', 16);
-  var B = new N(0xffffff);
-  var i, j, a, b;
+  const end = bench('div (' + name + ')');
+  const A = new N('ffffffffffffffff', 16);
+  const B = new N(0xffffff);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    b = B.clone();
-    for (j = 0; j < 2; j++)
+  for (let i = 0; i < 1000000; i++) {
+    let a = A.clone();
+    const b = B.clone();
+    for (let j = 0; j < 2; j++)
       a = a.div(b);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function modn(N, name) {
-  var end = bench('modn (' + name + ')');
-  var A = new N('ffffffffffffffff', 16);
-  var i, j, a;
-
-  if (!A.imodn)
+  if (!N.prototype.imodn)
     return;
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    for (j = 0; j < 2; j++)
+  const end = bench('modn (' + name + ')');
+  const A = new N('ffffffffffffffff', 16);
+
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    for (let j = 0; j < 2; j++)
       a.imodn(0xffffff);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function mod(N, name) {
-  var end = bench('mod (' + name + ')');
-  var A = new N('ffffffffffffffff', 16);
-  var B = new N(0xffffff);
-  var i, j, a, b;
+  const end = bench('mod (' + name + ')');
+  const A = new N('ffffffffffffffff', 16);
+  const B = new N(0xffffff);
 
-  for (i = 0; i < 1000000; i++) {
-    a = A.clone();
-    b = B.clone();
-    for (j = 0; j < 2; j++)
+  for (let i = 0; i < 1000000; i++) {
+    const a = A.clone();
+    const b = B.clone();
+    for (let j = 0; j < 2; j++)
       a.mod(b);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function muldiv(N, name) {
-  var end = bench('muldiv (' + name + ')');
-  var n = new N(10);
-  var ten = new N(10);
-  var i;
+  const end = bench('muldiv (' + name + ')');
+  const ten = new N(10);
 
-  for (i = 0; i < 1000000; i++) {
+  let n = new N(10);
+
+  for (let i = 0; i < 1000000; i++) {
     n.imul(ten);
     n = n.div(ten);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function muldivn(N, name) {
-  var end = bench('muldivn (' + name + ')');
-  var n = new N(10);
-  var i;
+  const end = bench('muldivn (' + name + ')');
+  const n = new N(10);
 
-  for (i = 0; i < 1000000; i++) {
+  for (let i = 0; i < 1000000; i++) {
     n.imuln(10);
     n.idivn(10);
   }
 
-  end(i * 2);
+  end(1000000 * 2);
 }
 
 function run() {

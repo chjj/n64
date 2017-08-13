@@ -1,77 +1,79 @@
+/* eslint-env mocha */
+/* eslint prefer-arrow-callback: "off" */
+
 'use strict';
 
-var assert = require('assert');
-var BN = require('bn.js');
-var Int64 = require('../lib/int64.js');
-var Native = require('../lib/native.js');
+const assert = require('assert');
+const BN = require('bn.js');
+const Int64 = require('../lib/int64.js');
+const Native = require('../lib/native.js');
 
 function run(Int64, name) {
-  var ZERO = Int64.fromInt(0, true);
-  var ONE = Int64.fromInt(1, true);
-  var UONE = Int64.fromInt(1, false);
-  var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
-  var MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
-  var MAX_U64 = Int64.fromBits(0xffffffff, 0xffffffff, false);
-  var MAX_SAFE = Int64.fromNumber(Number.MAX_SAFE_INTEGER, false);
-  var MAX_SAFE_MIN = Int64.fromNumber(-Number.MAX_SAFE_INTEGER, true);
-  var MAX_SAFE_MAX = Int64.fromNumber(Number.MAX_SAFE_INTEGER, true);
+  const ZERO = Int64.fromInt(0, true);
+  const ONE = Int64.fromInt(1, true);
+  const UONE = Int64.fromInt(1, false);
+  const MIN_I64 = Int64.fromBits(0x80000000, 0, true);
+  const MAX_I64 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
+  const MAX_U64 = Int64.fromBits(0xffffffff, 0xffffffff, false);
+  const MAX_SAFE = Int64.fromNumber(Number.MAX_SAFE_INTEGER, false);
+  const MAX_SAFE_MIN = Int64.fromNumber(-Number.MAX_SAFE_INTEGER, true);
+  const MAX_SAFE_MAX = Int64.fromNumber(Number.MAX_SAFE_INTEGER, true);
 
   describe(name, function() {
-    it('should instantiate and serialize', function() {
-      var num1 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
-      var num2;
+    it('should instantiate and serialize', () => {
+      const num1 = Int64.fromBits(0x7fffffff, 0xffffffff, true);
 
       assert.strictEqual(num1.toDouble(), 9223372036854775807);
       assert.strictEqual(num1.toString(), '9223372036854775807');
 
-      num2 = Int64.fromString(num1.toString(), true);
+      const num2 = Int64.fromString(num1.toString(), true);
 
       assert.strictEqual(num2.toDouble(), 9223372036854775807);
       assert.strictEqual(num2.toString(), '9223372036854775807');
       assert.strictEqual(num2.signed, num1.signed);
     });
 
-    it('should duck type', function() {
-      var num = Int64.fromBits(0x7fffffff, 0xffffffff, true);
+    it('should have instance', () => {
+      const num = Int64.fromBits(0x7fffffff, 0xffffffff, true);
       assert.strictEqual(Int64.isInt64(num), true);
       assert.strictEqual(Int64.isInt64({}), false);
     });
 
-    it('should serialize unsigned strings', function() {
-      var num = Int64.fromBits(0xffffffff, 0xffffffff, false);
-      assert.strictEqual(num.toString(16), 'ffffffffffffffff');
-      assert.strictEqual(num.toString(10), '18446744073709551615');
-      assert.strictEqual(num.toString(8), '1777777777777777777777');
-      assert.strictEqual(num.toString(2),
+    it('should serialize unsigned strings', () => {
+      const num1 = Int64.fromBits(0xffffffff, 0xffffffff, false);
+      assert.strictEqual(num1.toString(16), 'ffffffffffffffff');
+      assert.strictEqual(num1.toString(10), '18446744073709551615');
+      assert.strictEqual(num1.toString(8), '1777777777777777777777');
+      assert.strictEqual(num1.toString(2),
         '1111111111111111111111111111111111111111111111111111111111111111');
 
-      num = Int64.fromNumber(123456789012, false);
-      assert.strictEqual(num.toNumber(), 123456789012);
-      assert.strictEqual(num.toString(16), '1cbe991a14');
-      assert.strictEqual(num.toString(10), '123456789012');
-      assert.strictEqual(num.toString(8), '1627646215024');
-      assert.strictEqual(num.toString(2),
+      const num2 = Int64.fromNumber(123456789012, false);
+      assert.strictEqual(num2.toNumber(), 123456789012);
+      assert.strictEqual(num2.toString(16), '1cbe991a14');
+      assert.strictEqual(num2.toString(10), '123456789012');
+      assert.strictEqual(num2.toString(8), '1627646215024');
+      assert.strictEqual(num2.toString(2),
         '1110010111110100110010001101000010100');
     });
 
-    it('should serialize signed strings', function() {
-      var num = Int64.fromBits(0xffffffff, 0xffffffff, true);
-      assert.strictEqual(num.toString(16), '-1');
-      assert.strictEqual(num.toString(10), '-1');
-      assert.strictEqual(num.toString(8), '-1');
-      assert.strictEqual(num.toString(2), '-1');
+    it('should serialize signed strings', () => {
+      const num1 = Int64.fromBits(0xffffffff, 0xffffffff, true);
+      assert.strictEqual(num1.toString(16), '-1');
+      assert.strictEqual(num1.toString(10), '-1');
+      assert.strictEqual(num1.toString(8), '-1');
+      assert.strictEqual(num1.toString(2), '-1');
 
-      num = Int64.fromNumber(-123456789012, true);
-      assert.strictEqual(num.toNumber(), -0x1cbe991a14);
-      assert.strictEqual(num.toString(16), '-1cbe991a14');
-      assert.strictEqual(num.toString(10), '-123456789012');
-      assert.strictEqual(num.toString(8), '-1627646215024');
-      assert.strictEqual(num.toString(2),
+      const num2 = Int64.fromNumber(-123456789012, true);
+      assert.strictEqual(num2.toNumber(), -0x1cbe991a14);
+      assert.strictEqual(num2.toString(16), '-1cbe991a14');
+      assert.strictEqual(num2.toString(10), '-123456789012');
+      assert.strictEqual(num2.toString(8), '-1627646215024');
+      assert.strictEqual(num2.toString(2),
         '-1110010111110100110010001101000010100');
     });
 
-    it('should deserialize unsigned strings', function() {
-      var num = Int64.fromString('ffffffffffffffff', false, 16);
+    it('should deserialize unsigned strings', () => {
+      let num = Int64.fromString('ffffffffffffffff', false, 16);
       assert.strictEqual(num.toString(16), 'ffffffffffffffff');
 
       num = Int64.fromString('18446744073709551615', false, 10);
@@ -96,11 +98,12 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(8), '1627646215024');
 
       num = Int64.fromString('1110010111110100110010001101000010100', false, 2);
-      assert.strictEqual(num.toString(2), '1110010111110100110010001101000010100');
+      assert.strictEqual(num.toString(2),
+        '1110010111110100110010001101000010100');
     });
 
-    it('should deserialize signed strings', function() {
-      var num = Int64.fromString('-1', true, 16);
+    it('should deserialize signed strings', () => {
+      let num = Int64.fromString('-1', true, 16);
       assert.strictEqual(num.toNumber(), -1);
       assert.strictEqual(num.toString(16), '-1');
 
@@ -124,17 +127,18 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(8), '-1627646215024');
 
       num = Int64.fromString('-1110010111110100110010001101000010100', true, 2);
-      assert.strictEqual(num.toString(2), '-1110010111110100110010001101000010100');
+      assert.strictEqual(num.toString(2),
+        '-1110010111110100110010001101000010100');
     });
 
-    it('should serialize strings for min/max', function() {
+    it('should serialize strings for min/max', () => {
       assert.strictEqual(MIN_I64.toString(), '-9223372036854775808');
       assert.strictEqual(MAX_I64.toString(), '9223372036854775807');
       assert.strictEqual(MAX_U64.toString(), '18446744073709551615');
     });
 
-    it('should cast a negative', function() {
-      var num = Int64.fromInt(-1, false);
+    it('should cast a negative', () => {
+      const num = Int64.fromInt(-1, false);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
@@ -145,8 +149,8 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
 
-    it('should handle uint64 max', function() {
-      var num = Int64.fromBits(0xffffffff, 0xffffffff, false);
+    it('should handle uint64 max', () => {
+      const num = Int64.fromBits(0xffffffff, 0xffffffff, false);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
@@ -157,8 +161,8 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
 
-    it('should handle uint64 max as string', function() {
-      var num = Int64.fromString('ffffffffffffffff', false, 16);
+    it('should handle uint64 max as string', () => {
+      const num = Int64.fromString('ffffffffffffffff', false, 16);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
@@ -166,39 +170,44 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
 
-    it('should count bits', function() {
-      var num = Int64.fromString('000010000fffffff', false, 16);
+    it('should count bits', () => {
+      let num = Int64.fromString('000010000fffffff', false, 16);
       assert.strictEqual(num.bitLength(), 45);
       assert.strictEqual(num.byteLength(), 6);
+
       num = Int64.fromString('000010000fffffff', true, 16);
       assert.strictEqual(num.bitLength(), 45);
       assert.strictEqual(num.byteLength(), 6);
+
       num = Int64.fromString('800010000fffffff', false, 16);
       assert.strictEqual(num.bitLength(), 64);
       assert.strictEqual(num.byteLength(), 8);
+
       num = Int64.fromString('800010000fffffff', true, 16);
       assert.strictEqual(num.bitLength(), 63);
       assert.strictEqual(num.byteLength(), 8);
     });
 
-    it('should cast between signed and unsigned', function() {
-      var num = Int64.fromNumber(-1, true);
+    it('should cast between signed and unsigned', () => {
+      let num = Int64.fromNumber(-1, true);
       assert.strictEqual(num.toDouble(), -1);
+
       num = num.toUnsigned();
       assert.strictEqual(num.toDouble(), 0xffffffffffffffff);
       assert.strictEqual(num.toString(16), 'ffffffffffffffff');
+
       num = num.toSigned();
       assert.strictEqual(num.toDouble(), -1);
     });
 
-    it('should subtract from uint64 max', function() {
-      var num = MAX_U64.sub(MAX_I64).sub(ONE);
+    it('should subtract from uint64 max', () => {
+      const num = MAX_U64.sub(MAX_I64).sub(ONE);
       assert.strictEqual(num.toDouble(), MAX_I64.toDouble());
       assert.strictEqual(num.toString(), MAX_I64.toString());
     });
 
-    it('should subtract from uint64 max to zero', function() {
-      var num = MAX_U64.sub(MAX_U64);
+    it('should subtract from uint64 max to zero', () => {
+      const num = MAX_U64.sub(MAX_U64);
       assert.strictEqual(num.lo, 0);
       assert.strictEqual(num.hi, 0);
       assert.strictEqual(num.signed, false);
@@ -206,8 +215,8 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '0');
     });
 
-    it('should overflow from subtraction', function() {
-      var num = Int64.fromInt(0, false).add(Int64.fromInt(-1, true));
+    it('should overflow from subtraction', () => {
+      const num = Int64.fromInt(0, false).add(Int64.fromInt(-1, true));
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
@@ -215,32 +224,32 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
 
-    it('should divide uint64 max by int64 max', function() {
-      var num = MAX_U64.div(MAX_I64);
+    it('should divide uint64 max by int64 max', () => {
+      const num = MAX_U64.div(MAX_I64);
       assert.strictEqual(num.toDouble(), 2);
       assert.strictEqual(num.toString(), '2');
     });
 
-    it('should divide uint64 max by itself', function() {
-      var num = MAX_U64;
+    it('should divide uint64 max by itself', () => {
+      const num = MAX_U64;
       assert.strictEqual(num.div(num).toString(), '1');
     });
 
-    it('should cast and divide', function() {
-      var a = MAX_U64;
-      var b = Int64.fromInt(-2, true);
-      var num;
+    it('should cast and divide', () => {
+      const a = MAX_U64;
+      const b = Int64.fromInt(-2, true);
 
       assert.strictEqual(b.toUnsigned().toString(), MAX_U64.subn(1).toString());
 
-      num = a.div(b);
+      const num = a.div(b);
       assert.strictEqual(num.toString(), '1');
       assert.strictEqual(num.toNumber(), 1);
     });
 
-    it('should divide with int64 min edge cases (signed)', function() {
-      var MIN_I64 = Int64.fromBits(0x80000000, 0, true);
-      var num = MIN_I64.div(ONE);
+    it('should divide with int64 min edge cases (signed)', () => {
+      const MIN_I64 = Int64.fromBits(0x80000000, 0, true);
+
+      let num = MIN_I64.div(ONE);
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
       num = MIN_I64.div(new Int64(1234));
@@ -282,9 +291,10 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '-32');
     });
 
-    it('should divide with int64 min edge cases (unsigned)', function() {
-      var MIN_I64 = Int64.fromBits(0x80000000, 0, false);
-      var num = MIN_I64.div(ONE);
+    it('should divide with int64 min edge cases (unsigned)', () => {
+      const MIN_I64 = Int64.fromBits(0x80000000, 0, false);
+
+      let num = MIN_I64.div(ONE);
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
       num = MIN_I64.div(new Int64(1234));
@@ -311,8 +321,8 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(), '1');
     });
 
-    it('should implicitly cast for comparison', function() {
-      var num = UONE.shln(63);
+    it('should implicitly cast for comparison', () => {
+      const num = UONE.shln(63);
       assert.strictEqual(num.eq(MIN_I64), true);
       assert.strictEqual(num.cmp(MIN_I64), 0);
       assert.strictEqual(MIN_I64.cmp(num), 0);
@@ -322,21 +332,20 @@ function run(Int64, name) {
         '9223372036854775808');
     });
 
-    it('should maintain sign after division', function() {
-      var a = Int64.fromBits(8, 0, false);
-      var b = Int64.fromNumber(2656901066, false);
-      var x;
+    it('should maintain sign after division', () => {
+      const a = Int64.fromBits(8, 0, false);
+      const b = Int64.fromNumber(2656901066, false);
 
       assert.strictEqual(a.signed, false);
       assert.strictEqual(b.signed, false);
 
-      x = a.div(b);
+      const x = a.div(b);
 
       assert.strictEqual(x.toString(), '12');
       assert.strictEqual(x.signed, false);
     });
 
-    it('should do comparisons', function() {
+    it('should do comparisons', () => {
       assert.strictEqual(ONE.eq(UONE), true);
       assert.strictEqual(ONE.cmp(UONE), 0);
       assert.strictEqual(ONE.cmp(MAX_I64), -1);
@@ -383,7 +392,7 @@ function run(Int64, name) {
       assert.strictEqual(Int64.max(Int64(1), ONE), ONE);
     });
 
-    it('should do comparisons (signed)', function() {
+    it('should do comparisons (signed)', () => {
       assert.strictEqual(Int64(-20, true).eq(Int64(-20, true)), true);
       assert.strictEqual(!Int64(-20, true).eq(Int64(20, true)), true);
       assert.strictEqual(Int64(-20, true).cmp(Int64(-20, true)), 0);
@@ -398,14 +407,17 @@ function run(Int64, name) {
       assert.strictEqual(Int64(2147483647, true).gt(Int64(100, true)), true);
       assert.strictEqual(Int64(-2147483647, true).lt(Int64(-100, true)), true);
       assert.strictEqual(Int64(2147483647, true).gt(Int64(-100, true)), true);
-      assert.strictEqual(Int64(-0x212345679, true).lt(Int64(-0x212345678, true)), true);
-      assert.strictEqual(Int64(0x212345679, true).gt(Int64(-0x212345678, true)), true);
-      assert.strictEqual(Int64(0x212345679, true).gt(Int64(0x212345678, true)), true);
+      assert.strictEqual(
+        Int64(-0x212345679, true).lt(Int64(-0x212345678, true)), true);
+      assert.strictEqual(
+        Int64(0x212345679, true).gt(Int64(-0x212345678, true)), true);
+      assert.strictEqual(
+        Int64(0x212345679, true).gt(Int64(0x212345678, true)), true);
     });
 
-    it('should do small addition (unsigned)', function() {
-      var a = Int64.fromNumber(100, false);
-      var b = Int64.fromNumber(200, false);
+    it('should do small addition (unsigned)', () => {
+      let a = Int64.fromNumber(100, false);
+      let b = Int64.fromNumber(200, false);
       a.iadd(b);
       assert.strictEqual(a.toString(), '300');
 
@@ -423,9 +435,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do small addition (signed)', function() {
-      var a = Int64.fromNumber(100, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small addition (signed)', () => {
+      let a = Int64.fromNumber(100, true);
+      let b = Int64.fromNumber(-50, true);
       a.iadd(b);
       assert.strictEqual(a.toString(), '50');
 
@@ -443,9 +455,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do big addition (unsigned)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, false);
-      var b = Int64.fromNumber(200 * 0x100000000, false);
+    it('should do big addition (unsigned)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, false);
+      let b = Int64.fromNumber(200 * 0x100000000, false);
       a.iadd(b);
       assert.strictEqual(a.toString(), '1288490188800');
 
@@ -463,9 +475,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do big addition (signed)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, true);
-      var b = Int64.fromNumber(-50 * 0x100000000, true);
+    it('should do big addition (signed)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, true);
+      let b = Int64.fromNumber(-50 * 0x100000000, true);
       a.iadd(b);
       assert.strictEqual(a.toString(), '214748364800');
 
@@ -483,9 +495,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do small subtraction (unsigned)', function() {
-      var a = Int64.fromNumber(200, false);
-      var b = Int64.fromNumber(100, false);
+    it('should do small subtraction (unsigned)', () => {
+      let a = Int64.fromNumber(200, false);
+      let b = Int64.fromNumber(100, false);
       a.isub(b);
       assert.strictEqual(a.toString(), '100');
 
@@ -503,9 +515,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '200');
     });
 
-    it('should do small subtraction (signed)', function() {
-      var a = Int64.fromNumber(100, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small subtraction (signed)', () => {
+      let a = Int64.fromNumber(100, true);
+      let b = Int64.fromNumber(-50, true);
       a.isub(b);
       assert.strictEqual(a.toString(), '150');
 
@@ -523,9 +535,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do big subtraction (unsigned)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, false);
-      var b = Int64.fromNumber(200 * 0x100000000, false);
+    it('should do big subtraction (unsigned)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, false);
+      let b = Int64.fromNumber(200 * 0x100000000, false);
       a.isub(b);
       assert.strictEqual(a.toString(), '18446743644212822016');
 
@@ -543,9 +555,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do big subtraction (signed)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, true);
-      var b = Int64.fromNumber(200 * 0x100000000, true);
+    it('should do big subtraction (signed)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, true);
+      let b = Int64.fromNumber(200 * 0x100000000, true);
       a.isub(b);
       assert.strictEqual(a.toString(), '-429496729600');
 
@@ -563,9 +575,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do small multiplication (unsigned)', function() {
-      var a = Int64.fromNumber(100, false);
-      var b = Int64.fromNumber(200, false);
+    it('should do small multiplication (unsigned)', () => {
+      let a = Int64.fromNumber(100, false);
+      let b = Int64.fromNumber(200, false);
       a.imul(b);
       assert.strictEqual(a.toString(), '20000');
 
@@ -583,9 +595,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do small multiplication (signed)', function() {
-      var a = Int64.fromNumber(100, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small multiplication (signed)', () => {
+      let a = Int64.fromNumber(100, true);
+      let b = Int64.fromNumber(-50, true);
       a.imul(b);
       assert.strictEqual(a.toString(), '-5000');
 
@@ -603,9 +615,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do big multiplication (unsigned)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, false);
-      var b = Int64.fromNumber(10 * 0x10000000, false);
+    it('should do big multiplication (unsigned)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, false);
+      let b = Int64.fromNumber(10 * 0x10000000, false);
       a.imul(b);
       assert.strictEqual(a.toString(), '9223372036854775808');
 
@@ -624,9 +636,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do big multiplication (signed)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, true);
-      var b = Int64.fromNumber(-10 * 0x10000000, true);
+    it('should do big multiplication (signed)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, true);
+      let b = Int64.fromNumber(-10 * 0x10000000, true);
       a.imul(b);
       assert.strictEqual(a.toString(), '-9223372036854775808');
 
@@ -645,9 +657,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do small division (unsigned)', function() {
-      var a = Int64.fromNumber(200, false);
-      var b = Int64.fromNumber(100, false);
+    it('should do small division (unsigned)', () => {
+      let a = Int64.fromNumber(200, false);
+      let b = Int64.fromNumber(100, false);
       a.idiv(b);
       assert.strictEqual(a.toString(), '2');
 
@@ -665,9 +677,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '200');
     });
 
-    it('should do small division (signed)', function() {
-      var a = Int64.fromNumber(100, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small division (signed)', () => {
+      let a = Int64.fromNumber(100, true);
+      let b = Int64.fromNumber(-50, true);
       a.idiv(b);
       assert.strictEqual(a.toString(), '-2');
 
@@ -685,9 +697,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '100');
     });
 
-    it('should do big division (unsigned)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, false);
-      var b = Int64.fromNumber(10 * 0x10000000, false);
+    it('should do big division (unsigned)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, false);
+      let b = Int64.fromNumber(10 * 0x10000000, false);
       a.idiv(b);
       assert.strictEqual(a.toString(), '160');
 
@@ -705,9 +717,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do big division (signed)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, true);
-      var b = Int64.fromNumber(-10 * 0x10000000, true);
+    it('should do big division (signed)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, true);
+      let b = Int64.fromNumber(-10 * 0x10000000, true);
       a.idiv(b);
       assert.strictEqual(a.toString(), '-160');
 
@@ -725,9 +737,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do small modulo (unsigned)', function() {
-      var a = Int64.fromNumber(23525432, false);
-      var b = Int64.fromNumber(100, false);
+    it('should do small modulo (unsigned)', () => {
+      let a = Int64.fromNumber(23525432, false);
+      let b = Int64.fromNumber(100, false);
       a.imod(b);
       assert.strictEqual(a.toString(), '32');
 
@@ -745,9 +757,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '1130021');
     });
 
-    it('should do small modulo (signed)', function() {
-      var a = Int64.fromNumber(354241, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small modulo (signed)', () => {
+      let a = Int64.fromNumber(354241, true);
+      let b = Int64.fromNumber(-50, true);
       a.imod(b);
       assert.strictEqual(a.toString(), '41');
 
@@ -765,9 +777,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '141001');
     });
 
-    it('should do big modulo (unsigned)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, false);
-      var b = Int64.fromNumber(9 * 0x10000000, false);
+    it('should do big modulo (unsigned)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, false);
+      let b = Int64.fromNumber(9 * 0x10000000, false);
       a.imod(b);
       assert.strictEqual(a.toString(), '1879048192');
 
@@ -785,9 +797,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do big modulo (signed)', function() {
-      var a = Int64.fromNumber(100 * 0x100000000, true);
-      var b = Int64.fromNumber(-9 * 0x10000000, true);
+    it('should do big modulo (signed)', () => {
+      let a = Int64.fromNumber(100 * 0x100000000, true);
+      let b = Int64.fromNumber(-9 * 0x10000000, true);
       a.imod(b);
       assert.strictEqual(a.toString(), '1879048192');
 
@@ -805,9 +817,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '429496729600');
     });
 
-    it('should do small pow (unsigned)', function() {
-      var a = Int64.fromNumber(123, false);
-      var b = Int64.fromNumber(6, false);
+    it('should do small pow (unsigned)', () => {
+      let a = Int64.fromNumber(123, false);
+      let b = Int64.fromNumber(6, false);
       a.ipow(b);
       assert.strictEqual(a.toString(), '3462825991689');
 
@@ -825,9 +837,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '123');
     });
 
-    it('should do small pow (signed)', function() {
-      var a = Int64.fromNumber(-123, true);
-      var b = Int64.fromNumber(6, true);
+    it('should do small pow (signed)', () => {
+      let a = Int64.fromNumber(-123, true);
+      let b = Int64.fromNumber(6, true);
       a.ipow(b);
       assert.strictEqual(a.toString(), '3462825991689');
 
@@ -852,9 +864,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '-8');
     });
 
-    it('should do big pow (unsigned)', function() {
-      var a = Int64.fromNumber(2, false);
-      var b = Int64.fromNumber(63, false);
+    it('should do big pow (unsigned)', () => {
+      let a = Int64.fromNumber(2, false);
+      let b = Int64.fromNumber(63, false);
       a.ipow(b);
       assert.strictEqual(a.toString(), '9223372036854775808');
 
@@ -878,9 +890,9 @@ function run(Int64, name) {
       assert.strictEqual(a.pown(64).toString(), '0');
     });
 
-    it('should do big pow (signed)', function() {
-      var a = Int64.fromNumber(-2, true);
-      var b = Int64.fromNumber(63, true);
+    it('should do big pow (signed)', () => {
+      let a = Int64.fromNumber(-2, true);
+      let b = Int64.fromNumber(63, true);
       a.ipow(b);
       assert.strictEqual(a.toString(), '-9223372036854775808');
 
@@ -904,8 +916,8 @@ function run(Int64, name) {
       assert.strictEqual(a.pown(64).toString(), '0');
     });
 
-    it('should square', function() {
-      var a = Int64.fromNumber(6, false);
+    it('should square', () => {
+      let a = Int64.fromNumber(6, false);
       a.isqr();
       assert.strictEqual(a.toString(), '36');
 
@@ -914,9 +926,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '6');
     });
 
-    it('should do small AND (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(200, false);
+    it('should do small AND (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(200, false);
       a.iand(b);
       assert.strictEqual(a.toString(), '72');
 
@@ -934,9 +946,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small AND (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small AND (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(-50, true);
       a.iand(b);
       assert.strictEqual(a.toString(), '12364');
 
@@ -954,9 +966,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big AND (unsigned)', function() {
-      var a = Int64.fromNumber(1214532435245234, false);
-      var b = Int64.fromNumber(1242541452, false);
+    it('should do big AND (unsigned)', () => {
+      let a = Int64.fromNumber(1214532435245234, false);
+      let b = Int64.fromNumber(1242541452, false);
       a.iand(b);
       assert.strictEqual(a.toString(), '1242474624');
 
@@ -974,9 +986,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do big AND (signed)', function() {
-      var a = Int64.fromNumber(1214532435245234, true);
-      var b = Int64.fromNumber(1242541452, true);
+    it('should do big AND (signed)', () => {
+      let a = Int64.fromNumber(1214532435245234, true);
+      let b = Int64.fromNumber(1242541452, true);
       a.iand(b);
       assert.strictEqual(a.toString(), '1242474624');
 
@@ -994,9 +1006,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do small OR (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(200, false);
+    it('should do small OR (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(200, false);
       a.ior(b);
       assert.strictEqual(a.toString(), '12540');
 
@@ -1014,9 +1026,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small OR (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small OR (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(-50, true);
       a.ior(b);
       assert.strictEqual(a.toString(), '-2');
 
@@ -1034,9 +1046,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big OR (unsigned)', function() {
-      var a = Int64.fromNumber(1214532435245234, false);
-      var b = Int64.fromNumber(1242541452, false);
+    it('should do big OR (unsigned)', () => {
+      let a = Int64.fromNumber(1214532435245234, false);
+      let b = Int64.fromNumber(1242541452, false);
       a.ior(b);
       assert.strictEqual(a.toString(), '1214532435312062');
 
@@ -1054,9 +1066,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do big OR (signed)', function() {
-      var a = Int64.fromNumber(1214532435245234, true);
-      var b = Int64.fromNumber(1242541452, true);
+    it('should do big OR (signed)', () => {
+      let a = Int64.fromNumber(1214532435245234, true);
+      let b = Int64.fromNumber(1242541452, true);
       a.ior(b);
       assert.strictEqual(a.toString(), '1214532435312062');
 
@@ -1074,9 +1086,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do small XOR (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(200, false);
+    it('should do small XOR (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(200, false);
       a.ixor(b);
       assert.strictEqual(a.toString(), '12468');
 
@@ -1094,9 +1106,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small XOR (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(-50, true);
+    it('should do small XOR (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(-50, true);
       a.ixor(b);
       assert.strictEqual(a.toString(), '-12366');
 
@@ -1114,9 +1126,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big XOR (unsigned)', function() {
-      var a = Int64.fromNumber(1214532435245234, false);
-      var b = Int64.fromNumber(1242541452, false);
+    it('should do big XOR (unsigned)', () => {
+      let a = Int64.fromNumber(1214532435245234, false);
+      let b = Int64.fromNumber(1242541452, false);
       a.ixor(b);
       assert.strictEqual(a.toString(), '1214531192837438');
 
@@ -1134,9 +1146,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do big XOR (signed)', function() {
-      var a = Int64.fromNumber(1214532435245234, true);
-      var b = Int64.fromNumber(1242541452, true);
+    it('should do big XOR (signed)', () => {
+      let a = Int64.fromNumber(1214532435245234, true);
+      let b = Int64.fromNumber(1242541452, true);
       a.ixor(b);
       assert.strictEqual(a.toString(), '1214531192837438');
 
@@ -1154,9 +1166,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '13545214126');
     });
 
-    it('should do small left shift (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(2, false);
+    it('should do small left shift (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(2, false);
       a.ishl(b);
       assert.strictEqual(a.toString(), '49648');
 
@@ -1174,9 +1186,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small left shift (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(2, true);
+    it('should do small left shift (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(2, true);
       a.ishl(b);
       assert.strictEqual(a.toString(), '49648');
 
@@ -1194,9 +1206,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big left shift (unsigned)', function() {
-      var a = Int64.fromNumber(123, false);
-      var b = Int64.fromNumber(60, false);
+    it('should do big left shift (unsigned)', () => {
+      let a = Int64.fromNumber(123, false);
+      let b = Int64.fromNumber(60, false);
       a.ishl(b);
       assert.strictEqual(a.toString(), '12682136550675316736');
 
@@ -1214,9 +1226,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '123');
     });
 
-    it('should do big left shift (signed)', function() {
-      var a = Int64.fromNumber(123, true);
-      var b = Int64.fromNumber(60, true);
+    it('should do big left shift (signed)', () => {
+      let a = Int64.fromNumber(123, true);
+      let b = Int64.fromNumber(60, true);
       a.ishl(b);
       assert.strictEqual(a.toString(), '-5764607523034234880');
 
@@ -1234,9 +1246,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '123');
     });
 
-    it('should do small right shift (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(2, false);
+    it('should do small right shift (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(2, false);
       a.ishr(b);
       assert.strictEqual(a.toString(), '3103');
 
@@ -1254,9 +1266,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small right shift (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(2, true);
+    it('should do small right shift (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(2, true);
       a.ishr(b);
       assert.strictEqual(a.toString(), '3103');
 
@@ -1274,9 +1286,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big right shift (unsigned)', function() {
-      var a = Int64.fromString('f00fffffffffffff', false, 16);
-      var b = Int64.fromNumber(45, false);
+    it('should do big right shift (unsigned)', () => {
+      let a = Int64.fromString('f00fffffffffffff', false, 16);
+      let b = Int64.fromNumber(45, false);
       a.ishr(b);
       assert.strictEqual(a.toString(), '491647');
 
@@ -1294,9 +1306,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '17298326168730075135');
     });
 
-    it('should do big right shift (signed)', function() {
-      var a = Int64.fromString('f00fffffffffffff', true, 16);
-      var b = Int64.fromNumber(45, true);
+    it('should do big right shift (signed)', () => {
+      let a = Int64.fromString('f00fffffffffffff', true, 16);
+      let b = Int64.fromNumber(45, true);
       a.ishr(b);
       assert.strictEqual(a.toString(), '-32641');
 
@@ -1314,9 +1326,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '-1148417904979476481');
     });
 
-    it('should do small unsigned right shift (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
-      var b = Int64.fromNumber(2, false);
+    it('should do small unsigned right shift (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
+      let b = Int64.fromNumber(2, false);
       a.iushr(b);
       assert.strictEqual(a.toString(), '3103');
 
@@ -1334,9 +1346,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small unsigned right shift (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
-      var b = Int64.fromNumber(2, true);
+    it('should do small unsigned right shift (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
+      let b = Int64.fromNumber(2, true);
       a.iushr(b);
       assert.strictEqual(a.toString(), '3103');
 
@@ -1354,9 +1366,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big unsigned right shift (unsigned)', function() {
-      var a = Int64.fromString('ffffffffffffffff', false, 16);
-      var b = Int64.fromNumber(45, false);
+    it('should do big unsigned right shift (unsigned)', () => {
+      let a = Int64.fromString('ffffffffffffffff', false, 16);
+      let b = Int64.fromNumber(45, false);
       a.iushr(b);
       assert.strictEqual(a.toString(), '524287');
 
@@ -1374,9 +1386,9 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '18446744073709551615');
     });
 
-    it('should do big unsigned right shift (signed)', function() {
-      var a = Int64.fromString('ffffffffffffffff', true, 16);
-      var b = Int64.fromNumber(45, true);
+    it('should do big unsigned right shift (signed)', () => {
+      let a = Int64.fromString('ffffffffffffffff', true, 16);
+      let b = Int64.fromNumber(45, true);
       a.iushr(b);
       assert.strictEqual(a.toString(), '524287');
 
@@ -1394,8 +1406,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '-1');
     });
 
-    it('should set and test bits', function() {
-      var a = Int64(0);
+    it('should set and test bits', () => {
+      const a = Int64(0);
       assert.strictEqual(a.testn(35), 0);
       a.setn(35, 1);
       assert.strictEqual(a.toString(), '34359738368');
@@ -1406,8 +1418,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '0');
     });
 
-    it('should mask bits', function() {
-      var a = Int64.fromString('ffffffffffffffff', false, 16);
+    it('should mask bits', () => {
+      let a = Int64.fromString('ffffffffffffffff', false, 16);
       a.imaskn(35);
       assert.strictEqual(a.toString(), '34359738367');
 
@@ -1416,12 +1428,12 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '18446744073709551615');
     });
 
-    it('should and lo bits', function() {
+    it('should and lo bits', () => {
       assert.strictEqual(Int64(1).andln(0xffff), 1);
     });
 
-    it('should do small NOT (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
+    it('should do small NOT (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
       a.inot();
       assert.strictEqual(a.toString(), '18446744073709539203');
 
@@ -1430,8 +1442,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small NOT (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
+    it('should do small NOT (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
       a.inot();
       assert.strictEqual(a.toString(), '-12413');
 
@@ -1440,8 +1452,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big NOT (unsigned)', function() {
-      var a = Int64.fromString('ffffffffffffffff', false, 16);
+    it('should do big NOT (unsigned)', () => {
+      let a = Int64.fromString('ffffffffffffffff', false, 16);
       a.inot();
       assert.strictEqual(a.toString(), '0');
 
@@ -1450,8 +1462,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '18446744073709551615');
     });
 
-    it('should do big NOT (signed)', function() {
-      var a = Int64.fromString('ffffffffffffffff', true, 16);
+    it('should do big NOT (signed)', () => {
+      let a = Int64.fromString('ffffffffffffffff', true, 16);
       a.inot();
       assert.strictEqual(a.toString(), '0');
 
@@ -1460,8 +1472,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '-1');
     });
 
-    it('should do small NEGATE (unsigned)', function() {
-      var a = Int64.fromNumber(12412, false);
+    it('should do small NEGATE (unsigned)', () => {
+      let a = Int64.fromNumber(12412, false);
       a.ineg();
       assert.strictEqual(a.toString(), '18446744073709539204');
 
@@ -1470,8 +1482,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do small NEGATE (signed)', function() {
-      var a = Int64.fromNumber(12412, true);
+    it('should do small NEGATE (signed)', () => {
+      let a = Int64.fromNumber(12412, true);
       a.ineg();
       assert.strictEqual(a.toString(), '-12412');
 
@@ -1480,8 +1492,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '12412');
     });
 
-    it('should do big NEGATE (unsigned)', function() {
-      var a = Int64.fromString('ffffffffffffffff', false, 16);
+    it('should do big NEGATE (unsigned)', () => {
+      let a = Int64.fromString('ffffffffffffffff', false, 16);
       a.ineg();
       assert.strictEqual(a.toString(), '1');
 
@@ -1490,8 +1502,8 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '18446744073709551615');
     });
 
-    it('should do big NEGATE (signed)', function() {
-      var a = Int64.fromString('ffffffffffffffff', true, 16);
+    it('should do big NEGATE (signed)', () => {
+      let a = Int64.fromString('ffffffffffffffff', true, 16);
       a.ineg();
       assert.strictEqual(a.toString(), '1');
 
@@ -1500,7 +1512,7 @@ function run(Int64, name) {
       assert.strictEqual(a.toString(), '-1');
     });
 
-    it('should get absolute value', function() {
+    it('should get absolute value', () => {
       assert.strictEqual(Int64(-1, true).toString(), '-1');
       assert.strictEqual(Int64(-1, true).abs().toString(), '1');
       assert.strictEqual(Int64(-1, true).iabs().toString(), '1');
@@ -1508,7 +1520,7 @@ function run(Int64, name) {
       assert.strictEqual(Int64(1, true).iabs().toString(), '1');
     });
 
-    it('should test safety', function() {
+    it('should test safety', () => {
       assert.strictEqual(MAX_SAFE.toString(), '9007199254740991');
       assert.strictEqual(MAX_SAFE_MIN.toString(), '-9007199254740991');
       assert.strictEqual(MAX_SAFE_MAX.toString(), '9007199254740991');
@@ -1530,18 +1542,18 @@ function run(Int64, name) {
       assert.strictEqual(MAX_SAFE_MAX.clone().addn(1).isSafe(), false);
     });
 
-    it('should test bignum compat', function() {
-      var n = new BN('9007199254740991', 10);
-      var num = Int64.fromBN(n, false);
-      assert.equal(num.toString(), '9007199254740991');
+    it('should test bignum compat', () => {
+      let n = new BN('9007199254740991', 10);
+      let num = Int64.fromBN(n, false);
+      assert.strictEqual(num.toString(), '9007199254740991');
 
       n = new BN('-9007199254740991', 10);
       num = Int64.fromBN(n, true);
-      assert.equal(num.toString(), '-9007199254740991');
+      assert.strictEqual(num.toString(), '-9007199254740991');
 
       n = new BN('ffffffffffffffff', 16);
       num = Int64.fromBN(n, false);
-      assert.equal(num.toString(16), 'ffffffffffffffff');
+      assert.strictEqual(num.toString(16), 'ffffffffffffffff');
 
       n = new BN('ffffffffffffffff', 16);
       assert.throws(function() {
@@ -1555,7 +1567,7 @@ function run(Int64, name) {
 
       n = new BN('-fffffffffffffff', 16);
       num = Int64.fromBN(n, true);
-      assert.equal(num.toString(16), '-fffffffffffffff');
+      assert.strictEqual(num.toString(16), '-fffffffffffffff');
     });
   });
 }
