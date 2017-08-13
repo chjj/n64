@@ -142,9 +142,7 @@ function run(Int64, name) {
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
-      assert.throws(function() {
-        num.toNumber();
-      });
+      assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -154,9 +152,7 @@ function run(Int64, name) {
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.signed, false);
-      assert.throws(function() {
-        num.toNumber();
-      });
+      assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -1556,14 +1552,10 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(16), 'ffffffffffffffff');
 
       n = new BN('ffffffffffffffff', 16);
-      assert.throws(function() {
-        Int64.fromBN(n, true);
-      });
+      assert.throws(() => Int64.fromBN(n, true));
 
       n = new BN('fffffffffffffffff', 16);
-      assert.throws(function() {
-        Int64.fromBN(n, false);
-      });
+      assert.throws(() => Int64.fromBN(n, false));
 
       n = new BN('-fffffffffffffff', 16);
       num = Int64.fromBN(n, true);
