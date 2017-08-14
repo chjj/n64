@@ -395,7 +395,10 @@ NAN_METHOD(Int64::Imod) {
     return Nan::ThrowError("Cannot divide by zero.");
 
   if (a->sign)
-    a->n = (int64_t)a->n % (int64_t)b->n;
+    if ((int64_t)a->n == LLONG_MIN && (int64_t)b->n == -1)
+      a->n = 0;
+    else
+      a->n = (int64_t)a->n % (int64_t)b->n;
   else
     a->n %= b->n;
 
@@ -417,7 +420,10 @@ NAN_METHOD(Int64::Imodn) {
     return Nan::ThrowError("Cannot divide by zero.");
 
   if (a->sign)
-    a->n = (int64_t)a->n % (int64_t)((int32_t)num);
+    if ((int64_t)a->n == LLONG_MIN && (int32_t)num == -1)
+      a->n = 0;
+    else
+      a->n = (int64_t)a->n % (int64_t)((int32_t)num);
   else
     a->n %= num;
 
@@ -1141,6 +1147,10 @@ NAN_METHOD(Int64::FromString) {
 
   char *start = *str_;
   size_t len = str_.length();
+
+  if (len == 0 || len > 64)
+    return Nan::ThrowError("First argument must be a string.");
+
   bool neg = false;
 
   if (*start == '-') {
@@ -1148,9 +1158,6 @@ NAN_METHOD(Int64::FromString) {
     start++;
     len--;
   }
-
-  if (len == 0 || len > 64)
-    return Nan::ThrowError("First argument must be a string.");
 
   bool sign = false;
 
@@ -1201,7 +1208,7 @@ NAN_METHOD(Int64::FromString) {
   info.GetReturnValue().Set(info.Holder());
 }
 
-NAN_INLINE static bool IsNull(v8::Local<v8::Value> options) {
+NAN_INLINE static bool IsNull(v8::Local<v8::Value> obj) {
   Nan::HandleScope scope;
-  return options->IsNull() || options->IsUndefined();
+  return obj->IsNull() || obj->IsUndefined();
 }

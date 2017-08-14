@@ -269,6 +269,10 @@ function run(Int64, name) {
       num = MIN_I64.div(new Int64(-1));
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
+      // Normally an FPE
+      num = MIN_I64.mod(new Int64(-1));
+      assert.strictEqual(num.toString(), '0');
+
       num = MIN_I64.div(new Int64(-2));
       assert.strictEqual(num.toString(), '4611686018427387904');
 
