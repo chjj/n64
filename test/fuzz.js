@@ -62,6 +62,10 @@ function randomBits() {
   return Math.random() * 64 | 0;
 }
 
+function randomBit() {
+  return Math.random() * 2 | 0;
+}
+
 function equals(a, b) {
   return a.hi === b.hi && a.lo === b.lo;
 }
@@ -85,8 +89,8 @@ for (const signed of [false, true]) {
           number: a1.toString(),
           signed: signed,
           operation: op,
-          jsResult: a.toString(),
-          cpResult: b.toString()
+          result: a.toString(),
+          expect: b.toString()
         });
       }
     }
@@ -110,8 +114,8 @@ for (const signed of [false, true]) {
           number: a1.toString(),
           signed: signed,
           operation: op,
-          jsResult: a,
-          cpResult: b
+          result: a,
+          expect: b
         });
       }
     }
@@ -140,8 +144,8 @@ for (const signed of [false, true]) {
           operand: a2.toString(),
           signed: signed,
           operation: op,
-          jsResult: a.toString(),
-          cpResult: b.toString()
+          result: a.toString(),
+          expect: b.toString()
         });
       }
     }
@@ -170,8 +174,8 @@ for (const signed of [false, true]) {
           operand: a2.toString(),
           signed: signed,
           operation: op,
-          jsResult: a,
-          cpResult: b
+          result: a,
+          expect: b
         });
       }
     }
@@ -185,10 +189,11 @@ for (const signed of [false, true]) {
     const a1 = Int64.fromObject(n1, signed);
     const b1 = Native.fromObject(n1, signed);
     const bits = randomBits();
+    const bit = randomBit();
     assert(equals(a1, b1));
     for (const op of bitwise) {
-      const a = a1[op](bits, 1);
-      const b = b1[op](bits, 1);
+      const a = a1[op](bits, bit);
+      const b = b1[op](bits, bit);
 
       if (!equals(a, b)) {
         console.error('Bitwise operation failed!');
@@ -197,8 +202,8 @@ for (const signed of [false, true]) {
           operand: bits,
           signed: signed,
           operation: op,
-          jsResult: a.toString(),
-          cpResult: b.toString()
+          result: a.toString(),
+          expect: b.toString()
         });
       }
     }
