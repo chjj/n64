@@ -1561,6 +1561,13 @@ function run(Int64, name) {
       num = Int64.fromBN(n, true);
       assert.strictEqual(num.toString(16), '-fffffffffffffff');
     });
+
+    it('should test buggy overflow', () => {
+      const number = Int64.fromString('8864030017785018305', false);
+      const operand = Int64.fromString('17290260146955268389', false);
+      const result = number.mul(operand);
+      assert.strictEqual(result.toString(10), '11297288259488448485');
+    });
   });
 }
 
