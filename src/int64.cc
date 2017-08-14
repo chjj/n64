@@ -974,14 +974,8 @@ NAN_METHOD(Int64::ToInt) {
 
 NAN_METHOD(Int64::ToString) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
+
   int32_t base = 10;
-  size_t size = 64;
-  char *fmt = NULL;
-  char str_[66];
-  char *str = (char *)str_ + 1;
-  bool neg = false;
-  uint64_t n = a->n;
-  int32_t r;
 
   if (info.Length() > 0 && !IsNull(info[0])) {
     if (!info[0]->IsNumber())
@@ -989,10 +983,17 @@ NAN_METHOD(Int64::ToString) {
     base = info[0]->Int32Value();
   }
 
+  uint64_t n = a->n;
+  bool neg = false;
+
   if (a->sign && (int64_t)a->n < 0) {
     neg = true;
     n = ~n + 1;
   }
+
+  size_t size = 64;
+  char str_[66];
+  char *str = (char *)str_ + 1;
 
   if (base == 2) {
     int32_t bit;
@@ -1019,6 +1020,8 @@ NAN_METHOD(Int64::ToString) {
       size = 1;
     }
   } else {
+    char *fmt = NULL;
+
     switch (base) {
       case 8:
         size = 22;
@@ -1036,7 +1039,7 @@ NAN_METHOD(Int64::ToString) {
         return Nan::ThrowTypeError("Invalid base.");
     }
 
-    r = snprintf((char *)str, size + 1, (const char *)fmt, n);
+    int32_t r = snprintf((char *)str, size + 1, (const char *)fmt, n);
 
     if (r < 0)
       return Nan::ThrowTypeError("Could not serialize string.");
@@ -1135,13 +1138,10 @@ NAN_METHOD(Int64::FromString) {
     return Nan::ThrowError("First argument must be a string.");
 
   Nan::Utf8String str_(info[0]);
+
   char *start = *str_;
   size_t len = str_.length();
   bool neg = false;
-  int32_t base = 10;
-  bool sign = false;
-  char *end;
-  uint64_t n;
 
   if (*start == '-') {
     neg = true;
@@ -1152,11 +1152,15 @@ NAN_METHOD(Int64::FromString) {
   if (len == 0 || len > 64)
     return Nan::ThrowError("First argument must be a string.");
 
+  bool sign = false;
+
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
       return Nan::ThrowError("Second argument must be a boolean.");
     sign = info[1]->BooleanValue();
   }
+
+  int32_t base = 10;
 
   if (info.Length() > 2 && !IsNull(info[2])) {
     if (!info[2]->IsNumber())
@@ -1175,7 +1179,9 @@ NAN_METHOD(Int64::FromString) {
   }
 
   errno = 0;
-  n = strtoull((const char *)start, &end, base);
+
+  char *end = NULL;
+  uint64_t n = strtoull((const char *)start, &end, base);
 
   if (errno == ERANGE && n == ULLONG_MAX)
     return Nan::ThrowTypeError("Parse error (overflow).");
