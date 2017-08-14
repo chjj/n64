@@ -1101,7 +1101,12 @@ NAN_METHOD(Int64::FromInt) {
     a->sign = false;
   }
 
-  a->n = (uint64_t)(info[0]->IntegerValue() & -1);
+  uint32_t num = info[0]->Uint32Value();
+
+  if (a->sign)
+    a->n = (uint64_t)((int64_t)((int32_t)num));
+  else
+    a->n = (uint64_t)num;
 
   info.GetReturnValue().Set(info.Holder());
 }

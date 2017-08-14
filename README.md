@@ -17,7 +17,7 @@ $ npm install n64
 ## Usage
 
 ``` js
-var Int64 = require('n64');
+const Int64 = require('n64');
 
 console.log(Int64(0x123456789).muln(0x12345678).toString(10));
 ```
@@ -177,6 +177,76 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 - `Int64#toString(base?)` - Convert to string of `base`.
 - `Int64#toJSON()` - Convert to hex string.
 - `Int64#inspect()` - Inspect number.
+
+## Casting
+
+With mixed types, the left operand will cast the right operand to its sign.
+
+With the `n`-suffix methods, numbers passed into them will either be cast to 32
+bit integers. If the left had operand is signed, the number is cast to an
+`int32_t`, if unsigned, the number is cast to an `uint32_t`.
+
+### Examples
+
+In JS:
+
+``` js
+const a = new Int64(1, true);
+const b = new Int64('ffffffffffffffff', false, 16);
+const r = a.add(b);
+console.log(r.toString());
+```
+
+In C:
+
+``` c
+int64_t a = 1;
+uint64_t b = 0xffffffffffffffff;
+int64_t r = a + (int64_t)b;
+printf("%d\n", r);
+```
+
+Outputs `0`, as `(int64_t)ULLONG_MAX == -1LL`.
+
+---
+
+In JS:
+
+``` js
+const a = new Int64(0, true);
+const r = a.addn(0xffffffff);
+console.log(r.toString());
+```
+
+In C:
+
+``` c
+int64_t a = 0;
+int64_t r = a + (int32_t)0xffffffff;
+printf("%d\n", r);
+```
+
+Outputs `-1`.
+
+---
+
+In JS:
+
+``` js
+const a = new Int64(0, false);
+const r = a.addn(-1);
+console.log(r.toString());
+```
+
+In C:
+
+``` c
+uint64_t a = 0;
+uint64_t r = a + (uint32_t)-1;
+printf("%u\n", r);
+```
+
+Outputs `4294967295`.
 
 ## Testing
 

@@ -138,10 +138,15 @@ function run(Int64, name) {
     });
 
     it('should cast a negative', () => {
-      const num = Int64.fromInt(-1, false);
+      let num = Int64.fromInt(-1, false);
+      assert.strictEqual(num.lo, -1);
+      assert.strictEqual(num.hi, 0);
+      assert.strictEqual(num.signed, false);
+      num = Int64.fromInt(-1, true);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.signed, true);
+      num = num.toUnsigned();
       assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
