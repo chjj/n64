@@ -182,6 +182,14 @@ function run(Int64, name) {
       num = Int64.fromString('800010000fffffff', true, 16);
       assert.strictEqual(num.bitLength(), 63);
       assert.strictEqual(num.byteLength(), 8);
+
+      num = Int64.fromNumber(0, false);
+      assert.strictEqual(num.bitLength(), 0);
+      assert.strictEqual(num.byteLength(), 0);
+
+      num = Int64.fromNumber(1, false);
+      assert.strictEqual(num.bitLength(), 1);
+      assert.strictEqual(num.byteLength(), 1);
     });
 
     it('should cast between signed and unsigned', () => {

@@ -910,7 +910,7 @@ NAN_METHOD(Int64::BitLength) {
   if (a->sign && (int64_t)a->n < 0)
     n = ~n + 1;
 
-  for (bit = 63; bit > 0; bit--) {
+  for (bit = 63; bit >= 0; bit--) {
     if ((n & (1ull << bit)) != 0)
       break;
   }
