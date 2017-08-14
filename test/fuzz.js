@@ -46,12 +46,30 @@ const doubleOpsRes = [
 ];
 
 const numberOps = [
+  'addn',
+  'subn',
+  'muln',
+  'divn',
+  'modn',
+  'andn',
+  'orn',
+  'xorn',
   'shln',
   'shrn',
   'ushrn',
   'pown',
   'setn',
   'maskn'
+];
+
+const numberOpsRes = [
+  'cmpn',
+  'eqn',
+  'ltn',
+  'lten',
+  'gtn',
+  'gten',
+  'testn'
 ];
 
 function random32() {
@@ -62,8 +80,8 @@ function random32() {
   return (Math.random() * 0x100000000) | 0;
 }
 
-function randomInt(onlyLo) {
-  if (onlyLo) {
+function random64(low) {
+  if (low) {
     const hi = 0;
     const lo = random32();
     return { hi, lo };
@@ -73,11 +91,7 @@ function randomInt(onlyLo) {
   return { hi, lo };
 }
 
-function randomBits() {
-  return (Math.random() * (1 << 30)) | 0;
-}
-
-function randomBit() {
+function random2() {
   return (Math.random() * 2) | 0;
 }
 
@@ -89,8 +103,8 @@ const iterations = Number(process.argv[2]) || 1000000;
 
 console.log('Fuzzing with %d iterations.', iterations);
 
-for (const onlyLo of [false, true]) {
-  console.log('Fuzzing with %s values.', onlyLo ? 'low' : 'high');
+for (const low of [false, true]) {
+  console.log('Fuzzing with %s values.', low ? 'low' : 'high');
 
   // Single param ops
   for (const signed of [false, true]) {
@@ -98,7 +112,7 @@ for (const onlyLo of [false, true]) {
       signed ? 'signed' : 'unsigned');
 
     for (let i = 0; i < iterations; i++) {
-      const n1 = randomInt(onlyLo);
+      const n1 = random64(low);
       const a1 = Int64.fromObject(n1, signed);
       const b1 = Native.fromObject(n1, signed);
 
@@ -124,11 +138,11 @@ for (const onlyLo of [false, true]) {
 
   // Single param ops with primitive result
   for (const signed of [false, true]) {
-    console.log('Fuzzing single param ops w/ primitive results (%s).',
+    console.log('Fuzzing single param ops w/ primitive result (%s).',
       signed ? 'signed' : 'unsigned');
 
     for (let i = 0; i < iterations; i++) {
-      const n1 = randomInt(onlyLo);
+      const n1 = random64(low);
       const a1 = Int64.fromObject(n1, signed);
       const b1 = Native.fromObject(n1, signed);
 
@@ -158,11 +172,11 @@ for (const onlyLo of [false, true]) {
       signed ? 'signed' : 'unsigned');
 
     for (let i = 0; i < iterations; i++) {
-      const n1 = randomInt(onlyLo);
+      const n1 = random64(low);
       const a1 = Int64.fromObject(n1, signed);
       const b1 = Native.fromObject(n1, signed);
 
-      const n2 = randomInt(onlyLo);
+      const n2 = random64(low);
       const a2 = Int64.fromObject(n2, signed);
       const b2 = Native.fromObject(n2, signed);
 
@@ -193,15 +207,15 @@ for (const onlyLo of [false, true]) {
 
   // Double param ops with primitive result
   for (const signed of [false, true]) {
-    console.log('Fuzzing double param ops w/ primitive results (%s).',
+    console.log('Fuzzing double param ops w/ primitive result (%s).',
       signed ? 'signed' : 'unsigned');
 
     for (let i = 0; i < iterations; i++) {
-      const n1 = randomInt(onlyLo);
+      const n1 = random64(low);
       const a1 = Int64.fromObject(n1, signed);
       const b1 = Native.fromObject(n1, signed);
 
-      const n2 = randomInt(onlyLo);
+      const n2 = random64(low);
       const a2 = Int64.fromObject(n2, signed);
       const b2 = Native.fromObject(n2, signed);
 
@@ -233,24 +247,60 @@ for (const onlyLo of [false, true]) {
       signed ? 'signed' : 'unsigned');
 
     for (let i = 0; i < iterations; i++) {
-      const n1 = randomInt(onlyLo);
+      const n1 = random64(low);
       const a1 = Int64.fromObject(n1, signed);
       const b1 = Native.fromObject(n1, signed);
+      const num = random32() >>> 0;
 
-      const bits = randomBits();
-      const bit = randomBit();
+      // For `.setn()`.
+      const bit = random2();
 
       assert(equals(a1, b1));
 
       for (const op of numberOps) {
-        const a = a1[op](bits, bit);
-        const b = b1[op](bits, bit);
+        if ((op === 'divn' || op === 'modn') && num === 0)
+          continue;
+
+        const a = a1[op](num, bit);
+        const b = b1[op](num, bit);
 
         if (!equals(a, b)) {
           console.error('Number operation failed!');
           console.error({
             number: a1.toString(),
-            operand: bits,
+            operand: num,
+            signed: signed,
+            operation: op,
+            result: a.toString(),
+            expect: b.toString()
+          });
+        }
+      }
+    }
+  }
+
+  // Number ops with primitive result
+  for (const signed of [false, true]) {
+    console.log('Fuzzing number ops w/ primitive result (%s).',
+      signed ? 'signed' : 'unsigned');
+
+    for (let i = 0; i < iterations; i++) {
+      const n1 = random64(low);
+      const a1 = Int64.fromObject(n1, signed);
+      const b1 = Native.fromObject(n1, signed);
+      const num = random32() >>> 0;
+
+      assert(equals(a1, b1));
+
+      for (const op of numberOpsRes) {
+        const a = a1[op](num);
+        const b = b1[op](num);
+
+        if (a !== b) {
+          console.error('Number operation failed!');
+          console.error({
+            number: a1.toString(),
+            operand: num,
             signed: signed,
             operation: op,
             result: a.toString(),
