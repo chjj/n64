@@ -54,23 +54,31 @@ const numberOps = [
   'maskn'
 ];
 
+function random32() {
+  // Throw a zero in every so often.
+  if (((Math.random() * 10000) | 0) === 0)
+    return 0;
+
+  return (Math.random() * 0x100000000) | 0;
+}
+
 function randomInt(onlyLo) {
   if (onlyLo) {
     const hi = 0;
-    const lo = (Math.random() * 0x100000000) | 0;
+    const lo = random32();
     return { hi, lo };
   }
-  const hi = (Math.random() * 0x100000000) | 0;
-  const lo = (Math.random() * 0x100000000) | 0;
+  const hi = random32();
+  const lo = random32();
   return { hi, lo };
 }
 
 function randomBits() {
-  return Math.random() * 64 | 0;
+  return (Math.random() * (1 << 30)) | 0;
 }
 
 function randomBit() {
-  return Math.random() * 2 | 0;
+  return (Math.random() * 2) | 0;
 }
 
 function equals(a, b) {
