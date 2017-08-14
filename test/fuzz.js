@@ -88,8 +88,6 @@ for (const signed of [false, true]) {
           jsResult: a.toString(),
           cpResult: b.toString()
         });
-        process.exit(1);
-        break;
       }
     }
   }
@@ -115,8 +113,6 @@ for (const signed of [false, true]) {
           jsResult: a,
           cpResult: b
         });
-        process.exit(1);
-        break;
       }
     }
   }
@@ -147,8 +143,6 @@ for (const signed of [false, true]) {
           jsResult: a.toString(),
           cpResult: b.toString()
         });
-        process.exit(1);
-        break;
       }
     }
   }
@@ -179,8 +173,6 @@ for (const signed of [false, true]) {
           jsResult: a,
           cpResult: b
         });
-        process.exit(1);
-        break;
       }
     }
   }
@@ -208,8 +200,6 @@ for (const signed of [false, true]) {
           jsResult: a.toString(),
           cpResult: b.toString()
         });
-        process.exit(1);
-        break;
       }
     }
   }
