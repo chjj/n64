@@ -20,7 +20,9 @@ const singleRes = [
   'byteLength',
   'isSafe',
   'toDouble',
-  'toString'
+  'toInt',
+  'toString',
+  'toJSON'
 ];
 
 const double = [
