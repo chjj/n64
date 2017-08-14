@@ -1562,11 +1562,18 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(16), '-fffffffffffffff');
     });
 
-    it('should test buggy overflow', () => {
+    it('should test buggy overflow (1)', () => {
       const number = Int64.fromString('8864030017785018305', false);
       const operand = Int64.fromString('17290260146955268389', false);
       const result = number.mul(operand);
       assert.strictEqual(result.toString(10), '11297288259488448485');
+    });
+
+    it('should test buggy overflow (2)', () => {
+      const number = Int64.fromString('8439509051110122647', false);
+      const operand = Int64.fromString('12580720524404292133', false);
+      const result = number.mul(operand);
+      assert.strictEqual(result.toString(10), '379484468253032403');
     });
   });
 }
