@@ -427,12 +427,9 @@ function run(n64, name) {
       assert.strictEqual(I64(2147483647).gt(I64(100)), true);
       assert.strictEqual(I64(-2147483647).lt(I64(-100)), true);
       assert.strictEqual(I64(2147483647).gt(I64(-100)), true);
-      assert.strictEqual(
-        I64(-0x212345679).lt(I64(-0x212345678)), true);
-      assert.strictEqual(
-        I64(0x212345679).gt(I64(-0x212345678)), true);
-      assert.strictEqual(
-        I64(0x212345679).gt(I64(0x212345678)), true);
+      assert.strictEqual(I64(-0x212345679).lt(I64(-0x212345678)), true);
+      assert.strictEqual(I64(0x212345679).gt(I64(-0x212345678)), true);
+      assert.strictEqual(I64(0x212345679).gt(I64(0x212345678)), true);
     });
 
     it('should do small addition (unsigned)', () => {
