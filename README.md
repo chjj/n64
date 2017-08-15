@@ -182,8 +182,8 @@ addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
 
 With mixed types, the left operand will cast the right operand to its sign.
 
-With the `n`-suffix methods, numbers passed into them will either be cast to 32
-bit integers. If the left had operand is signed, the number is cast to an
+With the `n`-suffix methods, numbers passed into them will be cast to 32 bit
+integers. If the left had operand is signed, the number is cast to an
 `int32_t`, if unsigned, the number is cast to an `uint32_t`.
 
 ### Examples
