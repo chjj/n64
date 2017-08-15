@@ -221,7 +221,7 @@ NAN_METHOD(Int64::Iadd) {
     return Nan::ThrowError("int64.iadd() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -240,7 +240,7 @@ NAN_METHOD(Int64::Iaddn) {
     return Nan::ThrowError("int64.iaddn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -259,7 +259,7 @@ NAN_METHOD(Int64::Isub) {
     return Nan::ThrowError("int64.isub() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -278,7 +278,7 @@ NAN_METHOD(Int64::Isubn) {
     return Nan::ThrowError("int64.isubn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -297,7 +297,7 @@ NAN_METHOD(Int64::Imul) {
     return Nan::ThrowError("int64.imul() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -316,7 +316,7 @@ NAN_METHOD(Int64::Imuln) {
     return Nan::ThrowError("int64.imuln() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -335,7 +335,7 @@ NAN_METHOD(Int64::Idiv) {
     return Nan::ThrowError("int64.idiv() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -361,7 +361,7 @@ NAN_METHOD(Int64::Idivn) {
     return Nan::ThrowError("int64.idivn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -387,7 +387,7 @@ NAN_METHOD(Int64::Imod) {
     return Nan::ThrowError("int64.imod() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -412,7 +412,7 @@ NAN_METHOD(Int64::Imodn) {
     return Nan::ThrowError("int64.imodn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -437,7 +437,7 @@ NAN_METHOD(Int64::Ipown) {
     return Nan::ThrowError("int64.ipown() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint64_t x = a->n;
   uint32_t y = info[0]->Uint32Value();
@@ -463,7 +463,7 @@ NAN_METHOD(Int64::Iand) {
     return Nan::ThrowError("int64.iand() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -482,7 +482,7 @@ NAN_METHOD(Int64::Iandn) {
     return Nan::ThrowError("int64.iandn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -501,7 +501,7 @@ NAN_METHOD(Int64::Ior) {
     return Nan::ThrowError("int64.ior() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -520,7 +520,7 @@ NAN_METHOD(Int64::Iorn) {
     return Nan::ThrowError("int64.iorn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -539,7 +539,7 @@ NAN_METHOD(Int64::Ixor) {
     return Nan::ThrowError("int64.ixor() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -558,7 +558,7 @@ NAN_METHOD(Int64::Ixorn) {
     return Nan::ThrowError("int64.ixorn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -585,7 +585,7 @@ NAN_METHOD(Int64::Ishln) {
     return Nan::ThrowError("int64.ishln() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -604,7 +604,7 @@ NAN_METHOD(Int64::Ishrn) {
     return Nan::ThrowError("int64.ishrn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -623,7 +623,7 @@ NAN_METHOD(Int64::Iushrn) {
     return Nan::ThrowError("int64.iushrn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -639,10 +639,10 @@ NAN_METHOD(Int64::Setn) {
     return Nan::ThrowError("int64.setn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   if (!info[1]->IsNumber() && !info[1]->IsBoolean())
-    return Nan::ThrowError("First argument must be a number or boolean.");
+    return Nan::ThrowTypeError("First argument must be a number or boolean.");
 
   uint32_t bit = info[0]->Uint32Value() & 63;
   bool val = info[1]->BooleanValue();
@@ -662,7 +662,7 @@ NAN_METHOD(Int64::Testn) {
     return Nan::ThrowError("int64.testn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t bit = info[0]->Uint32Value() & 63;
   int32_t r = 0;
@@ -680,7 +680,7 @@ NAN_METHOD(Int64::Imaskn) {
     return Nan::ThrowError("int64.imaskn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t bit = info[0]->Uint32Value() & 63;
 
@@ -704,7 +704,7 @@ NAN_METHOD(Int64::Cmp) {
     return Nan::ThrowError("int64.cmp() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
   int32_t r = 0;
@@ -731,7 +731,7 @@ NAN_METHOD(Int64::Cmpn) {
     return Nan::ThrowError("int64.cmpn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
   int32_t r = 0;
@@ -758,7 +758,7 @@ NAN_METHOD(Int64::Eq) {
     return Nan::ThrowError("int64.eq() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
   bool r = false;
@@ -776,7 +776,7 @@ NAN_METHOD(Int64::Eqn) {
     return Nan::ThrowError("int64.eqn() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   uint32_t num = info[0]->Uint32Value();
   bool r = false;
@@ -860,7 +860,7 @@ NAN_METHOD(Int64::Inject) {
     return Nan::ThrowError("int64.inject() requires arguments.");
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowError("First argument must be an Int64.");
+    return Nan::ThrowTypeError("First argument must be an Int64.");
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -877,7 +877,12 @@ NAN_METHOD(Int64::Set) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError("First argument must be a number.");
 
-  a->n = (uint64_t)info[0]->IntegerValue();
+  int64_t n = info[0]->IntegerValue();
+
+  if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
+    return Nan::ThrowError("Number exceeds 53 bits.");
+
+  a->n = (uint64_t)n;
 
   info.GetReturnValue().Set(info.Holder());
 }
@@ -1042,13 +1047,13 @@ NAN_METHOD(Int64::ToString) {
         fmt = "%" PRIx64;
         break;
       default:
-        return Nan::ThrowTypeError("Invalid base.");
+        return Nan::ThrowError("Base ranges between 2 and 16.");
     }
 
     int32_t r = snprintf((char *)str, size + 1, (const char *)fmt, n);
 
     if (r < 0)
-      return Nan::ThrowTypeError("Could not serialize string.");
+      return Nan::ThrowError("Could not serialize string.");
 
     size = r;
   }
@@ -1069,17 +1074,22 @@ NAN_METHOD(Int64::FromNumber) {
     return Nan::ThrowError("from_number() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError("Second argument must be a boolean.");
     a->sign = info[1]->BooleanValue();
   } else {
     a->sign = false;
   }
 
-  a->n = (uint64_t)info[0]->IntegerValue();
+  int64_t n = info[0]->IntegerValue();
+
+  if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
+    return Nan::ThrowError("Number exceeds 53 bits.");
+
+  a->n = (uint64_t)n;
 
   info.GetReturnValue().Set(info.Holder());
 }
@@ -1091,11 +1101,11 @@ NAN_METHOD(Int64::FromInt) {
     return Nan::ThrowError("from_int() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError("Second argument must be a boolean.");
     a->sign = info[1]->BooleanValue();
   } else {
     a->sign = false;
@@ -1118,14 +1128,14 @@ NAN_METHOD(Int64::FromBits) {
     return Nan::ThrowError("from_bits() requires arguments.");
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowError("First argument must be a number.");
+    return Nan::ThrowTypeError("First argument must be a number.");
 
   if (!info[1]->IsNumber())
-    return Nan::ThrowError("Second argument must be a number.");
+    return Nan::ThrowTypeError("Second argument must be a number.");
 
   if (info.Length() > 2 && !IsNull(info[2])) {
     if (!info[2]->IsBoolean())
-      return Nan::ThrowError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError("Second argument must be a boolean.");
     a->sign = info[2]->BooleanValue();
   } else {
     a->sign = false;
@@ -1146,15 +1156,12 @@ NAN_METHOD(Int64::FromString) {
     return Nan::ThrowError("from_string() requires arguments.");
 
   if (!info[0]->IsString())
-    return Nan::ThrowError("First argument must be a string.");
+    return Nan::ThrowTypeError("First argument must be a string.");
 
   Nan::Utf8String str_(info[0]);
 
   char *start = *str_;
   size_t len = str_.length();
-
-  if (len == 0 || len > 64)
-    return Nan::ThrowError("First argument must be a string.");
 
   bool neg = false;
 
@@ -1164,11 +1171,14 @@ NAN_METHOD(Int64::FromString) {
     len--;
   }
 
+  if (len == 0 || len > 64)
+    return Nan::ThrowError("Invalid string (bad length).");
+
   bool sign = false;
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError("Second argument must be a boolean.");
     sign = info[1]->BooleanValue();
   }
 
@@ -1187,7 +1197,7 @@ NAN_METHOD(Int64::FromString) {
     case 16:
       break;
     default:
-      return Nan::ThrowTypeError("Invalid base.");
+      return Nan::ThrowError("Base ranges between 2 and 16.");
   }
 
   errno = 0;
@@ -1196,13 +1206,13 @@ NAN_METHOD(Int64::FromString) {
   uint64_t n = strtoull((const char *)start, &end, base);
 
   if (errno == ERANGE && n == ULLONG_MAX)
-    return Nan::ThrowTypeError("Parse error (overflow).");
+    return Nan::ThrowError("Invalid string (overflow).");
 
   if (errno != 0 && n == 0)
-    return Nan::ThrowTypeError("Parse error (invalid string).");
+    return Nan::ThrowError("Invalid string (parse error).");
 
   if (end == start)
-    return Nan::ThrowTypeError("Parse error (no digits).");
+    return Nan::ThrowError("Invalid string (no digits).");
 
   a->n = n;
   a->sign = sign;
