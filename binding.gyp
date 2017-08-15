@@ -2,7 +2,6 @@
   "targets": [{
     "target_name": "n64",
     "sources": [
-      "./src/int64.cc",
       "./src/n64.cc"
     ],
     "cflags": [

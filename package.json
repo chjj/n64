@@ -13,7 +13,7 @@
   "homepage": "https://github.com/chjj/n64",
   "license": "MIT",
   "author": "Christopher Jeffrey <chjjeffrey@gmail.com>",
-  "main": "./lib/int64.js",
+  "main": "./lib/n64.js",
   "repository": "git://github.com/chjj/n64.git",
   "scripts": {
     "test": "mocha --reporter spec test/*-test.js",

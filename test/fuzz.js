@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const n64 = require('../lib/int64');
+const n64 = require('../lib/n64');
 const native = require('../lib/native');
 
 const singleOps = [

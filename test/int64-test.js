@@ -5,7 +5,7 @@
 
 const assert = require('assert');
 const BN = require('bn.js');
-const n64 = require('../lib/int64');
+const n64 = require('../lib/n64');
 const native = require('../lib/native');
 
 function run(n64, name) {

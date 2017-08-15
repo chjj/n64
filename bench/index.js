@@ -2,7 +2,7 @@
 
 const bench = require('./bench');
 const Native = require('../lib/native').U64;
-const Int64 = require('../lib/int64').U64;
+const N64 = require('../lib/n64').U64;
 const BN = require('bn.js');
 
 function addn(N, name) {
@@ -147,61 +147,61 @@ function muldivn(N, name) {
 }
 
 function run() {
-  addn(Int64, 'js');
+  addn(N64, 'js');
   addn(Native, 'native');
   addn(BN, 'bn.js');
 
   console.log('--');
 
-  add(Int64, 'js');
+  add(N64, 'js');
   add(Native, 'native');
   add(BN, 'bn.js');
 
   console.log('--');
 
-  muln(Int64, 'js');
+  muln(N64, 'js');
   muln(Native, 'native');
   muln(BN, 'bn.js');
 
   console.log('--');
 
-  mul(Int64, 'js');
+  mul(N64, 'js');
   mul(Native, 'native');
   mul(BN, 'bn.js');
 
   console.log('--');
 
-  divn(Int64, 'js');
+  divn(N64, 'js');
   divn(Native, 'native');
   divn(BN, 'bn.js');
 
   console.log('--');
 
-  div(Int64, 'js');
+  div(N64, 'js');
   div(Native, 'native');
   div(BN, 'bn.js');
 
   console.log('--');
 
-  modn(Int64, 'js');
+  modn(N64, 'js');
   modn(Native, 'native');
   modn(BN, 'bn.js');
 
   console.log('--');
 
-  mod(Int64, 'js');
+  mod(N64, 'js');
   mod(Native, 'native');
   mod(BN, 'bn.js');
 
   console.log('--');
 
-  muldiv(Int64, 'js');
+  muldiv(N64, 'js');
   muldiv(Native, 'native');
   muldiv(BN, 'bn.js');
 
   console.log('--');
 
-  muldivn(Int64, 'js');
+  muldivn(N64, 'js');
   muldivn(Native, 'native');
   muldivn(BN, 'bn.js');
 }
