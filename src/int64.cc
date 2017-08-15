@@ -1,5 +1,5 @@
 /**
- * n64.js - native int64's for node.js.
+ * int64.cc - native int64 object for node.js.
  * Copyright (c) 2017, Christopher Jeffrey (MIT License)
  */
 
@@ -8,6 +8,9 @@
 #include <stdlib.h>
 
 #include "int64.h"
+
+#define ARG_ERROR(name, len) ("Int64#" #name " requires " #len " argument(s).")
+#define TYPE_ERROR(name, type) ("`" #name "` must be a(n) " #type ".")
 
 static Nan::Persistent<v8::FunctionTemplate> int64_constructor;
 
@@ -158,10 +161,10 @@ NAN_METHOD(Int64::SetHi) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.set_hi() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(setHi, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(hi, number));
 
   uint32_t hi = info[0]->Uint32Value();
 
@@ -182,10 +185,10 @@ NAN_METHOD(Int64::SetLo) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.set_lo() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(setLo, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
   uint32_t lo = info[0]->Uint32Value();
 
@@ -204,10 +207,10 @@ NAN_METHOD(Int64::SetSigned) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.set_signed() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(setSigned, 1));
 
   if (!info[0]->IsBoolean())
-    return Nan::ThrowTypeError("First argument must be a Boolean.");
+    return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
 
   a->sign = info[0]->BooleanValue();
 
@@ -218,10 +221,10 @@ NAN_METHOD(Int64::Iadd) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iadd() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(iadd, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -237,10 +240,10 @@ NAN_METHOD(Int64::Iaddn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iaddn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(iaddn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -256,10 +259,10 @@ NAN_METHOD(Int64::Isub) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.isub() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(isub, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -275,10 +278,10 @@ NAN_METHOD(Int64::Isubn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.isubn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(isubn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -294,10 +297,10 @@ NAN_METHOD(Int64::Imul) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.imul() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(imul, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(multiplicand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -313,10 +316,10 @@ NAN_METHOD(Int64::Imuln) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.imuln() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(imuln, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(multiplicand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -332,10 +335,10 @@ NAN_METHOD(Int64::Idiv) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.idiv() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(idiv, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(divisor, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -358,10 +361,10 @@ NAN_METHOD(Int64::Idivn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.idivn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(idivn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(divisor, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -384,10 +387,10 @@ NAN_METHOD(Int64::Imod) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.imod() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(imod, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(divisor, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -409,10 +412,10 @@ NAN_METHOD(Int64::Imodn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.imodn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(imodn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(divisor, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -434,10 +437,10 @@ NAN_METHOD(Int64::Ipown) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ipown() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ipown, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(exponent, number));
 
   uint64_t x = a->n;
   uint32_t y = info[0]->Uint32Value();
@@ -460,10 +463,10 @@ NAN_METHOD(Int64::Iand) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iand() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(iand, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -479,10 +482,10 @@ NAN_METHOD(Int64::Iandn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iandn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(iandn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -498,10 +501,10 @@ NAN_METHOD(Int64::Ior) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ior() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ior, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -517,10 +520,10 @@ NAN_METHOD(Int64::Iorn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iorn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(iorn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -536,10 +539,10 @@ NAN_METHOD(Int64::Ixor) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ixor() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ixor, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -555,10 +558,10 @@ NAN_METHOD(Int64::Ixorn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ixorn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ixorn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
   uint32_t num = info[0]->Uint32Value();
 
@@ -582,10 +585,10 @@ NAN_METHOD(Int64::Ishln) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ishln() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ishln, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -601,10 +604,10 @@ NAN_METHOD(Int64::Ishrn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.ishrn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ishrn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -620,10 +623,10 @@ NAN_METHOD(Int64::Iushrn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.iushrn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(ushrn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
   uint32_t bits = info[0]->Uint32Value() & 63;
 
@@ -636,13 +639,13 @@ NAN_METHOD(Int64::Setn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 2)
-    return Nan::ThrowError("int64.setn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(setn, 2));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bit, number));
 
   if (!info[1]->IsNumber() && !info[1]->IsBoolean())
-    return Nan::ThrowTypeError("First argument must be a number or boolean.");
+    return Nan::ThrowTypeError(TYPE_ERROR(val, number));
 
   uint32_t bit = info[0]->Uint32Value() & 63;
   bool val = info[1]->BooleanValue();
@@ -659,10 +662,10 @@ NAN_METHOD(Int64::Testn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.testn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(testn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bit, number));
 
   uint32_t bit = info[0]->Uint32Value() & 63;
   int32_t r = 0;
@@ -677,10 +680,10 @@ NAN_METHOD(Int64::Imaskn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.imaskn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(imaskn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(bit, number));
 
   uint32_t bit = info[0]->Uint32Value() & 63;
 
@@ -701,10 +704,10 @@ NAN_METHOD(Int64::Cmp) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.cmp() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(cmp, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(value, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
   int32_t r = 0;
@@ -728,10 +731,10 @@ NAN_METHOD(Int64::Cmpn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.cmpn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(cmpn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(value, number));
 
   uint32_t num = info[0]->Uint32Value();
   int32_t r = 0;
@@ -755,10 +758,10 @@ NAN_METHOD(Int64::Eq) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.eq() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(eq, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(value, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
   bool r = false;
@@ -773,10 +776,10 @@ NAN_METHOD(Int64::Eqn) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.eqn() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(eqn, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(value, number));
 
   uint32_t num = info[0]->Uint32Value();
   bool r = false;
@@ -857,10 +860,10 @@ NAN_METHOD(Int64::Inject) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.inject() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(inject, 1));
 
   if (!Int64::HasInstance(info[0]))
-    return Nan::ThrowTypeError("First argument must be an Int64.");
+    return Nan::ThrowTypeError(TYPE_ERROR(value, int64));
 
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
@@ -872,12 +875,15 @@ NAN_METHOD(Int64::Set) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("int64.set() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(set, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   int64_t n = info[0]->IntegerValue();
+
+  if (info[0]->NumberValue() != (double)n)
+    return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
     return Nan::ThrowError("Number exceeds 53 bits.");
@@ -891,13 +897,13 @@ NAN_METHOD(Int64::Join) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 2)
-    return Nan::ThrowError("int64.join() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(join, 2));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(hi, number));
 
   if (!info[1]->IsNumber())
-    return Nan::ThrowTypeError("Second argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
   uint32_t hi = info[0]->Uint32Value();
   uint32_t lo = info[1]->Uint32Value();
@@ -990,8 +996,12 @@ NAN_METHOD(Int64::ToString) {
 
   if (info.Length() > 0 && !IsNull(info[0])) {
     if (!info[0]->IsNumber())
-      return Nan::ThrowTypeError("First argument must be a number.");
+      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+
     base = info[0]->Int32Value();
+
+    if (info[0]->NumberValue() != (double)base)
+      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
   }
 
   uint64_t n = a->n;
@@ -1071,20 +1081,23 @@ NAN_METHOD(Int64::FromNumber) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("from_number() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(fromNumber, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
     a->sign = info[1]->BooleanValue();
   } else {
     a->sign = false;
   }
 
   int64_t n = info[0]->IntegerValue();
+
+  if (info[0]->NumberValue() != (double)n)
+    return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
     return Nan::ThrowError("Number exceeds 53 bits.");
@@ -1098,14 +1111,14 @@ NAN_METHOD(Int64::FromInt) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("from_int() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(fromInt, 1));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(integer, number));
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
     a->sign = info[1]->BooleanValue();
   } else {
     a->sign = false;
@@ -1125,17 +1138,17 @@ NAN_METHOD(Int64::FromBits) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 2)
-    return Nan::ThrowError("from_bits() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(fromBits, 2));
 
   if (!info[0]->IsNumber())
-    return Nan::ThrowTypeError("First argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(hi, number));
 
   if (!info[1]->IsNumber())
-    return Nan::ThrowTypeError("Second argument must be a number.");
+    return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
   if (info.Length() > 2 && !IsNull(info[2])) {
     if (!info[2]->IsBoolean())
-      return Nan::ThrowTypeError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
     a->sign = info[2]->BooleanValue();
   } else {
     a->sign = false;
@@ -1153,10 +1166,10 @@ NAN_METHOD(Int64::FromString) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
   if (info.Length() < 1)
-    return Nan::ThrowError("from_string() requires arguments.");
+    return Nan::ThrowError(ARG_ERROR(fromString, 1));
 
   if (!info[0]->IsString())
-    return Nan::ThrowTypeError("First argument must be a string.");
+    return Nan::ThrowTypeError(TYPE_ERROR(string, string));
 
   Nan::Utf8String str_(info[0]);
 
@@ -1178,7 +1191,7 @@ NAN_METHOD(Int64::FromString) {
 
   if (info.Length() > 1 && !IsNull(info[1])) {
     if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError("Second argument must be a boolean.");
+      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
     sign = info[1]->BooleanValue();
   }
 
@@ -1186,8 +1199,12 @@ NAN_METHOD(Int64::FromString) {
 
   if (info.Length() > 2 && !IsNull(info[2])) {
     if (!info[2]->IsNumber())
-      return Nan::ThrowTypeError("Third argument must be a number.");
+      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+
     base = info[2]->Int32Value();
+
+    if (info[2]->NumberValue() != (double)base)
+      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
   }
 
   switch (base) {

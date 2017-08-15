@@ -1,5 +1,5 @@
 /**
- * n64.js - native int64's for node.js.
+ * int64.h - native int64 object for node.js.
  * Copyright (c) 2017, Christopher Jeffrey (MIT License)
  */
 
