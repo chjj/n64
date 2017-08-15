@@ -1,8 +1,8 @@
 'use strict';
 
 const assert = require('assert');
-const Native = require('../lib/native');
-const Int64 = require('../lib/int64');
+const n64 = require('../lib/int64');
+const native = require('../lib/native');
 
 const singleOps = [
   'sqr',
@@ -113,14 +113,16 @@ for (const low of [false, true]) {
   console.log('Fuzzing with %s values.', low ? 'low' : 'high');
 
   // Single param ops
-  for (const signed of [false, true]) {
-    console.log('Fuzzing single param ops (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing single param ops (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
 
       assert(equals(a1, b1));
 
@@ -132,7 +134,7 @@ for (const low of [false, true]) {
           console.error('Single param operation failed!');
           console.error({
             number: a1.toString(),
-            signed: signed,
+            type: type,
             operation: op,
             result: a.toString(),
             expect: b.toString()
@@ -143,14 +145,16 @@ for (const low of [false, true]) {
   }
 
   // Single param ops with primitive result
-  for (const signed of [false, true]) {
-    console.log('Fuzzing single param ops w/ primitive result (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing single param ops w/ primitive result (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
 
       assert(equals(a1, b1));
 
@@ -162,7 +166,7 @@ for (const low of [false, true]) {
           console.error('Single param operation failed!');
           console.error({
             number: a1.toString(),
-            signed: signed,
+            type: type,
             operation: op,
             result: a,
             expect: b
@@ -173,18 +177,20 @@ for (const low of [false, true]) {
   }
 
   // Double param ops
-  for (const signed of [false, true]) {
-    console.log('Fuzzing double param ops (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing double param ops (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
 
       const n2 = random64(low);
-      const a2 = Int64.fromObject(n2, signed);
-      const b2 = Native.fromObject(n2, signed);
+      const a2 = A.fromObject(n2);
+      const b2 = B.fromObject(n2);
 
       assert(equals(a1, b1));
       assert(equals(a2, b2));
@@ -201,7 +207,7 @@ for (const low of [false, true]) {
           console.error({
             number: a1.toString(),
             operand: a2.toString(),
-            signed: signed,
+            type: type,
             operation: op,
             result: a.toString(),
             expect: b.toString()
@@ -212,18 +218,20 @@ for (const low of [false, true]) {
   }
 
   // Double param ops with primitive result
-  for (const signed of [false, true]) {
-    console.log('Fuzzing double param ops w/ primitive result (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing double param ops w/ primitive result (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
 
       const n2 = random64(low);
-      const a2 = Int64.fromObject(n2, signed);
-      const b2 = Native.fromObject(n2, signed);
+      const a2 = A.fromObject(n2);
+      const b2 = B.fromObject(n2);
 
       assert(equals(a1, b1));
       assert(equals(a2, b2));
@@ -237,7 +245,7 @@ for (const low of [false, true]) {
           console.error({
             number: a1.toString(),
             operand: a2.toString(),
-            signed: signed,
+            type: type,
             operation: op,
             result: a,
             expect: b
@@ -248,14 +256,16 @@ for (const low of [false, true]) {
   }
 
   // Number ops
-  for (const signed of [false, true]) {
-    console.log('Fuzzing number ops (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing number ops (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
       const num = random32() >>> 0;
 
       // For `.setn()`.
@@ -275,7 +285,7 @@ for (const low of [false, true]) {
           console.error({
             number: a1.toString(),
             operand: num,
-            signed: signed,
+            type: type,
             operation: op,
             result: a.toString(),
             expect: b.toString()
@@ -286,14 +296,16 @@ for (const low of [false, true]) {
   }
 
   // Number ops with primitive result
-  for (const signed of [false, true]) {
-    console.log('Fuzzing number ops w/ primitive result (%s).',
-      signed ? 'signed' : 'unsigned');
+  for (const type of ['U64', 'I64']) {
+    const A = n64[type];
+    const B = native[type];
+
+    console.log('Fuzzing number ops w/ primitive result (%s).', type);
 
     for (let i = 0; i < iterations; i++) {
       const n1 = random64(low);
-      const a1 = Int64.fromObject(n1, signed);
-      const b1 = Native.fromObject(n1, signed);
+      const a1 = A.fromObject(n1);
+      const b1 = B.fromObject(n1);
       const num = random32() >>> 0;
 
       assert(equals(a1, b1));
@@ -307,7 +319,7 @@ for (const low of [false, true]) {
           console.error({
             number: a1.toString(),
             operand: num,
-            signed: signed,
+            type: type,
             operation: op,
             result: a.toString(),
             expect: b.toString()

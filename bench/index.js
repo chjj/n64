@@ -1,8 +1,8 @@
 'use strict';
 
 const bench = require('./bench');
-const Native = require('../lib/native');
-const Int64 = require('../lib/int64');
+const Native = require('../lib/native').U64;
+const Int64 = require('../lib/int64').U64;
 const BN = require('bn.js');
 
 function addn(N, name) {

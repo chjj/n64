@@ -41,8 +41,6 @@ Int64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "setHi", Int64::SetHi);
   Nan::SetPrototypeMethod(tpl, "getLo", Int64::GetLo);
   Nan::SetPrototypeMethod(tpl, "setLo", Int64::SetLo);
-  Nan::SetPrototypeMethod(tpl, "getSigned", Int64::GetSigned);
-  Nan::SetPrototypeMethod(tpl, "setSigned", Int64::SetSigned);
   Nan::SetPrototypeMethod(tpl, "iadd", Int64::Iadd);
   Nan::SetPrototypeMethod(tpl, "iaddn", Int64::Iaddn);
   Nan::SetPrototypeMethod(tpl, "isub", Int64::Isub);
@@ -76,7 +74,6 @@ Int64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "isNeg", Int64::IsNeg);
   Nan::SetPrototypeMethod(tpl, "isOdd", Int64::IsOdd);
   Nan::SetPrototypeMethod(tpl, "isEven", Int64::IsEven);
-  Nan::SetPrototypeMethod(tpl, "clone", Int64::Clone);
   Nan::SetPrototypeMethod(tpl, "inject", Int64::Inject);
   Nan::SetPrototypeMethod(tpl, "set", Int64::Set);
   Nan::SetPrototypeMethod(tpl, "join", Int64::Join);
@@ -97,55 +94,26 @@ Int64::Init(v8::Local<v8::Object> &target) {
   target->Set(Nan::New("Int64").ToLocalChecked(), ctor->GetFunction());
 }
 
-v8::Local<v8::Value> Int64::Clone() {
-  Nan::EscapableHandleScope scope;
-  Nan::MaybeLocal<v8::Object> maybeInstance;
-  v8::Local<v8::Object> instance;
-
-  v8::Local<v8::FunctionTemplate> ctor =
-    Nan::New<v8::FunctionTemplate>(int64_constructor);
-
-  maybeInstance = Nan::NewInstance(ctor->GetFunction(), 0, NULL);
-
-  if (maybeInstance.IsEmpty()) {
-    Nan::ThrowError("Could not create Int64 instance.");
-    return instance;
-  }
-
-  instance = maybeInstance.ToLocalChecked();
-
-  Int64 *a = ObjectWrap::Unwrap<Int64>(instance);
-  a->n = n;
-  a->sign = sign;
-
-  return scope.Escape(instance);
-}
-
 bool Int64::HasInstance(v8::Local<v8::Value> val) {
   Nan::HandleScope scope;
   return Nan::New(int64_constructor)->HasInstance(val);
 }
 
 NAN_METHOD(Int64::New) {
-  if (!info.IsConstructCall()) {
-    v8::Local<v8::FunctionTemplate> ctor =
-      Nan::New<v8::FunctionTemplate>(int64_constructor);
-    Nan::MaybeLocal<v8::Object> maybeInstance;
-    v8::Local<v8::Object> instance;
+  if (!info.IsConstructCall())
+    return Nan::ThrowError("Int64 must be called with `new`.");
 
-    maybeInstance = Nan::NewInstance(ctor->GetFunction(), 0, NULL);
+  if (info.Length() < 1)
+    return Nan::ThrowError(ARG_ERROR(New, 1));
 
-    if (maybeInstance.IsEmpty())
-      return Nan::ThrowError("Could not create Int64 instance.");
-
-    instance = maybeInstance.ToLocalChecked();
-
-    info.GetReturnValue().Set(instance);
-    return;
-  }
+  if (!info[0]->IsBoolean())
+    return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
 
   Int64 *obj = new Int64();
+
+  obj->sign = info[0]->BooleanValue();
   obj->Wrap(info.This());
+
   info.GetReturnValue().Set(info.This());
 }
 
@@ -196,25 +164,6 @@ NAN_METHOD(Int64::SetLo) {
   a->n |= lo;
 
   info.GetReturnValue().Set(info.Holder());
-}
-
-NAN_METHOD(Int64::GetSigned) {
-  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
-  info.GetReturnValue().Set(Nan::New<v8::Boolean>(a->sign));
-}
-
-NAN_METHOD(Int64::SetSigned) {
-  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
-
-  if (info.Length() < 1)
-    return Nan::ThrowError(ARG_ERROR(setSigned, 1));
-
-  if (!info[0]->IsBoolean())
-    return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
-
-  a->sign = info[0]->BooleanValue();
-
-  info.GetReturnValue().Set(Nan::New<v8::Boolean>(a->sign));
 }
 
 NAN_METHOD(Int64::Iadd) {
@@ -835,27 +784,6 @@ NAN_METHOD(Int64::IsEven) {
   info.GetReturnValue().Set(Nan::New<v8::Boolean>(r));
 }
 
-NAN_METHOD(Int64::Clone) {
-  Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
-  v8::Local<v8::FunctionTemplate> ctor =
-    Nan::New<v8::FunctionTemplate>(int64_constructor);
-  Nan::MaybeLocal<v8::Object> maybeInstance;
-  v8::Local<v8::Object> instance;
-
-  maybeInstance = Nan::NewInstance(ctor->GetFunction(), 0, NULL);
-
-  if (maybeInstance.IsEmpty())
-    return Nan::ThrowError("Could not create Int64 instance.");
-
-  instance = maybeInstance.ToLocalChecked();
-  Int64 *b = ObjectWrap::Unwrap<Int64>(instance);
-
-  b->n = a->n;
-  b->sign = a->sign;
-
-  info.GetReturnValue().Set(instance);
-}
-
 NAN_METHOD(Int64::Inject) {
   Int64 *a = ObjectWrap::Unwrap<Int64>(info.Holder());
 
@@ -868,7 +796,6 @@ NAN_METHOD(Int64::Inject) {
   Int64 *b = ObjectWrap::Unwrap<Int64>(info[0].As<v8::Object>());
 
   a->n = b->n;
-  a->sign = b->sign;
 }
 
 NAN_METHOD(Int64::Set) {
@@ -1086,14 +1013,6 @@ NAN_METHOD(Int64::FromNumber) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
-  if (info.Length() > 1 && !IsNull(info[1])) {
-    if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
-    a->sign = info[1]->BooleanValue();
-  } else {
-    a->sign = false;
-  }
-
   int64_t n = info[0]->IntegerValue();
 
   if (info[0]->NumberValue() != (double)n)
@@ -1116,14 +1035,6 @@ NAN_METHOD(Int64::FromInt) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(integer, number));
 
-  if (info.Length() > 1 && !IsNull(info[1])) {
-    if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
-    a->sign = info[1]->BooleanValue();
-  } else {
-    a->sign = false;
-  }
-
   uint32_t num = info[0]->Uint32Value();
 
   if (a->sign)
@@ -1145,14 +1056,6 @@ NAN_METHOD(Int64::FromBits) {
 
   if (!info[1]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
-
-  if (info.Length() > 2 && !IsNull(info[2])) {
-    if (!info[2]->IsBoolean())
-      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
-    a->sign = info[2]->BooleanValue();
-  } else {
-    a->sign = false;
-  }
 
   uint32_t hi = info[0]->Uint32Value();
   uint32_t lo = info[1]->Uint32Value();
@@ -1187,23 +1090,15 @@ NAN_METHOD(Int64::FromString) {
   if (len == 0 || len > 64)
     return Nan::ThrowError("Invalid string (bad length).");
 
-  bool sign = false;
-
-  if (info.Length() > 1 && !IsNull(info[1])) {
-    if (!info[1]->IsBoolean())
-      return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
-    sign = info[1]->BooleanValue();
-  }
-
   int32_t base = 10;
 
-  if (info.Length() > 2 && !IsNull(info[2])) {
-    if (!info[2]->IsNumber())
+  if (info.Length() > 1 && !IsNull(info[1])) {
+    if (!info[1]->IsNumber())
       return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
 
-    base = info[2]->Int32Value();
+    base = info[1]->Int32Value();
 
-    if (info[2]->NumberValue() != (double)base)
+    if (info[1]->NumberValue() != (double)base)
       return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
   }
 
@@ -1232,7 +1127,6 @@ NAN_METHOD(Int64::FromString) {
     return Nan::ThrowError("Invalid string (no digits).");
 
   a->n = n;
-  a->sign = sign;
 
   if (neg)
     a->n = ~n + 1;

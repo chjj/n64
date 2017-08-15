@@ -15,7 +15,6 @@ public:
   static void Init(v8::Local<v8::Object> &target);
   static bool HasInstance(v8::Local<v8::Value> val);
   static NAN_METHOD(New);
-  v8::Local<v8::Value> Clone();
 
   Int64();
   ~Int64();
@@ -28,8 +27,6 @@ private:
   static NAN_METHOD(SetHi);
   static NAN_METHOD(GetLo);
   static NAN_METHOD(SetLo);
-  static NAN_METHOD(GetSigned);
-  static NAN_METHOD(SetSigned);
   static NAN_METHOD(Iadd);
   static NAN_METHOD(Iaddn);
   static NAN_METHOD(Isub);
@@ -63,7 +60,6 @@ private:
   static NAN_METHOD(IsNeg);
   static NAN_METHOD(IsOdd);
   static NAN_METHOD(IsEven);
-  static NAN_METHOD(Clone);
   static NAN_METHOD(Inject);
   static NAN_METHOD(Set);
   static NAN_METHOD(Join);
