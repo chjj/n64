@@ -1579,18 +1579,39 @@ function run(Int64, name) {
       assert.strictEqual(num.toString(16), '-fffffffffffffff');
     });
 
-    it('should test buggy overflow (1)', () => {
+    it('should test multiplication overflow (1)', () => {
       const number = Int64.fromString('8864030017785018305', false);
       const operand = Int64.fromString('17290260146955268389', false);
       const result = number.mul(operand);
       assert.strictEqual(result.toString(10), '11297288259488448485');
     });
 
-    it('should test buggy overflow (2)', () => {
+    it('should test multiplication overflow (2)', () => {
       const number = Int64.fromString('8439509051110122647', false);
       const operand = Int64.fromString('12580720524404292133', false);
       const result = number.mul(operand);
       assert.strictEqual(result.toString(10), '379484468253032403');
+    });
+
+    it('should test multiplication overflow (3)', () => {
+      const number = Int64.fromString('8be04bf30ed7308d', false, 16);
+      const operand = Int64.fromString('87c4c6fd02280001', false, 16);
+      const result = number.mul(operand);
+      assert.strictEqual(result.toString(16), 'f124554cbedf308d');
+    });
+
+    it('should test exponent overflow (1)', () => {
+      const number = Int64.fromString('539709153113928093', false);
+      const operand = 1309648989;
+      const result = number.pown(operand);
+      assert.strictEqual(result.toString(10), '9390288313338769549');
+    });
+
+    it('should test exponent overflow (2)', () => {
+      const number = Int64.fromString('4240110663', true);
+      const operand = 1444429182;
+      const result = number.pown(operand);
+      assert.strictEqual(result.toString(10), '3719928238591852881');
     });
   });
 }
