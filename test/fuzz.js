@@ -8,7 +8,10 @@ const singleOps = [
   'sqr',
   'not',
   'neg',
-  'abs'
+  'abs',
+  'toSigned',
+  'toUnsigned',
+  'clone'
 ];
 
 const singleOpsRes = [
@@ -22,7 +25,8 @@ const singleOpsRes = [
   'toDouble',
   'toInt',
   'toString',
-  'toJSON'
+  'toJSON',
+  'inspect'
 ];
 
 const doubleOps = [
@@ -59,7 +63,8 @@ const numberOps = [
   'ushrn',
   'pown',
   'setn',
-  'maskn'
+  'maskn',
+  'set'
 ];
 
 const numberOpsRes = [
@@ -69,7 +74,8 @@ const numberOpsRes = [
   'lten',
   'gtn',
   'gten',
-  'testn'
+  'testn',
+  'andln'
 ];
 
 function random32() {
