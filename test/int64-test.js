@@ -1598,7 +1598,8 @@ function run(n64, name) {
     });
 
     it('should test encoding (unsigned)', () => {
-      let num = U64.fromString('8864030017785018305');
+      const num = U64.fromString('8864030017785018305');
+
       let r = num.toRaw(Buffer);
       let n = U64.fromRaw(r);
 
@@ -1645,7 +1646,8 @@ function run(n64, name) {
     });
 
     it('should test encoding (signed)', () => {
-      let num = I64.fromString('-8864030017785018305');
+      const num = I64.fromString('-8864030017785018305');
+
       let r = num.toRaw(Buffer);
       let n = I64.fromRaw(r);
 
