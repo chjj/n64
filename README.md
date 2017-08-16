@@ -291,7 +291,7 @@ Outputs `4294967295`.
 
 ## Testing
 
-``` js
+``` bash
 $ npm test
 ```
 
@@ -301,7 +301,7 @@ This should run all test vectors for both the native and non-native backend.
 
 A fuzzer is present for testing of operations vs. actual machine operations.
 
-``` js
+``` bash
 $ node test/fuzz.js
 ```
 
@@ -309,7 +309,7 @@ $ node test/fuzz.js
 
 Benchmarks are run against bn.js.
 
-``` js
+``` bash
 $ node bench
 ```
 
