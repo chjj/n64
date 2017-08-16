@@ -153,7 +153,7 @@ function run(n64, name) {
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
       assert.strictEqual(num.sign, 1);
-      num = num.toUnsigned();
+      num = num.toU64();
       assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
@@ -208,11 +208,11 @@ function run(n64, name) {
       let num = I64.fromNumber(-1);
       assert.strictEqual(num.toDouble(), -1);
 
-      num = num.toUnsigned();
+      num = num.toU64();
       assert.strictEqual(num.toDouble(), 0xffffffffffffffff);
       assert.strictEqual(num.toString(16), 'ffffffffffffffff');
 
-      num = num.toSigned();
+      num = num.toI64();
       assert.strictEqual(num.toDouble(), -1);
     });
 
@@ -255,7 +255,7 @@ function run(n64, name) {
       const a = MAX_U64;
       const b = I64.fromInt(-2);
 
-      assert.strictEqual(b.toUnsigned().toString(), MAX_U64.subn(1).toString());
+      assert.strictEqual(b.toU64().toString(), MAX_U64.subn(1).toString());
 
       const num = a.div(b);
       assert.strictEqual(num.toString(), '1');
@@ -1562,24 +1562,12 @@ function run(n64, name) {
     it('should test static methods', () => {
       assert(U64.isU64(new U64()));
       assert(!U64.isU64(new I64()));
-      assert(U64.isI64(new I64()));
-      assert(!U64.isI64(new U64()));
-      assert(U64.isN64(new U64()));
-      assert(U64.isN64(new I64()));
-      assert(!U64.isN64({}));
+      assert(!U64.isU64({}));
 
-      assert(I64.isU64(new U64()));
-      assert(!I64.isU64(new I64()));
       assert(I64.isI64(new I64()));
       assert(!I64.isI64(new U64()));
-      assert(I64.isN64(new U64()));
-      assert(I64.isN64(new I64()));
-      assert(!I64.isN64({}));
+      assert(!I64.isI64({}));
 
-      assert(N64.isU64(new U64()));
-      assert(!N64.isU64(new I64()));
-      assert(N64.isI64(new I64()));
-      assert(!N64.isI64(new U64()));
       assert(N64.isN64(new U64()));
       assert(N64.isN64(new I64()));
       assert(!N64.isN64({}));

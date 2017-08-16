@@ -195,8 +195,6 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#inject(obj)` - Inject properties from int64.
 - `N64#set(num)` - Set the int64 to a JS number value.
 - `N64#join(hi, lo)` - Join hi and lo bits.
-- `N64#toUnsigned()` - Cast to unsigned. Returns a U64.
-- `N64#toSigned()` - Cast to signed. Returns an I64.
 - `N64#bitLength()` - Count number of bits.
 - `N64#byteLength()` - Count number of bytes.
 - `N64#isSafe()` - Test whether the number is less than or equal to 53 bits.
@@ -213,6 +211,8 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 #### Conversion
 
+- `N64#toU64()` - Cast to unsigned. Returns a U64.
+- `N64#toI64()` - Cast to signed. Returns an I64.
 - `N64#toNumber()` - Convert int64 to a JS number (throws on >53 bits).
 - `N64#toDouble()` - Convert int64 to a JS number.
 - `N64#toInt()` - Convert lo bits to a JS number.

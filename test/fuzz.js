@@ -9,8 +9,8 @@ const singleOps = [
   'not',
   'neg',
   'abs',
-  'toSigned',
-  'toUnsigned',
+  'toU64',
+  'toI64',
   'clone'
 ];
 
