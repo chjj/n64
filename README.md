@@ -81,9 +81,9 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.from(str, base?)` - Instantiate from string.
 - `N64.from(obj)` - Instantiate from object (hi & lo).
 - `N64.from(bn)` - Instantiate from bn.js bignumber.
+- `N64.isN64(obj)` - Test instanceof N64.
 - `N64.isU64(obj)` - Test instanceof U64.
 - `N64.isI64(obj)` - Test instanceof I64.
-- `N64.isN64(obj)` - Test instanceof N64.
 
 ### Methods
 
