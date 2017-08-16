@@ -1597,18 +1597,115 @@ function run(n64, name) {
       assert.strictEqual(I64.shift(1, 63).toString(), '-9223372036854775808');
     });
 
+    it('should test encoding (unsigned)', () => {
+      let num = U64.fromString('8864030017785018305');
+      let r = num.toRaw(Buffer);
+      let n = U64.fromRaw(r);
+
+      assert.strictEqual(r.toString('hex'), 'c1b77968565c037b');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = num.toLE(Buffer);
+      n = U64.fromLE(r);
+
+      assert.strictEqual(r.toString('hex'), 'c1b77968565c037b');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = num.toBE(Buffer);
+      n = U64.fromBE(r);
+
+      assert.strictEqual(r.toString('hex'), '7b035c566879b7c1');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeRaw(r, 0);
+      n = U64.readRaw(r, 0);
+
+      assert.strictEqual(r.toString('hex'), 'c1b77968565c037b');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeLE(r, 0);
+      n = U64.readLE(r, 0);
+
+      assert.strictEqual(r.toString('hex'), 'c1b77968565c037b');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      n = U64(r);
+
+      assert.strictEqual(r.toString('hex'), 'c1b77968565c037b');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeBE(r, 0);
+      n = U64.readBE(r, 0);
+
+      assert.strictEqual(r.toString('hex'), '7b035c566879b7c1');
+      assert.strictEqual(n.toString(16), num.toString(16));
+    });
+
+    it('should test encoding (signed)', () => {
+      let num = I64.fromString('-8864030017785018305');
+      let r = num.toRaw(Buffer);
+      let n = I64.fromRaw(r);
+
+      assert.strictEqual(r.toString('hex'), '3f488697a9a3fc84');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = num.toLE(Buffer);
+      n = I64.fromLE(r);
+
+      assert.strictEqual(r.toString('hex'), '3f488697a9a3fc84');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = num.toBE(Buffer);
+      n = I64.fromBE(r);
+
+      assert.strictEqual(r.toString('hex'), '84fca3a99786483f');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeRaw(r, 0);
+      n = I64.readRaw(r, 0);
+
+      assert.strictEqual(r.toString('hex'), '3f488697a9a3fc84');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeLE(r, 0);
+      n = I64.readLE(r, 0);
+
+      assert.strictEqual(r.toString('hex'), '3f488697a9a3fc84');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      n = I64(r);
+
+      assert.strictEqual(r.toString('hex'), '3f488697a9a3fc84');
+      assert.strictEqual(n.toString(16), num.toString(16));
+
+      r = Buffer.alloc(8);
+      num.writeBE(r, 0);
+      n = I64.readBE(r, 0);
+
+      assert.strictEqual(r.toString('hex'), '84fca3a99786483f');
+      assert.strictEqual(n.toString(16), num.toString(16));
+    });
+
     it('should test bignum compat', () => {
       let n = new BN('9007199254740991', 10);
       let num = U64.fromBN(n);
       assert.strictEqual(num.toString(), '9007199254740991');
+      assert(num.toBN(BN).eq(n));
 
       n = new BN('-9007199254740991', 10);
       num = I64.fromBN(n);
       assert.strictEqual(num.toString(), '-9007199254740991');
+      assert(num.toBN(BN).eq(n));
 
       n = new BN('ffffffffffffffff', 16);
       num = U64.fromBN(n);
       assert.strictEqual(num.toString(16), 'ffffffffffffffff');
+      assert(num.toBN(BN).eq(n));
 
       n = new BN('ffffffffffffffff', 16);
       assert.throws(() => I64.fromBN(n));
@@ -1619,6 +1716,12 @@ function run(n64, name) {
       n = new BN('-fffffffffffffff', 16);
       num = I64.fromBN(n);
       assert.strictEqual(num.toString(16), '-fffffffffffffff');
+      assert(num.toBN(BN).eq(n));
+
+      n = new BN('-fffffffffffffff', 16);
+      num = I64(n);
+      assert.strictEqual(num.toString(16), '-fffffffffffffff');
+      assert(num.toBN(BN).eq(n));
     });
 
     it('should test multiplication overflow (1)', () => {

@@ -57,6 +57,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `new N64(str, base?)` - Instantiate from string.
 - `new N64(obj)` - Instantiate from object (hi & lo).
 - `new N64(bn)` - Instantiate from bn.js bignumber.
+- `new N64(data)` - Instantiate from bytes (little endian).
 
 ### Properties
 
@@ -66,6 +67,9 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 ### Static Methods
 
+- `N64.readLE(data, off)` - Instantiate from `data` at `off` (little endian).
+- `N64.readBE(data, off)` - Instantiate from `data` at `off` (big endian).
+- `N64.readRaw(data, off)` - Instantiate from `data` at `off` (little endian).
 - `N64.fromNumber(num)` - Instantiate from JS number.
 - `N64.fromInt(lo)` - Instantiate from lo bits.
 - `N64.fromBits(hi, lo)` - Instantiate from hi/lo bits.
@@ -73,12 +77,16 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.fromString(str)` - Instantiate from string.
 - `N64.fromJSON(json)` - Instantiate from JSON.
 - `N64.fromBN(bn)` - Instantiate from bn.js bignumber.
+- `N64.fromLE(data)` - Instantiate from bytes (little endian).
+- `N64.fromBE(data)` - Instantiate from bytes (big endian).
+- `N64.fromRaw(data)` - Instantiate from bytes (little endian).
 - `N64.from()` - Instantiate.
 - `N64.from(num)` - Instantiate from JS number.
 - `N64.from(hi, lo)` - Instantiate from hi/lo bits.
 - `N64.from(str, base?)` - Instantiate from string.
 - `N64.from(obj)` - Instantiate from object (hi & lo).
 - `N64.from(bn)` - Instantiate from bn.js bignumber.
+- `N64.from(data)` - Instantiate from bytes (little endian).
 - `N64.random()` - Instantiate random int64.
 - `N64.pow(num, exp)` - Instantiate from number and power.
 - `N64.shift(num, bits)` - Instantiate from left shift.
@@ -188,6 +196,19 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#bitLength()` - Count number of bits.
 - `N64#byteLength()` - Count number of bytes.
 - `N64#isSafe()` - Test whether the number is less than or equal to 53 bits.
+- `N64#inspect()` - Inspect number.
+
+#### Encoding
+
+- `N64#readLE(data, off)` - Read number from `data` at `off` (little endian).
+- `N64#readBE(data, off)` - Read number from `data` at `off` (big endian).
+- `N64#readRaw(data, off)` - Read number from `data` at `off` (little endian).
+- `N64#writeLE(data, off)` - Write number to `data` at `off` (little endian).
+- `N64#writeBE(data, off)` - Write number to `data` at `off` (big endian).
+- `N64#writeRaw(data, off)` - Write number to `data` at `off` (little endian).
+
+#### Conversion
+
 - `N64#toNumber()` - Convert int64 to a JS number (throws on >53 bits).
 - `N64#toDouble()` - Convert int64 to a JS number.
 - `N64#toInt()` - Convert lo bits to a JS number.
@@ -195,7 +216,10 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#toObject()` - Convert lo bits to an object containing hi and lo bits.
 - `N64#toString(base?)` - Convert to string of `base`.
 - `N64#toJSON()` - Convert to hex string.
-- `N64#inspect()` - Inspect number.
+- `N64#toBN(BN)` - Convert to bn.js big number.
+- `N64#toLE(ArrayLike)` - Convert to `ArrayLike` instance (little endian).
+- `N64#toBE(ArrayLike)` - Convert to `ArrayLike` instance (big endian).
+- `N64#toRaw(ArrayLike)` - Convert to `ArrayLike` instance (little endian).
 
 ### Module Functions
 

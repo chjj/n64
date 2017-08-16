@@ -107,7 +107,7 @@ NAN_METHOD(N64::New) {
     return Nan::ThrowError("N64 must be called with `new`.");
 
   if (info.Length() < 1)
-    return Nan::ThrowError(ARG_ERROR(New, 1));
+    return Nan::ThrowError(ARG_ERROR(new, 1));
 
   if (!info[0]->IsBoolean())
     return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
@@ -139,7 +139,7 @@ NAN_METHOD(N64::SetHi) {
 
   uint32_t hi = info[0]->Uint32Value();
 
-  a->n = ((uint64_t)hi << 32) | (a->n & 0xffffffff);
+  a->n = ((uint64_t)hi << 32) | (a->n & 0xffffffffull);
 
   info.GetReturnValue().Set(info.Holder());
 }
@@ -147,7 +147,7 @@ NAN_METHOD(N64::SetHi) {
 NAN_METHOD(N64::GetLo) {
   N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
 
-  int32_t lo = (int32_t)(a->n & 0xffffffff);
+  int32_t lo = (int32_t)(a->n & 0xffffffffull);
 
   info.GetReturnValue().Set(Nan::New<v8::Int32>(lo));
 }
@@ -163,7 +163,7 @@ NAN_METHOD(N64::SetLo) {
 
   uint32_t lo = info[0]->Uint32Value();
 
-  a->n &= ~0xffffffff;
+  a->n &= ~0xffffffffull;
   a->n |= lo;
 
   info.GetReturnValue().Set(info.Holder());
