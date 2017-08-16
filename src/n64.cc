@@ -13,7 +13,7 @@
 #include "n64.h"
 
 #define ARG_ERROR(name, len) ("N64#" #name " requires " #len " argument(s).")
-#define TYPE_ERROR(name, type) ("`" #name "` must be a(n) " #type ".")
+#define TYPE_ERROR(name, type) ("'" #name "' must be a(n) " #type ".")
 
 static Nan::Persistent<v8::FunctionTemplate> int64_constructor;
 

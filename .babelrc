@@ -3,6 +3,7 @@
     ["transform-es2015-block-scoping"],
     ["transform-es2015-classes", {
       "loose": true
-    }]
+    }],
+    ["transform-es2015-block-template-literals"]
   ]
 }

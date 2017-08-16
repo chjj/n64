@@ -8,6 +8,8 @@ module.exports = {
     'n64': './lib/n64'
   },
   output: {
+    library: 'n64',
+    libraryTarget: 'umd',
     path: __dirname,
     filename: '[name].js'
   },
