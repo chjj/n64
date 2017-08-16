@@ -206,22 +206,16 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 - `n64.ULONG_MIN` - Unsigned int32 minimum (number).
 - `n64.ULONG_MAX` - Unsigned int32 maximum (number).
-
 - `n64.LONG_MIN` - Int32 minimum (number).
 - `n64.LONG_MAX` - Int32 maximum (number).
-
 - `n64.DOUBLE_MIN` - Double float 53 bit minimum (number).
 - `n64.DOUBLE_MAX` - Double float 53 bit maxmimum (number).
-
 - `n64.UINT32_MIN` - Unsigned int32 minimum (U64).
 - `n64.UINT32_MAX` - Unsigned int32 maximum (U64).
-
 - `n64.INT32_MIN` - Int32 minimum (I64).
 - `n64.INT32_MAX` - Int32 maximum (I64).
-
 - `n64.UINT64_MIN` - Unsigned int64 minimum (U64).
 - `n64.UINT64_MAX` - Unsigned int64 maximum (U64).
-
 - `n64.INT64_MIN` - Int64 minimum (I64).
 - `n64.INT64_MAX` - Int64 maximum (I64).
 
