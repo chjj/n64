@@ -9,7 +9,7 @@ const n64 = require('../lib/n64');
 const native = require('../lib/native');
 
 function run(n64, name) {
-  const {U64, I64} = n64;
+  const {N64, U64, I64} = n64;
   const ZERO = I64.fromInt(0);
   const ONE = I64.fromInt(1);
   const UONE = U64.fromInt(1);
@@ -36,14 +36,14 @@ function run(n64, name) {
 
     it('should have instance', () => {
       const num1 = I64.fromBits(0x7fffffff, 0xffffffff);
-      assert.strictEqual(n64.isN64(num1), true);
+      assert.strictEqual(N64.isN64(num1), true);
       assert.strictEqual(I64.isI64(num1), true);
       assert.strictEqual(I64.isI64({}), false);
       const num2 = U64.fromBits(0x7fffffff, 0xffffffff);
-      assert.strictEqual(n64.isN64(num2), true);
+      assert.strictEqual(N64.isN64(num2), true);
       assert.strictEqual(U64.isU64(num2), true);
       assert.strictEqual(U64.isU64({}), false);
-      assert.strictEqual(n64.isN64({}), false);
+      assert.strictEqual(N64.isN64({}), false);
     });
 
     it('should serialize unsigned strings', () => {
@@ -406,10 +406,10 @@ function run(n64, name) {
       assert.strictEqual(ONE.addn(1).gtn(1), true);
       assert.strictEqual(ONE.addn(1).lten(1), false);
       assert.strictEqual(ONE.addn(1).ltn(1), false);
-      assert.strictEqual(n64.min(ZERO, ONE), ZERO);
-      assert.strictEqual(n64.max(ZERO, ONE), ONE);
-      assert.strictEqual(n64.min(U64(1), ONE), ONE);
-      assert.strictEqual(n64.max(U64(1), ONE), ONE);
+      assert.strictEqual(N64.min(ZERO, ONE), ZERO);
+      assert.strictEqual(N64.max(ZERO, ONE), ONE);
+      assert.strictEqual(N64.min(U64(1), ONE), ONE);
+      assert.strictEqual(N64.max(U64(1), ONE), ONE);
     });
 
     it('should do comparisons (signed)', () => {
@@ -1547,10 +1547,10 @@ function run(n64, name) {
 
       assert.strictEqual(ONE.isSafe(), true);
       assert.strictEqual(UONE.isSafe(), true);
-      assert.strictEqual(n64.INT32_MIN.isSafe(), true);
-      assert.strictEqual(n64.INT32_MAX.isSafe(), true);
-      assert.strictEqual(n64.UINT32_MIN.isSafe(), true);
-      assert.strictEqual(n64.UINT32_MAX.isSafe(), true);
+      assert.strictEqual(I64.INT32_MIN.isSafe(), true);
+      assert.strictEqual(I64.INT32_MAX.isSafe(), true);
+      assert.strictEqual(U64.UINT32_MIN.isSafe(), true);
+      assert.strictEqual(U64.UINT32_MAX.isSafe(), true);
       assert.strictEqual(MAX_SAFE.isSafe(), true);
       assert.strictEqual(MAX_SAFE_MIN.isSafe(), true);
       assert.strictEqual(MAX_SAFE_MAX.isSafe(), true);
@@ -1576,13 +1576,13 @@ function run(n64, name) {
       assert(I64.isN64(new I64()));
       assert(!I64.isN64({}));
 
-      assert(n64.isU64(new U64()));
-      assert(!n64.isU64(new I64()));
-      assert(n64.isI64(new I64()));
-      assert(!n64.isI64(new U64()));
-      assert(n64.isN64(new U64()));
-      assert(n64.isN64(new I64()));
-      assert(!n64.isN64({}));
+      assert(N64.isU64(new U64()));
+      assert(!N64.isU64(new I64()));
+      assert(N64.isI64(new I64()));
+      assert(!N64.isI64(new U64()));
+      assert(N64.isN64(new U64()));
+      assert(N64.isN64(new I64()));
+      assert(!N64.isN64({}));
 
       assert(U64.random() instanceof U64);
       assert(I64.random() instanceof I64);

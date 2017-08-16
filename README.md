@@ -1,6 +1,6 @@
 # n64
 
-Int64 object for javascript.
+Optimized int64 object for javascript.
 
 ---
 
@@ -10,22 +10,24 @@ native and non-native version which both have full test coverage.
 
 ## Install
 
-``` js
+``` bash
 $ npm install n64
 ```
 
 ## Usage
 
 ``` js
-const {U64} = require('n64');
+const {U64, I64} = require('n64');
 
-console.log(U64(0x123456789).muln(0x12345678).toString(10));
+console.log(U64(0x12345678900).muln(0x12345678));
+console.log(I64(0x12345678900).muln(0x12345678));
 ```
 
 Outputs:
 
 ```
-1492501008711192120
+<U64: 13145376755874150400>
+<I64: -5301367317835401216>
 ```
 
 ## API
@@ -67,6 +69,11 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 ### Static Methods
 
+- `N64.min(a, b)` - Pick min value.
+- `N64.max(a, b)` - Pick max value.
+- `N64.random()` - Instantiate random int64.
+- `N64.pow(num, exp)` - Instantiate from number and power.
+- `N64.shift(num, bits)` - Instantiate from left shift.
 - `N64.readLE(data, off)` - Instantiate from `data` at `off` (little endian).
 - `N64.readBE(data, off)` - Instantiate from `data` at `off` (big endian).
 - `N64.readRaw(data, off)` - Instantiate from `data` at `off` (little endian).
@@ -87,9 +94,6 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.from(obj)` - Instantiate from object (hi & lo).
 - `N64.from(bn)` - Instantiate from bn.js bignumber.
 - `N64.from(data)` - Instantiate from bytes (little endian).
-- `N64.random()` - Instantiate random int64.
-- `N64.pow(num, exp)` - Instantiate from number and power.
-- `N64.shift(num, bits)` - Instantiate from left shift.
 - `N64.isN64(obj)` - Test instanceof N64.
 - `N64.isU64(obj)` - Test instanceof U64.
 - `N64.isI64(obj)` - Test instanceof I64.
@@ -216,35 +220,25 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#toObject()` - Convert lo bits to an object containing hi and lo bits.
 - `N64#toString(base?)` - Convert to string of `base`.
 - `N64#toJSON()` - Convert to hex string.
-- `N64#toBN(BN)` - Convert to bn.js big number.
+- `N64#toBN(BN)` - Convert to bn.js big number (must pass BN constructor).
 - `N64#toLE(ArrayLike)` - Convert to `ArrayLike` instance (little endian).
 - `N64#toBE(ArrayLike)` - Convert to `ArrayLike` instance (big endian).
 - `N64#toRaw(ArrayLike)` - Convert to `ArrayLike` instance (little endian).
 
-### Module Functions
+### Constants
 
-- `n64.min(a, b)` - Pick min value.
-- `n64.max(a, b)` - Pick max value.
-- `n64.isU64(obj)` - Test instanceof U64.
-- `n64.isI64(obj)` - Test instanceof I64.
-- `n64.isN64(obj)` - Test instanceof N64.
-
-### Module Constants
-
-- `n64.ULONG_MIN` - Unsigned int32 minimum (number).
-- `n64.ULONG_MAX` - Unsigned int32 maximum (number).
-- `n64.LONG_MIN` - Int32 minimum (number).
-- `n64.LONG_MAX` - Int32 maximum (number).
-- `n64.DOUBLE_MIN` - Double float 53 bit minimum (number).
-- `n64.DOUBLE_MAX` - Double float 53 bit maxmimum (number).
-- `n64.UINT32_MIN` - Unsigned int32 minimum (U64).
-- `n64.UINT32_MAX` - Unsigned int32 maximum (U64).
-- `n64.INT32_MIN` - Int32 minimum (I64).
-- `n64.INT32_MAX` - Int32 maximum (I64).
-- `n64.UINT64_MIN` - Unsigned int64 minimum (U64).
-- `n64.UINT64_MAX` - Unsigned int64 maximum (U64).
-- `n64.INT64_MIN` - Int64 minimum (I64).
-- `n64.INT64_MAX` - Int64 maximum (I64).
+- `U64.ULONG_MIN` - Unsigned int32 minimum (number).
+- `U64.ULONG_MAX` - Unsigned int32 maximum (number).
+- `U64.UINT32_MIN` - Unsigned int32 minimum (U64).
+- `U64.UINT32_MAX` - Unsigned int32 maximum (U64).
+- `U64.UINT64_MIN` - Unsigned int64 minimum (U64).
+- `U64.UINT64_MAX` - Unsigned int64 maximum (U64).
+- `I64.LONG_MIN` - Int32 minimum (number).
+- `I64.LONG_MAX` - Int32 maximum (number).
+- `I64.INT32_MIN` - Int32 minimum (I64).
+- `I64.INT32_MAX` - Int32 maximum (I64).
+- `I64.INT64_MIN` - Int64 minimum (I64).
+- `I64.INT64_MAX` - Int64 maximum (I64).
 
 ## Casting
 
@@ -259,8 +253,8 @@ integers. If the left had operand is signed, the number is cast to an
 In JS:
 
 ``` js
-const a = new I64(1);
-const b = new U64('ffffffffffffffff', 16);
+const a = I64(1);
+const b = U64('ffffffffffffffff', 16);
 const r = a.add(b);
 console.log(r.toString());
 ```
@@ -281,7 +275,7 @@ Outputs `0`, as `(int64_t)ULLONG_MAX == -1LL`.
 In JS:
 
 ``` js
-const a = new I64(0);
+const a = I64(0);
 const r = a.addn(0xffffffff);
 console.log(r.toString());
 ```
@@ -301,7 +295,7 @@ Outputs `-1`.
 In JS:
 
 ``` js
-const a = new U64(0);
+const a = U64(0);
 const r = a.addn(-1);
 console.log(r.toString());
 ```
@@ -339,6 +333,24 @@ Benchmarks are run against bn.js.
 ``` bash
 $ node bench
 ```
+
+## Building
+
+Both webpack and browserify are supported.
+
+To compile with webpack:
+
+``` bash
+$ make webpack
+```
+
+To compile with browserify:
+
+``` bash
+$ make browserify
+```
+
+Both will write `n64.js` in the root directory.
 
 ## Contribution and License Agreement
 
