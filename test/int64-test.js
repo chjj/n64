@@ -31,7 +31,7 @@ function run(n64, name) {
 
       assert.strictEqual(num2.toDouble(), 9223372036854775807);
       assert.strictEqual(num2.toString(), '9223372036854775807');
-      assert.strictEqual(num2.signed, num1.signed);
+      assert.strictEqual(num2.sign, num1.sign);
     });
 
     it('should have instance', () => {
@@ -148,11 +148,11 @@ function run(n64, name) {
       let num = U64.fromInt(-1);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, 0);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.sign, 0);
       num = I64.fromInt(-1);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
-      assert.strictEqual(num.signed, true);
+      assert.strictEqual(num.sign, 1);
       num = num.toUnsigned();
       assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
@@ -163,7 +163,7 @@ function run(n64, name) {
       const num = U64.fromBits(0xffffffff, 0xffffffff);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.sign, 0);
       assert.throws(() => num.toNumber());
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
@@ -173,7 +173,7 @@ function run(n64, name) {
       const num = U64.fromString('ffffffffffffffff', 16);
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.sign, 0);
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -226,7 +226,7 @@ function run(n64, name) {
       const num = MAX_U64.sub(MAX_U64);
       assert.strictEqual(num.lo, 0);
       assert.strictEqual(num.hi, 0);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.sign, 0);
       assert.strictEqual(num.toDouble(), 0);
       assert.strictEqual(num.toString(), '0');
     });
@@ -235,7 +235,7 @@ function run(n64, name) {
       const num = U64.fromInt(0).add(I64.fromInt(-1));
       assert.strictEqual(num.lo, -1);
       assert.strictEqual(num.hi, -1);
-      assert.strictEqual(num.signed, false);
+      assert.strictEqual(num.sign, 0);
       assert.strictEqual(num.toDouble(), 18446744073709551615);
       assert.strictEqual(num.toString(), '18446744073709551615');
     });
@@ -356,13 +356,13 @@ function run(n64, name) {
       const a = U64.fromBits(8, 0);
       const b = U64.fromNumber(2656901066);
 
-      assert.strictEqual(a.signed, false);
-      assert.strictEqual(b.signed, false);
+      assert.strictEqual(a.sign, 0);
+      assert.strictEqual(b.sign, 0);
 
       const x = a.div(b);
 
       assert.strictEqual(x.toString(), '12');
-      assert.strictEqual(x.signed, false);
+      assert.strictEqual(x.sign, 0);
     });
 
     it('should do comparisons', () => {

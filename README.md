@@ -65,7 +65,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 - `hi` - Internal hi bits (int32).
 - `lo` - Internal lo bits (int32).
-- `signed` - Whether the int64 is signed (bool).
+- `sign` - Whether the int64 is signed (number - 0 or 1).
 
 ### Static Methods
 

@@ -23,7 +23,7 @@ static int64_t MAX_SAFE_INTEGER = 0x1fffffffffffff;
 
 N64::N64() {
   n = 0;
-  sign = false;
+  sign = 0;
 }
 
 N64::~N64() {}
@@ -44,6 +44,8 @@ N64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "setHi", N64::SetHi);
   Nan::SetPrototypeMethod(tpl, "getLo", N64::GetLo);
   Nan::SetPrototypeMethod(tpl, "setLo", N64::SetLo);
+  Nan::SetPrototypeMethod(tpl, "getSign", N64::GetSign);
+  Nan::SetPrototypeMethod(tpl, "setSign", N64::SetSign);
   Nan::SetPrototypeMethod(tpl, "iadd", N64::Iadd);
   Nan::SetPrototypeMethod(tpl, "iaddn", N64::Iaddn);
   Nan::SetPrototypeMethod(tpl, "isub", N64::Isub);
@@ -109,12 +111,19 @@ NAN_METHOD(N64::New) {
   if (info.Length() < 1)
     return Nan::ThrowError(ARG_ERROR(new, 1));
 
-  if (!info[0]->IsBoolean())
-    return Nan::ThrowTypeError(TYPE_ERROR(signed, boolean));
+  if (!info[0]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
+
+  uint8_t sign = (uint8_t)info[0]->Uint32Value();
+
+  if (info[0]->NumberValue() != (double)sign)
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
+
+  if (sign > 1)
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
 
   N64 *obj = new N64();
-
-  obj->sign = info[0]->BooleanValue();
+  obj->sign = sign;
   obj->Wrap(info.This());
 
   info.GetReturnValue().Set(info.This());
@@ -165,6 +174,33 @@ NAN_METHOD(N64::SetLo) {
 
   a->n &= ~0xffffffffull;
   a->n |= lo;
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(N64::GetSign) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+  info.GetReturnValue().Set(Nan::New<v8::Uint32>((int32_t)a->sign));
+}
+
+NAN_METHOD(N64::SetSign) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+
+  if (info.Length() < 1)
+    return Nan::ThrowError(ARG_ERROR(setSign, 1));
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, number));
+
+  uint8_t sign = (uint8_t)info[0]->Uint32Value();
+
+  if (info[0]->NumberValue() != (double)sign)
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
+
+  if (sign > 1)
+    return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
+
+  a->sign = sign;
 
   info.GetReturnValue().Set(info.Holder());
 }

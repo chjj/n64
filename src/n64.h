@@ -20,13 +20,15 @@ public:
   ~N64();
 
   uint64_t n;
-  bool sign;
+  uint8_t sign;
 
 private:
   static NAN_METHOD(GetHi);
   static NAN_METHOD(SetHi);
   static NAN_METHOD(GetLo);
   static NAN_METHOD(SetLo);
+  static NAN_METHOD(GetSign);
+  static NAN_METHOD(SetSign);
   static NAN_METHOD(Iadd);
   static NAN_METHOD(Iaddn);
   static NAN_METHOD(Isub);
