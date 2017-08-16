@@ -1559,6 +1559,44 @@ function run(n64, name) {
       assert.strictEqual(MAX_SAFE_MAX.clone().addn(1).isSafe(), false);
     });
 
+    it('should test static methods', () => {
+      assert(U64.isU64(new U64()));
+      assert(!U64.isU64(new I64()));
+      assert(U64.isI64(new I64()));
+      assert(!U64.isI64(new U64()));
+      assert(U64.isN64(new U64()));
+      assert(U64.isN64(new I64()));
+      assert(!U64.isN64({}));
+
+      assert(I64.isU64(new U64()));
+      assert(!I64.isU64(new I64()));
+      assert(I64.isI64(new I64()));
+      assert(!I64.isI64(new U64()));
+      assert(I64.isN64(new U64()));
+      assert(I64.isN64(new I64()));
+      assert(!I64.isN64({}));
+
+      assert(n64.isU64(new U64()));
+      assert(!n64.isU64(new I64()));
+      assert(n64.isI64(new I64()));
+      assert(!n64.isI64(new U64()));
+      assert(n64.isN64(new U64()));
+      assert(n64.isN64(new I64()));
+      assert(!n64.isN64({}));
+
+      assert(U64.random() instanceof U64);
+      assert(I64.random() instanceof I64);
+
+      assert.strictEqual(
+        U64.pow(2, 64).subn(1).toString(),
+        '18446744073709551615');
+
+      assert.strictEqual(I64.pow(2, 64).subn(1).toString(), '-1');
+
+      assert.strictEqual(U64.shift(1, 63).toString(), '9223372036854775808');
+      assert.strictEqual(I64.shift(1, 63).toString(), '-9223372036854775808');
+    });
+
     it('should test bignum compat', () => {
       let n = new BN('9007199254740991', 10);
       let num = U64.fromBN(n);

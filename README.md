@@ -30,15 +30,26 @@ Outputs:
 
 ## API
 
-`n64` tries to mimic the [bn.js] API as much as possible. Each method follows a
-pattern of `(i?)(operation)(n?)`. For example, `a.add(b)` will clone the
-current int64, do the addition, and return a new int64. `a.iadd(b)` will do the
-addition _in place_. `a.addn(b)` will do the "cloned" addition with `b` being a
-32 bit JS number. `a.iaddn(b)` will do the same thing _in-place_.
+`n64` tries to mimic the [bn.js] API as much as possible. Like bn.js, each
+method follows a pattern of `(i?)(operation)(n?)`.
+
+### Prefixes
+
+- `i` - Perform the operation in-place.
+
+### Postfixes
+
+- `n` - Function must be passed a 32 bit javascript number.
+
+For example, `a.add(b)` will clone the current object, do the addition, and
+return a new object. `a.iadd(b)` will do the addition _in place_. `a.addn(b)`
+will do the "cloned" addition with `b` being a 32 bit JS number, and
+`a.iaddn(b)` will do the same thing _in-place_.
 
 ### Constructor
 
 There are two constructors: `U64` and `I64`, both containing the same methods.
+The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 - `new N64()` - Instantiate.
 - `new N64(num)` - Instantiate from JS number.
@@ -55,6 +66,9 @@ There are two constructors: `U64` and `I64`, both containing the same methods.
 
 ### Static Methods
 
+- `N64.random()` - Instantiate random int64.
+- `N64.pow(num, exp)` - Instantiate from number and power.
+- `N64.shift(num, bits)` - Instantiate from left shift.
 - `N64.fromNumber(num)` - Instantiate from JS number.
 - `N64.fromBits(hi, lo)` - Instantiate from hi/lo bits.
 - `N64.fromInt(lo)` - Instantiate from lo bits.
@@ -67,8 +81,9 @@ There are two constructors: `U64` and `I64`, both containing the same methods.
 - `N64.from(str, base?)` - Instantiate from string.
 - `N64.from(obj)` - Instantiate from object (hi & lo).
 - `N64.from(bn)` - Instantiate from bn.js bignumber.
-- `N64.isU64(obj)` - Test instanceof (U64 only).
-- `N64.isI64(obj)` - Test instanceof (I64 only).
+- `N64.isU64(obj)` - Test instanceof U64.
+- `N64.isI64(obj)` - Test instanceof I64.
+- `N64.isN64(obj)` - Test instanceof N64.
 
 ### Methods
 
@@ -183,19 +198,40 @@ There are two constructors: `U64` and `I64`, both containing the same methods.
 
 - `n64.min(a, b)` - Pick min value.
 - `n64.max(a, b)` - Pick max value.
-- `n64.isN64(obj)` - Test instanceof for either U64 or I64.
+- `n64.isU64(obj)` - Test instanceof U64.
+- `n64.isI64(obj)` - Test instanceof I64.
+- `n64.isN64(obj)` - Test instanceof N64.
 
 ### Module Constants
 
-- TODO
+- `n64.ULONG_MIN` - Unsigned int32 minimum (number).
+- `n64.ULONG_MAX` - Unsigned int32 maximum (number).
+
+- `n64.LONG_MIN` - Int32 minimum (number).
+- `n64.LONG_MAX` - Int32 maximum (number).
+
+- `n64.DOUBLE_MIN` - Double float 53 bit minimum (number).
+- `n64.DOUBLE_MAX` - Double float 53 bit maxmimum (number).
+
+- `n64.UINT32_MIN` - Unsigned int32 minimum (U64).
+- `n64.UINT32_MAX` - Unsigned int32 maximum (U64).
+
+- `n64.INT32_MIN` - Int32 minimum (I64).
+- `n64.INT32_MAX` - Int32 maximum (I64).
+
+- `n64.UINT64_MIN` - Unsigned int64 minimum (U64).
+- `n64.UINT64_MAX` - Unsigned int64 maximum (U64).
+
+- `n64.INT64_MIN` - Int64 minimum (I64).
+- `n64.INT64_MAX` - Int64 maximum (I64).
 
 ## Casting
 
 With mixed types, the left operand will cast the right operand to its sign.
 
-With the `n`-suffix methods, numbers passed into them will be cast to 32 bit
+With the `n`-postfix methods, numbers passed into them will be cast to 32 bit
 integers. If the left had operand is signed, the number is cast to an
-`int32_t`, if unsigned, the number is cast to an `uint32_t`.
+`int32_t`. If unsigned, the number is cast to an `uint32_t`.
 
 ### Examples
 
@@ -269,11 +305,15 @@ This should run all test vectors for both the native and non-native backend.
 
 ## Fuzzing
 
+A fuzzer is present for testing of operations vs. actual machine operations.
+
 ``` js
 $ node test/fuzz.js
 ```
 
 ## Benchmarks
+
+Benchmarks are run against bn.js.
 
 ``` js
 $ node bench
