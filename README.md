@@ -216,8 +216,8 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#toNumber()` - Convert int64 to a JS number (throws on >53 bits).
 - `N64#toDouble()` - Convert int64 to a JS number.
 - `N64#toInt()` - Convert lo bits to a JS number.
-- `N64#toBits()` - Convert lo bits to an array containing hi and lo bits.
-- `N64#toObject()` - Convert lo bits to an object containing hi and lo bits.
+- `N64#toBits()` - Convert to an array containing hi and lo bits.
+- `N64#toObject()` - Convert to an object containing hi and lo bits.
 - `N64#toString(base?)` - Convert to string of `base`.
 - `N64#toJSON()` - Convert to hex string.
 - `N64#toBN(BN)` - Convert to bn.js big number (must pass BN constructor).
