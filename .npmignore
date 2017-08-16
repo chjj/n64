@@ -1,8 +1,9 @@
+bench/
 build/
 lib/native.js
-bench/
 src/
 test/
 node_modules/
 binding.gyp
 npm-debug.log
+package-lock.json
