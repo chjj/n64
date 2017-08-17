@@ -71,6 +71,7 @@ N64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "setn", N64::Setn);
   Nan::SetPrototypeMethod(tpl, "testn", N64::Testn);
   Nan::SetPrototypeMethod(tpl, "imaskn", N64::Imaskn);
+  Nan::SetPrototypeMethod(tpl, "andln", N64::Andln);
   Nan::SetPrototypeMethod(tpl, "ineg", N64::Ineg);
   Nan::SetPrototypeMethod(tpl, "cmp", N64::Cmp);
   Nan::SetPrototypeMethod(tpl, "cmpn", N64::Cmpn);
@@ -679,6 +680,21 @@ NAN_METHOD(N64::Imaskn) {
   a->n &= (1ull << bit) - 1;
 
   info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(N64::Andln) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+
+  if (info.Length() < 1)
+    return Nan::ThrowError(ARG_ERROR(andln, 1));
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
+
+  uint32_t num = info[0]->Uint32Value();
+  uint32_t r = (uint32_t)a->n & num;
+
+  info.GetReturnValue().Set(Nan::New<v8::Int32>(r));
 }
 
 NAN_METHOD(N64::Ineg) {
