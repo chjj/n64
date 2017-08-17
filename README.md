@@ -81,7 +81,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.fromInt(lo)` - Instantiate from lo bits.
 - `N64.fromBits(hi, lo)` - Instantiate from hi/lo bits.
 - `N64.fromObject(obj)` - Instantiate from object (hi & lo).
-- `N64.fromString(str)` - Instantiate from string.
+- `N64.fromString(str, base?)` - Instantiate from string.
 - `N64.fromJSON(json)` - Instantiate from JSON.
 - `N64.fromBN(bn)` - Instantiate from bn.js bignumber.
 - `N64.fromLE(data)` - Instantiate from bytes (little endian).
@@ -218,7 +218,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#toInt()` - Convert lo bits to a JS number.
 - `N64#toBits()` - Convert to an array containing hi and lo bits.
 - `N64#toObject()` - Convert to an object containing hi and lo bits.
-- `N64#toString(base?)` - Convert to string of `base`.
+- `N64#toString(base?, pad?)` - Convert to string of `base`. Optional padding.
 - `N64#toJSON()` - Convert to hex string.
 - `N64#toBN(BN)` - Convert to bn.js big number (must pass BN constructor).
 - `N64#toLE(ArrayLike)` - Convert to `ArrayLike` instance (little endian).

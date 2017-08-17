@@ -57,10 +57,31 @@ function run(n64, name) {
       const num2 = U64.fromNumber(123456789012);
       assert.strictEqual(num2.toNumber(), 123456789012);
       assert.strictEqual(num2.toString(16), '1cbe991a14');
+      assert.strictEqual(num2.toString('hex'), '1cbe991a14');
+      assert.strictEqual(num2.toString(16, 9), '1cbe991a14');
+      assert.strictEqual(num2.toString(16, 10), '1cbe991a14');
+      assert.strictEqual(num2.toString(16, 11), '01cbe991a14');
+      assert.strictEqual(num2.toString(16, 16), '0000001cbe991a14');
       assert.strictEqual(num2.toString(10), '123456789012');
+      assert.strictEqual(num2.toString(10, 10), '123456789012');
+      assert.strictEqual(num2.toString(10, 12), '123456789012');
+      assert.strictEqual(num2.toString(10, 13), '0123456789012');
+      assert.strictEqual(num2.toString(10, 20), '00000000123456789012');
       assert.strictEqual(num2.toString(8), '1627646215024');
+      assert.strictEqual(num2.toString(8, 10), '1627646215024');
+      assert.strictEqual(num2.toString(8, 13), '1627646215024');
+      assert.strictEqual(num2.toString(8, 14), '01627646215024');
+      assert.strictEqual(num2.toString(8, 22), '0000000001627646215024');
       assert.strictEqual(num2.toString(2),
         '1110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 36),
+        '1110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 37),
+        '1110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 38),
+        '01110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 64),
+        '0000000000000000000000000001110010111110100110010001101000010100');
     });
 
     it('should serialize signed strings', () => {
@@ -73,10 +94,20 @@ function run(n64, name) {
       const num2 = I64.fromNumber(-123456789012);
       assert.strictEqual(num2.toNumber(), -0x1cbe991a14);
       assert.strictEqual(num2.toString(16), '-1cbe991a14');
+      assert.strictEqual(num2.toString(16, 9), '-1cbe991a14');
+      assert.strictEqual(num2.toString(16, 10), '-1cbe991a14');
+      assert.strictEqual(num2.toString(16, 11), '-01cbe991a14');
+      assert.strictEqual(num2.toString(16, 16), '-0000001cbe991a14');
       assert.strictEqual(num2.toString(10), '-123456789012');
       assert.strictEqual(num2.toString(8), '-1627646215024');
       assert.strictEqual(num2.toString(2),
         '-1110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 37),
+        '-1110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 38),
+        '-01110010111110100110010001101000010100');
+      assert.strictEqual(num2.toString(2, 64),
+        '-0000000000000000000000000001110010111110100110010001101000010100');
     });
 
     it('should deserialize unsigned strings', () => {

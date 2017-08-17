@@ -18,6 +18,7 @@
 static Nan::Persistent<v8::FunctionTemplate> int64_constructor;
 
 NAN_INLINE static bool IsNull(v8::Local<v8::Value> options);
+static uint32_t get_base(const char *name);
 
 static int64_t MAX_SAFE_INTEGER = 0x1fffffffffffff;
 
@@ -958,16 +959,36 @@ NAN_METHOD(N64::ToInt) {
 NAN_METHOD(N64::ToString) {
   N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
 
-  int32_t base = 10;
+  uint32_t base = 10;
 
   if (info.Length() > 0 && !IsNull(info[0])) {
-    if (!info[0]->IsNumber())
-      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+    if (info[0]->IsString()) {
+      Nan::Utf8String name(info[0]);
+      base = get_base(*name);
+    } else {
+      if (!info[0]->IsNumber())
+        return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
 
-    base = info[0]->Int32Value();
+      base = info[0]->Uint32Value();
 
-    if (info[0]->NumberValue() != (double)base)
-      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+      if (info[0]->NumberValue() != (double)base)
+        return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+    }
+  }
+
+  uint32_t pad = 0;
+
+  if (info.Length() > 1 && !IsNull(info[1])) {
+    if (!info[1]->IsNumber())
+      return Nan::ThrowTypeError(TYPE_ERROR(pad, integer));
+
+    pad = info[1]->Uint32Value();
+
+    if (info[1]->NumberValue() != (double)pad)
+      return Nan::ThrowTypeError(TYPE_ERROR(pad, integer));
+
+    if (pad > 64)
+      return Nan::ThrowError("Maximum padding is 64 characters.");
   }
 
   uint64_t n = a->n;
@@ -978,19 +999,19 @@ NAN_METHOD(N64::ToString) {
     n = ~n + 1;
   }
 
+  char buf[66];
+  char *str = (char *)buf + 1;
   size_t size = 64;
-  char str_[66];
-  char *str = (char *)str_ + 1;
 
   if (base == 2) {
     int32_t bit;
     int32_t i = 0;
-    int32_t j = -1;
+    int32_t s = -1;
 
     for (bit = 63; bit >= 0; bit--) {
       if ((n & (1ull << bit)) != 0) {
-        if (j == -1)
-          j = i;
+        if (s == -1)
+          s = i;
         str[i++] = '1';
       } else {
         str[i++] = '0';
@@ -999,40 +1020,51 @@ NAN_METHOD(N64::ToString) {
 
     str[i] = '\0';
 
-    if (j != -1) {
-      str += j;
-      size -= j;
-    } else {
-      str = (str + i) - 1;
-      size = 1;
+    if (s == -1)
+      s = 63;
+
+    str += s;
+    size -= s;
+
+    if (size < pad) {
+      str -= pad - size;
+      size = pad;
     }
   } else {
     char *fmt = NULL;
 
     switch (base) {
       case 8:
-        size = 22;
         fmt = "%" PRIo64;
         break;
       case 10:
-        size = 20;
         fmt = "%" PRIu64;
         break;
       case 16:
-        size = 16;
         fmt = "%" PRIx64;
         break;
       default:
         return Nan::ThrowError("Base ranges between 2 and 16.");
     }
 
-    int32_t r = snprintf((char *)str, size + 1, (const char *)fmt, n);
+    size = snprintf(NULL, 0, (const char *)fmt, n);
 
-    if (r < 0)
-      return Nan::ThrowError("Could not serialize string.");
+    assert(size > 0 && size < 23);
 
-    size = r;
+    size_t fill = 0;
+
+    if (size < pad) {
+      fill = pad - size;
+      memset(str, '0', fill);
+    }
+
+    snprintf(str + fill, size + 1, (const char *)fmt, n);
+
+    if (size < pad)
+      size = pad;
   }
+
+  assert(size > 0);
 
   if (neg) {
     *(--str) = '-';
@@ -1113,10 +1145,10 @@ NAN_METHOD(N64::FromString) {
   if (!info[0]->IsString())
     return Nan::ThrowTypeError(TYPE_ERROR(string, string));
 
-  Nan::Utf8String str_(info[0]);
+  Nan::Utf8String nstr(info[0]);
 
-  char *start = *str_;
-  size_t len = str_.length();
+  char *start = *nstr;
+  size_t len = nstr.length();
 
   bool neg = false;
 
@@ -1129,16 +1161,21 @@ NAN_METHOD(N64::FromString) {
   if (len == 0 || len > 64)
     return Nan::ThrowError("Invalid string (bad length).");
 
-  int32_t base = 10;
+  uint32_t base = 10;
 
   if (info.Length() > 1 && !IsNull(info[1])) {
-    if (!info[1]->IsNumber())
-      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+    if (info[1]->IsString()) {
+      Nan::Utf8String name(info[1]);
+      base = get_base(*name);
+    } else {
+      if (!info[1]->IsNumber())
+        return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
 
-    base = info[1]->Int32Value();
+      base = info[1]->Uint32Value();
 
-    if (info[1]->NumberValue() != (double)base)
-      return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+      if (info[1]->NumberValue() != (double)base)
+        return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
+    }
   }
 
   switch (base) {
@@ -1176,6 +1213,22 @@ NAN_METHOD(N64::FromString) {
 NAN_INLINE static bool IsNull(v8::Local<v8::Value> obj) {
   Nan::HandleScope scope;
   return obj->IsNull() || obj->IsUndefined();
+}
+
+static uint32_t get_base(const char *name) {
+  if (strcmp(name, "bin") == 0)
+    return 2;
+
+  if (strcmp(name, "oct") == 0)
+    return 8;
+
+  if (strcmp(name, "dec") == 0)
+    return 10;
+
+  if (strcmp(name, "hex") == 0)
+    return 16;
+
+  return 0;
 }
 
 NAN_MODULE_INIT(init) {
