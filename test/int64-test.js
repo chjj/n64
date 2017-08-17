@@ -299,32 +299,34 @@ function run(n64, name) {
       let num = MIN_I64.div(ONE);
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
-      num = MIN_I64.div(new U64(1234));
+      num = MIN_I64.div(new I64(1234));
       assert.strictEqual(num.toString(), '-7474369559849899');
       assert.strictEqual(num.toNumber(), -7474369559849899);
 
-      num = MIN_I64.div(new U64(-1234));
+      num = MIN_I64.div(new I64(-1234));
       assert.strictEqual(num.toString(), '7474369559849899');
       assert.strictEqual(num.toNumber(), 7474369559849899);
 
-      num = MIN_I64.div(new U64(1));
+      num = MIN_I64.div(new I64(1));
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
       num = MIN_I64.div(MIN_I64.clone());
       assert.strictEqual(num.toString(), '1');
 
-      num = U64(2).div(MIN_I64.clone());
+      num = I64(2).div(MIN_I64.clone());
       assert.strictEqual(num.toString(), '0');
 
       // Normally an FPE
-      num = MIN_I64.div(new U64(-1));
+      num = MIN_I64.div(new I64(-1));
       assert.strictEqual(num.toString(), MIN_I64.toString());
 
       // Normally an FPE
-      num = MIN_I64.mod(new U64(-1));
+      num = MIN_I64.mod(new I64(-1));
       assert.strictEqual(num.toString(), '0');
 
-      num = MIN_I64.div(new U64(-2));
+      assert.strictEqual(MIN_I64.neg().toString(), MIN_I64.toString());
+
+      num = MIN_I64.div(new I64(-2));
       assert.strictEqual(num.toString(), '4611686018427387904');
 
       num = MIN_I64.div(MIN_I64.subn(1000));
@@ -367,6 +369,11 @@ function run(n64, name) {
 
       num = MIN_I64.div(new U64(-1));
       assert.strictEqual(num.toString(), '0');
+
+      num = MIN_I64.mod(new U64(-1));
+      assert.strictEqual(num.toString(), MIN_I64.toString());
+
+      assert.strictEqual(MIN_I64.neg().toString(), MIN_I64.toString());
 
       num = MIN_I64.div(MIN_I64.subn(1000));
       assert.strictEqual(num.toString(), '1');
