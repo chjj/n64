@@ -55,9 +55,10 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 - `new N64()` - Instantiate.
 - `new N64(num)` - Instantiate from JS number.
+- `new N64(bool)` - Instantiate from boolean.
 - `new N64(hi, lo)` - Instantiate from hi/lo bits.
-- `new N64(str, base?)` - Instantiate from string.
 - `new N64(obj)` - Instantiate from object (hi & lo).
+- `new N64(str, base?)` - Instantiate from string.
 - `new N64(bn)` - Instantiate from bn.js bignumber.
 - `new N64(data)` - Instantiate from bytes (little endian).
 
@@ -90,9 +91,10 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.fromRaw(data)` - Instantiate from bytes (little endian).
 - `N64.from()` - Instantiate.
 - `N64.from(num)` - Instantiate from JS number.
+- `N64.from(bool)` - Instantiate from boolean.
 - `N64.from(hi, lo)` - Instantiate from hi/lo bits.
-- `N64.from(str, base?)` - Instantiate from string.
 - `N64.from(obj)` - Instantiate from object (hi & lo).
+- `N64.from(str, base?)` - Instantiate from string.
 - `N64.from(bn)` - Instantiate from bn.js bignumber.
 - `N64.from(data)` - Instantiate from bytes (little endian).
 - `N64.isN64(obj)` - Test instanceof N64.
