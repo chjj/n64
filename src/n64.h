@@ -71,9 +71,11 @@ private:
   static NAN_METHOD(ToNumber);
   static NAN_METHOD(ToDouble);
   static NAN_METHOD(ToInt);
+  static NAN_METHOD(ToBool);
   static NAN_METHOD(ToString);
   static NAN_METHOD(FromNumber);
   static NAN_METHOD(FromInt);
+  static NAN_METHOD(FromBool);
   static NAN_METHOD(FromBits);
   static NAN_METHOD(FromString);
 };

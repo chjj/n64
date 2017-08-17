@@ -65,7 +65,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 
 - `hi` - Internal hi bits (int32).
 - `lo` - Internal lo bits (int32).
-- `sign` - Whether the int64 is signed (number - 0 or 1).
+- `sign` - Whether the int64 is signed (0 or 1).
 
 ### Static Methods
 
@@ -79,6 +79,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64.readRaw(data, off)` - Instantiate from `data` at `off` (little endian).
 - `N64.fromNumber(num)` - Instantiate from JS number.
 - `N64.fromInt(lo)` - Instantiate from lo bits.
+- `N64.fromBool(value)` - Instantiate from boolean.
 - `N64.fromBits(hi, lo)` - Instantiate from hi/lo bits.
 - `N64.fromObject(obj)` - Instantiate from object (hi & lo).
 - `N64.fromString(str, base?)` - Instantiate from string.
@@ -216,6 +217,7 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#toNumber()` - Convert int64 to a JS number (throws on >53 bits).
 - `N64#toDouble()` - Convert int64 to a JS number.
 - `N64#toInt()` - Convert lo bits to a JS number.
+- `N64#toBool()` - Convert to a boolean.
 - `N64#toBits()` - Convert to an array containing hi and lo bits.
 - `N64#toObject()` - Convert to an object containing hi and lo bits.
 - `N64#toString(base?, pad?)` - Convert to string of `base`. Optional padding.

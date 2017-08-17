@@ -24,6 +24,7 @@ const singleOpsRes = [
   'isSafe',
   'toDouble',
   'toInt',
+  'toBool',
   'toString',
   'toJSON',
   'inspect'

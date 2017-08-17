@@ -89,9 +89,11 @@ N64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "toNumber", N64::ToNumber);
   Nan::SetPrototypeMethod(tpl, "toDouble", N64::ToDouble);
   Nan::SetPrototypeMethod(tpl, "toInt", N64::ToInt);
+  Nan::SetPrototypeMethod(tpl, "toBool", N64::ToBool);
   Nan::SetPrototypeMethod(tpl, "toString", N64::ToString);
   Nan::SetPrototypeMethod(tpl, "fromNumber", N64::FromNumber);
   Nan::SetPrototypeMethod(tpl, "fromInt", N64::FromInt);
+  Nan::SetPrototypeMethod(tpl, "fromBool", N64::FromBool);
   Nan::SetPrototypeMethod(tpl, "fromBits", N64::FromBits);
   Nan::SetPrototypeMethod(tpl, "fromString", N64::FromString);
 
@@ -972,6 +974,16 @@ NAN_METHOD(N64::ToInt) {
   info.GetReturnValue().Set(Nan::New<v8::Number>(r));
 }
 
+NAN_METHOD(N64::ToBool) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+  bool r = false;
+
+  if (a->n != 0)
+    r = true;
+
+  info.GetReturnValue().Set(Nan::New<v8::Boolean>(r));
+}
+
 NAN_METHOD(N64::ToString) {
   N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
 
@@ -1128,6 +1140,20 @@ NAN_METHOD(N64::FromInt) {
     a->n = (uint64_t)((int64_t)((int32_t)num));
   else
     a->n = (uint64_t)num;
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(N64::FromBool) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+
+  if (info.Length() < 1)
+    return Nan::ThrowError(ARG_ERROR(fromBool, 1));
+
+  if (!info[0]->IsBoolean())
+    return Nan::ThrowTypeError(TYPE_ERROR(value, boolean));
+
+  a->n = (uint64_t)info[0]->BooleanValue();
 
   info.GetReturnValue().Set(info.Holder());
 }

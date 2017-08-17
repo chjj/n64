@@ -1712,6 +1712,25 @@ function run(n64, name) {
       assert.strictEqual(n.toString(16), num.toString(16));
     });
 
+    it('should have bool casting', () => {
+      assert.strictEqual(U64(true).toString(10), '1');
+      assert.strictEqual(U64(false).toString(10), '0');
+      assert.strictEqual(I64(true).toString(10), '1');
+      assert.strictEqual(I64(false).toString(10), '0');
+      assert.strictEqual(U64.fromBool(true).toString(10), '1');
+      assert.strictEqual(U64.fromBool(false).toString(10), '0');
+      assert.strictEqual(I64.fromBool(true).toString(10), '1');
+      assert.strictEqual(I64.fromBool(false).toString(10), '0');
+      assert.strictEqual(U64(1).toBool(), true);
+      assert.strictEqual(U64(0).toBool(), false);
+      assert.strictEqual(U64(-1).toBool(), true);
+      assert.strictEqual(I64(1).toBool(), true);
+      assert.strictEqual(I64(0).toBool(), false);
+      assert.strictEqual(I64(-1).toBool(), true);
+      assert.throws(() => U64.fromBool(1));
+      assert.throws(() => I64.fromBool(1));
+    });
+
     it('should test bignum compat', () => {
       let n = new BN('9007199254740991', 10);
       let num = U64.fromBN(n);
