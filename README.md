@@ -160,8 +160,10 @@ The `N64` object documented below applies to both `n64.U64` and `n64.I64`.
 - `N64#iushrn(num)` - In-place unsigned right-shift with a JS number.
 - `N64#ushr(obj)` - Cloned unsigned right-shift with another int64.
 - `N64#ushrn(num)` - Cloned unsigned right-shift with a JS number.
-- `N64#setn(bit)` - Set specified bit to `1` (in-place).
+- `N64#setn(bit, val)` - Set specified bit to `val` (in-place).
 - `N64#testn(bit)` - Test whether a bit is set.
+- `N64#setb(pos, ch)` - Set byte `ch` at position `pos` (in-place).
+- `N64#getb(pos)` - Get byte at position `pos`.
 - `N64#imaskn(bit)` - Clear bits higher or equal to `bit` (in-place).
 - `N64#maskn(bit)` - Clear bits higher or equal to `bit`.
 - `N64#andln(num)` - Perform `AND` on lo 32 bits (returns JS number).

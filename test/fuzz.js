@@ -64,6 +64,7 @@ const numberOps = [
   'ushrn',
   'pown',
   'setn',
+  'setb',
   'maskn',
   'set'
 ];
@@ -76,6 +77,7 @@ const numberOpsRes = [
   'gtn',
   'gten',
   'testn',
+  'getb',
   'andln'
 ];
 

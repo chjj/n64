@@ -1473,6 +1473,18 @@ function run(n64, name) {
       assert.strictEqual(a.toString(), '0');
     });
 
+    it('should set and test bytes', () => {
+      const a = U64(0);
+      assert.strictEqual(a.testn(35), 0);
+      a.setb(6, 1);
+      assert.strictEqual(a.toString(), '281474976710656');
+      assert.strictEqual(a.getb(6), 1);
+      assert.strictEqual(a.getb(5), 0);
+      a.setb(3, 2);
+      assert.strictEqual(a.getb(3), 2);
+      assert.strictEqual(a.toString(), '281475010265088');
+    });
+
     it('should mask bits', () => {
       let a = U64.fromString('ffffffffffffffff', 16);
       a.imaskn(35);

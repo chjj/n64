@@ -70,6 +70,8 @@ N64::Init(v8::Local<v8::Object> &target) {
   Nan::SetPrototypeMethod(tpl, "iushrn", N64::Iushrn);
   Nan::SetPrototypeMethod(tpl, "setn", N64::Setn);
   Nan::SetPrototypeMethod(tpl, "testn", N64::Testn);
+  Nan::SetPrototypeMethod(tpl, "setb", N64::Setb);
+  Nan::SetPrototypeMethod(tpl, "getb", N64::Getb);
   Nan::SetPrototypeMethod(tpl, "imaskn", N64::Imaskn);
   Nan::SetPrototypeMethod(tpl, "andln", N64::Andln);
   Nan::SetPrototypeMethod(tpl, "ineg", N64::Ineg);
@@ -666,6 +668,41 @@ NAN_METHOD(N64::Testn) {
     r = 1;
 
   info.GetReturnValue().Set(Nan::New<v8::Int32>(r));
+}
+
+NAN_METHOD(N64::Setb) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+
+  if (info.Length() < 2)
+    return Nan::ThrowError(ARG_ERROR(setb, 2));
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(pos, number));
+
+  if (!info[1]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(ch, number));
+
+  uint32_t pos = info[0]->Uint32Value() & 7;
+  uint64_t ch = info[1]->IntegerValue() & 0xff;
+
+  a->n |= ch << (pos * 8);
+
+  info.GetReturnValue().Set(info.Holder());
+}
+
+NAN_METHOD(N64::Getb) {
+  N64 *a = ObjectWrap::Unwrap<N64>(info.Holder());
+
+  if (info.Length() < 1)
+    return Nan::ThrowError(ARG_ERROR(getb, 1));
+
+  if (!info[0]->IsNumber())
+    return Nan::ThrowTypeError(TYPE_ERROR(pos, number));
+
+  uint32_t pos = info[0]->Uint32Value() & 7;
+  int32_t ch = (a->n >> (pos * 8)) & 0xff;
+
+  info.GetReturnValue().Set(Nan::New<v8::Int32>(ch));
 }
 
 NAN_METHOD(N64::Imaskn) {
