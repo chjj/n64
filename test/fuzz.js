@@ -65,6 +65,7 @@ const numberOps = [
   'pown',
   'setn',
   'setb',
+  'orb',
   'maskn',
   'set'
 ];

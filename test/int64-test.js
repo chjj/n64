@@ -1480,7 +1480,7 @@ function run(n64, name) {
       assert.strictEqual(a.toString(), '281474976710656');
       assert.strictEqual(a.getb(6), 1);
       assert.strictEqual(a.getb(5), 0);
-      a.setb(3, 2);
+      a.orb(3, 2);
       assert.strictEqual(a.getb(3), 2);
       assert.strictEqual(a.toString(), '281475010265088');
     });

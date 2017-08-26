@@ -53,6 +53,7 @@ private:
   static NAN_METHOD(Setn);
   static NAN_METHOD(Testn);
   static NAN_METHOD(Setb);
+  static NAN_METHOD(Orb);
   static NAN_METHOD(Getb);
   static NAN_METHOD(Imaskn);
   static NAN_METHOD(Andln);
