@@ -272,7 +272,7 @@ In C:
 int64_t a = 1;
 uint64_t b = 0xffffffffffffffff;
 int64_t r = a + (int64_t)b;
-printf("%d\n", r);
+printf("%lld\n", r);
 ```
 
 Outputs `0`, as `(int64_t)ULLONG_MAX == -1LL`.
@@ -292,7 +292,7 @@ In C:
 ``` c
 int64_t a = 0;
 int64_t r = a + (int32_t)0xffffffff;
-printf("%d\n", r);
+printf("%lld\n", r);
 ```
 
 Outputs `-1`.
@@ -312,7 +312,7 @@ In C:
 ``` c
 uint64_t a = 0;
 uint64_t r = a + (uint32_t)-1;
-printf("%u\n", r);
+printf("%llu\n", r);
 ```
 
 Outputs `4294967295`.
