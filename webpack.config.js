@@ -15,7 +15,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.js']
+    extensions: ['-browser.js', '.js']
   },
   module: {
     rules: [{

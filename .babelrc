@@ -1,9 +1,11 @@
 {
-  "plugins": [
-    ["transform-es2015-block-scoping"],
-    ["transform-es2015-classes", {
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions"]
+      },
+      "useBuiltins": "usage",
       "loose": true
-    }],
-    ["transform-es2015-template-literals"]
+    }]
   ]
 }
