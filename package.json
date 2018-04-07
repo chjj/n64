@@ -1,6 +1,6 @@
 {
   "name": "n64",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Int64 object for javascript",
   "keywords": [
     "i64",
