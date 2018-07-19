@@ -341,24 +341,6 @@ Benchmarks are run against bn.js.
 $ node bench
 ```
 
-## Building
-
-Both webpack and browserify are supported.
-
-To compile with webpack:
-
-``` bash
-$ make webpack
-```
-
-To compile with browserify:
-
-``` bash
-$ make browserify
-```
-
-Both will write `n64.js` in the root directory.
-
 ## Contribution and License Agreement
 
 If you contribute code to this project, you are implicitly allowing your code
