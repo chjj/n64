@@ -121,9 +121,9 @@ NAN_METHOD(N64::New) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
 
-  uint8_t sign = (uint8_t)info[0]->Uint32Value();
+  uint8_t sign = (uint8_t)Nan::To<uint32_t>(info[0]).FromJust();
 
-  if (info[0]->NumberValue() != (double)sign)
+  if (Nan::To<double>(info[0]).FromJust() != (double)sign)
     return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
 
   if (sign > 1)
@@ -153,7 +153,7 @@ NAN_METHOD(N64::SetHi) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(hi, number));
 
-  uint32_t hi = info[0]->Uint32Value();
+  uint32_t hi = Nan::To<uint32_t>(info[0]).FromJust();
 
   a->n = ((uint64_t)hi << 32) | (a->n & 0xffffffffull);
 
@@ -177,7 +177,7 @@ NAN_METHOD(N64::SetLo) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
-  uint32_t lo = info[0]->Uint32Value();
+  uint32_t lo = Nan::To<uint32_t>(info[0]).FromJust();
 
   a->n &= ~0xffffffffull;
   a->n |= lo;
@@ -199,9 +199,9 @@ NAN_METHOD(N64::SetSign) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(sign, number));
 
-  uint8_t sign = (uint8_t)info[0]->Uint32Value();
+  uint8_t sign = (uint8_t)Nan::To<uint32_t>(info[0]).FromJust();
 
-  if (info[0]->NumberValue() != (double)sign)
+  if (Nan::To<double>(info[0]).FromJust() != (double)sign)
     return Nan::ThrowTypeError(TYPE_ERROR(sign, bit));
 
   if (sign > 1)
@@ -240,7 +240,7 @@ NAN_METHOD(N64::Iaddn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n + (int64_t)((int32_t)num);
@@ -278,7 +278,7 @@ NAN_METHOD(N64::Isubn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n - (int64_t)((int32_t)num);
@@ -316,7 +316,7 @@ NAN_METHOD(N64::Imuln) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(multiplicand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n * (int64_t)((int32_t)num);
@@ -361,7 +361,7 @@ NAN_METHOD(N64::Idivn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(divisor, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (num == 0)
     return Nan::ThrowError("Cannot divide by zero.");
@@ -412,7 +412,7 @@ NAN_METHOD(N64::Imodn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(divisor, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (num == 0)
     return Nan::ThrowError("Cannot divide by zero.");
@@ -438,7 +438,7 @@ NAN_METHOD(N64::Ipown) {
     return Nan::ThrowTypeError(TYPE_ERROR(exponent, number));
 
   uint64_t x = a->n;
-  uint32_t y = info[0]->Uint32Value();
+  uint32_t y = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->n != 0) {
     a->n = 1;
@@ -482,7 +482,7 @@ NAN_METHOD(N64::Iandn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n & (int64_t)((int32_t)num);
@@ -520,7 +520,7 @@ NAN_METHOD(N64::Iorn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n | (int64_t)((int32_t)num);
@@ -558,7 +558,7 @@ NAN_METHOD(N64::Ixorn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (int64_t)a->n ^ (int64_t)((int32_t)num);
@@ -585,7 +585,7 @@ NAN_METHOD(N64::Ishln) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
-  uint32_t bits = info[0]->Uint32Value() & 63;
+  uint32_t bits = Nan::To<uint32_t>(info[0]).FromJust() & 63;
 
   if (a->sign)
     a->n = (int64_t)a->n << bits;
@@ -604,7 +604,7 @@ NAN_METHOD(N64::Ishrn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
-  uint32_t bits = info[0]->Uint32Value() & 63;
+  uint32_t bits = Nan::To<uint32_t>(info[0]).FromJust() & 63;
 
   if (a->sign)
     a->n = (int64_t)a->n >> bits;
@@ -623,7 +623,7 @@ NAN_METHOD(N64::Iushrn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(bits, number));
 
-  uint32_t bits = info[0]->Uint32Value() & 63;
+  uint32_t bits = Nan::To<uint32_t>(info[0]).FromJust() & 63;
 
   a->n >>= bits;
 
@@ -642,8 +642,8 @@ NAN_METHOD(N64::Setn) {
   if (!info[1]->IsNumber() && !info[1]->IsBoolean())
     return Nan::ThrowTypeError(TYPE_ERROR(val, number));
 
-  uint32_t bit = info[0]->Uint32Value() & 63;
-  bool val = info[1]->BooleanValue();
+  uint32_t bit = Nan::To<uint32_t>(info[0]).FromJust() & 63;
+  bool val = Nan::To<bool>(info[1]).FromJust();
 
   if (val)
     a->n |= (1ull << bit);
@@ -662,7 +662,7 @@ NAN_METHOD(N64::Testn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(bit, number));
 
-  uint32_t bit = info[0]->Uint32Value() & 63;
+  uint32_t bit = Nan::To<uint32_t>(info[0]).FromJust() & 63;
   int32_t r = 0;
 
   if ((a->n & (1ull << bit)) != 0)
@@ -683,8 +683,8 @@ NAN_METHOD(N64::Setb) {
   if (!info[1]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(ch, number));
 
-  uint32_t pos = info[0]->Uint32Value() & 7;
-  uint64_t ch = info[1]->IntegerValue() & 0xff;
+  uint32_t pos = Nan::To<uint32_t>(info[0]).FromJust() & 7;
+  uint64_t ch = Nan::To<int64_t>(info[1]).FromJust() & 0xff;
 
   a->n &= ~(0xffull << (pos * 8));
   a->n |= ch << (pos * 8);
@@ -704,8 +704,8 @@ NAN_METHOD(N64::Orb) {
   if (!info[1]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(ch, number));
 
-  uint32_t pos = info[0]->Uint32Value() & 7;
-  uint64_t ch = info[1]->IntegerValue() & 0xff;
+  uint32_t pos = Nan::To<uint32_t>(info[0]).FromJust() & 7;
+  uint64_t ch = Nan::To<int64_t>(info[1]).FromJust() & 0xff;
 
   a->n |= ch << (pos * 8);
 
@@ -721,7 +721,7 @@ NAN_METHOD(N64::Getb) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(pos, number));
 
-  uint32_t pos = info[0]->Uint32Value() & 7;
+  uint32_t pos = Nan::To<uint32_t>(info[0]).FromJust() & 7;
   int32_t ch = (a->n >> (pos * 8)) & 0xff;
 
   info.GetReturnValue().Set(Nan::New<v8::Int32>(ch));
@@ -736,7 +736,7 @@ NAN_METHOD(N64::Imaskn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(bit, number));
 
-  uint32_t bit = info[0]->Uint32Value() & 63;
+  uint32_t bit = Nan::To<uint32_t>(info[0]).FromJust() & 63;
 
   a->n &= (1ull << bit) - 1;
 
@@ -752,7 +752,7 @@ NAN_METHOD(N64::Andln) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(operand, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
   uint32_t r = (uint32_t)a->n & num;
 
   info.GetReturnValue().Set(Nan::New<v8::Int32>(r));
@@ -802,7 +802,7 @@ NAN_METHOD(N64::Cmpn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(value, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
   int32_t r = 0;
 
   if (a->sign) {
@@ -847,7 +847,7 @@ NAN_METHOD(N64::Eqn) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(value, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
   bool r = false;
 
   if (a->sign) {
@@ -924,9 +924,9 @@ NAN_METHOD(N64::Set) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
-  int64_t n = info[0]->IntegerValue();
+  int64_t n = Nan::To<int64_t>(info[0]).FromJust();
 
-  if (info[0]->NumberValue() != (double)n)
+  if (Nan::To<double>(info[0]).FromJust() != (double)n)
     return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
@@ -949,8 +949,8 @@ NAN_METHOD(N64::Join) {
   if (!info[1]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
-  uint32_t hi = info[0]->Uint32Value();
-  uint32_t lo = info[1]->Uint32Value();
+  uint32_t hi = Nan::To<uint32_t>(info[0]).FromJust();
+  uint32_t lo = Nan::To<uint32_t>(info[1]).FromJust();
 
   a->n = ((uint64_t)hi << 32) | lo;
 
@@ -1056,9 +1056,9 @@ NAN_METHOD(N64::ToString) {
       if (!info[0]->IsNumber())
         return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
 
-      base = info[0]->Uint32Value();
+      base = Nan::To<uint32_t>(info[0]).FromJust();
 
-      if (info[0]->NumberValue() != (double)base)
+      if (Nan::To<double>(info[0]).FromJust() != (double)base)
         return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
     }
   }
@@ -1069,9 +1069,9 @@ NAN_METHOD(N64::ToString) {
     if (!info[1]->IsNumber())
       return Nan::ThrowTypeError(TYPE_ERROR(pad, integer));
 
-    pad = info[1]->Uint32Value();
+    pad = Nan::To<uint32_t>(info[1]).FromJust();
 
-    if (info[1]->NumberValue() != (double)pad)
+    if (Nan::To<double>(info[1]).FromJust() != (double)pad)
       return Nan::ThrowTypeError(TYPE_ERROR(pad, integer));
 
     if (pad > 64)
@@ -1171,9 +1171,9 @@ NAN_METHOD(N64::FromNumber) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
-  int64_t n = info[0]->IntegerValue();
+  int64_t n = Nan::To<int64_t>(info[0]).FromJust();
 
-  if (info[0]->NumberValue() != (double)n)
+  if (Nan::To<double>(info[0]).FromJust() != (double)n)
     return Nan::ThrowTypeError(TYPE_ERROR(number, integer));
 
   if (n < -MAX_SAFE_INTEGER || n > MAX_SAFE_INTEGER)
@@ -1193,7 +1193,7 @@ NAN_METHOD(N64::FromInt) {
   if (!info[0]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(integer, number));
 
-  uint32_t num = info[0]->Uint32Value();
+  uint32_t num = Nan::To<uint32_t>(info[0]).FromJust();
 
   if (a->sign)
     a->n = (uint64_t)((int64_t)((int32_t)num));
@@ -1212,7 +1212,7 @@ NAN_METHOD(N64::FromBool) {
   if (!info[0]->IsBoolean())
     return Nan::ThrowTypeError(TYPE_ERROR(value, boolean));
 
-  a->n = (uint64_t)info[0]->BooleanValue();
+  a->n = (uint64_t)Nan::To<bool>(info[0]).FromJust();
 
   info.GetReturnValue().Set(info.Holder());
 }
@@ -1229,8 +1229,8 @@ NAN_METHOD(N64::FromBits) {
   if (!info[1]->IsNumber())
     return Nan::ThrowTypeError(TYPE_ERROR(lo, number));
 
-  uint32_t hi = info[0]->Uint32Value();
-  uint32_t lo = info[1]->Uint32Value();
+  uint32_t hi = Nan::To<uint32_t>(info[0]).FromJust();
+  uint32_t lo = Nan::To<uint32_t>(info[1]).FromJust();
 
   a->n = ((uint64_t)hi << 32) | lo;
 
@@ -1272,9 +1272,9 @@ NAN_METHOD(N64::FromString) {
       if (!info[1]->IsNumber())
         return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
 
-      base = info[1]->Uint32Value();
+      base = Nan::To<uint32_t>(info[1]).FromJust();
 
-      if (info[1]->NumberValue() != (double)base)
+      if (Nan::To<double>(info[1]).FromJust() != (double)base)
         return Nan::ThrowTypeError(TYPE_ERROR(base, integer));
     }
   }
