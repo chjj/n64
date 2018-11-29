@@ -4,6 +4,7 @@ lib/native.js
 src/
 test/
 node_modules/
+vendor/
 binding.gyp
 npm-debug.log
 package-lock.json

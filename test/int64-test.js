@@ -4,7 +4,7 @@
 'use strict';
 
 const assert = require('assert');
-const BN = require('bn.js');
+const BN = require('../vendor/bn.js');
 const n64 = require('../lib/n64');
 const native = require('../lib/native');
 

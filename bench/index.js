@@ -3,7 +3,7 @@
 const bench = require('./bench');
 const Native = require('../lib/native').U64;
 const N64 = require('../lib/n64').U64;
-const BN = require('bn.js');
+const BN = require('../vendor/bn.js');
 
 function addn(N, name) {
   const end = bench('addn (' + name + ')');
