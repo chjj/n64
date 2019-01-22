@@ -1,6 +1,6 @@
 {
   "name": "n64",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Int64 object for javascript",
   "keywords": [
     "i64",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "bindings": "~1.3.1",
-    "bmocha": "^0.1.8",
-    "nan": "~2.12.0"
+    "bmocha": "^1.0.0",
+    "nan": "~2.12.1"
   },
   "engines": {
     "node": ">=2.0.0"
