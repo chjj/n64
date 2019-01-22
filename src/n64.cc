@@ -1336,4 +1336,4 @@ NAN_MODULE_INIT(init) {
   N64::Init(target);
 }
 
-NODE_MODULE(n64, init)
+NAN_MODULE_WORKER_ENABLED(n64, init)
