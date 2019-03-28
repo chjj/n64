@@ -1336,4 +1336,8 @@ NAN_MODULE_INIT(init) {
   N64::Init(target);
 }
 
+#if NODE_MAJOR_VERSION >= 10
 NAN_MODULE_WORKER_ENABLED(n64, init)
+#else
+NODE_MODULE(n64, init)
+#endif
