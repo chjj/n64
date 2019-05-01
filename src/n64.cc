@@ -103,7 +103,8 @@ N64::Init(v8::Local<v8::Object> &target) {
   v8::Local<v8::FunctionTemplate> ctor =
     Nan::New<v8::FunctionTemplate>(int64_constructor);
 
-  target->Set(Nan::New("N64").ToLocalChecked(), ctor->GetFunction());
+  target->Set(Nan::New("N64").ToLocalChecked(),
+    Nan::GetFunction(ctor).ToLocalChecked());
 }
 
 bool N64::HasInstance(v8::Local<v8::Value> val) {
